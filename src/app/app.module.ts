@@ -12,6 +12,7 @@ import { LoginLayoutComponent } from './layouts/login-layout/login-layout.compon
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 import { AlertsComponent } from './components/alerts/alerts.component';
 import { InputComponent } from './components/input/input.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { InputComponent } from './components/input/input.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule ,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

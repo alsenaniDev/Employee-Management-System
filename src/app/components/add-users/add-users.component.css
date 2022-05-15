@@ -1,3 +1,16 @@
+
 .btn {
   margin-right: 15px;
+}
+#output {
+  padding: 20px;
+  background: #dadada;
+}
+
+form {
+  margin-top: 20px;
+}
+
+select {
+  width: 300px;
 }

@@ -1,8 +1,8 @@
 <!-- alert required -->
 <div
-  *ngIf="signupForm.controls[controlName].invalid && signupForm.controls[controlName].touched && signupForm.controls[controlName].dirty">
+  *ngIf="signupForm.controls[controlName].invalid && signupForm.controls[controlName].touched">
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{title}} is <strong>required</strong>
+    {{title}} is required
   </div>
 </div>
 
