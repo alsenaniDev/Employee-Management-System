@@ -1,0 +1,44 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Add New User</h1>
+    <hr />
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">User Information</h5>
+            <form class="row g-3" [formGroup]="SignUpForm">
+
+              <div class="col-md-4" *ngFor="let control of controls">
+                <label class="form-label">{{control.title}}</label>
+                <input type={{control.type}} class="form-control" formControlName={{control.controlName}}>
+                <app-alerts [title]="control.title" [controlName]="control.controlName"></app-alerts>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">State</label>
+                <select class="form-select" formControlName="role">
+                  <option selected disabled value="">Choose...</option>
+                  <option>Admin</option>
+                  <option>User</option>
+                </select>
+                <app-alerts [title]="'State'" [controlName]="'role'"></app-alerts>
+              </div>
+
+              <div class="col-12">
+                <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                <button class="btn btn-primary" (click)="updateData()">Fill</button>
+              </div>
+              <br />
+              form status is: {{SignUpForm.status}}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
