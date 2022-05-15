@@ -13,7 +13,6 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
 import { AlertsComponent } from './components/alerts/alerts.component';
 import { InputComponent } from './components/input/input.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -32,8 +31,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule ,
-    NgSelectModule
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
