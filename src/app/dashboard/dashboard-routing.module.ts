@@ -4,6 +4,7 @@ import { AddUsersComponent } from '../components/add-users/add-users.component';
 import { AdminPageComponent } from '../components/admin-page/admin-page.component';
 import { ShowUsersComponent } from '../components/show-users/show-users.component';
 import { DashboardComponent } from './dashboard.component';
+import { SettingsComponent } from '../components/settings/settings.component';
 
 const routes: Routes = [{
   path: '',
@@ -18,6 +19,8 @@ const routes: Routes = [{
   path: 'add', component: AddUsersComponent
 }, {
   path: 'show', component: ShowUsersComponent
+}, {
+  path: 'settings', component: SettingsComponent
 }];
 
 @NgModule({
