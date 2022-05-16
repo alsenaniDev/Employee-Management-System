@@ -15,22 +15,30 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Position</th>
-                  <th scope="col">Age</th>
-                  <th scope="col">Start Date</th>
+                  <th width="2%" scope="col">id</th>
+                  <th width="30%" scope="col">Name</th>
+                  <th width="20%" scope="col">Email</th>
+                  <th width="30%" scope="col">Group</th>
+                  <th width="40%" scope="col">Roles</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Brandon Jacob</td>
-                  <td>Designer</td>
-                  <td>28</td>
-                  <td>2016-05-25</td>
+                <tr *ngFor="let user of usersList ">
+                  <th scope="row">{{user.id}}</th>
+                  <td>{{user.firstName}} {{user.lastName}}</td>
+                  <td>{{user.email}}</td>
+                  <!-- <div *ngFor="let group of groupsList">
+                    <td *ngIf="group.id == user.id">{{group.name}}</td>
+                  </div> -->
+                  <ng-container *ngFor="let group of groupsList">
+                    <td *ngIf="group.id == user.group">{{ group.name }}</td>
+                  </ng-container>
+
+                  <ng-container *ngFor="let role of rolesList">
+                    <td *ngIf="role.id == user.roles">{{ role.name }}</td>
+                  </ng-container>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <th scope="row">2</th>
                   <td>Bridie Kessler</td>
                   <td>Developer</td>
@@ -57,7 +65,7 @@
                   <td>Dynamic Division Officer</td>
                   <td>47</td>
                   <td>2011-04-19</td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
             <!-- End Default Table Example -->

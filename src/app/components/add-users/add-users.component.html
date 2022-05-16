@@ -22,16 +22,13 @@
                 <label class="form-label">Group</label>
                 <select controlName="group" class="form-select" formControlName="group">
                   <option selected disabled value="">Choose...</option>
-                  <option>Front End</option>
-                  <option>Back End</option>
-                  <option>Developer</option>
-                  <option>UX/UI Designer</option>
+                  <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
                 </select>
                 <app-alerts [title]="'group'" [controlName]="'group'"></app-alerts>
               </div>
               <label>Roles</label>
-              <ng-select  formControlName="roles"  [maxSelectedItems]="3" [multiple]="true" [items]="items" bindLabel="name" bindValue="id"
-                placeholder="Select Roles">
+              <ng-select formControlName="roles" [maxSelectedItems]="3" [multiple]="true" [items]="rolesList"
+                bindLabel="name" bindValue="" placeholder="Select Roles">
               </ng-select>
               <app-alerts [title]="'roles'" [controlName]="'roles'"></app-alerts>
               <div class="col-12">

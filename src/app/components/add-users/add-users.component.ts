@@ -10,17 +10,13 @@ declare var $: any;
 @Injectable({ providedIn: "root" })
 export class AddUsersComponent {
   SignUpForm: FormGroup;
-  categories = [
-    { id: 1, name: 'Laravel' },
-    { id: 2, name: 'Codeigniter' },
-    { id: 3, name: 'React' },
-    { id: 4, name: 'PHP' },
-    { id: 5, name: 'Angular' },
-    { id: 6, name: 'Vue' },
-    { id: 7, name: 'JQuery', disabled: true },
-    { id: 8, name: 'Javascript' },
-  ];
-  selectedCityIds: string[]
+  groups = JSON.parse(localStorage.getItem("Groups") || "[]")
+  roles = JSON.parse(localStorage.getItem("Roles") || '[]')
+  Users =  JSON.parse(localStorage.getItem("Users") || "[]")
+  groupsList: any = [...this.groups]
+  rolesList: any = [...this.roles]
+  usersList : any = [...this.Users]
+
   controls = [
     {
       title: 'First Name',
@@ -56,23 +52,10 @@ export class AddUsersComponent {
     });
   }
   ngOnInit(): void {
-
   }
 
-  items = [
-    { id: 1, name: 'Python' },
-    { id: 2, name: 'Node Js' },
-    { id: 3, name: 'Java' },
-    { id: 4, name: 'PHP' },
-    { id: 5, name: 'Django' },
-    { id: 6, name: 'Angular' },
-    { id: 7, name: 'Vue' },
-    { id: 8, name: 'ReactJs' },
-  ];
 
-  getValues() {
 
-  }
   onSubmit() {
     if (this.SignUpForm.invalid) {
       this.SignUpForm.markAllAsTouched()
@@ -86,7 +69,9 @@ export class AddUsersComponent {
         group: this.SignUpForm.value.group,
         roles: this.SignUpForm.value.roles
       }
-      console.log(user)
+      this.usersList.push(user)
+      localStorage.setItem("Users" , JSON.stringify(this.usersList))
+      
     }
 
   }
