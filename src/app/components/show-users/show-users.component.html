@@ -10,12 +10,30 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Default Table</h5>
-
-
+            <div class="search-bar">
+              <div class="col-md-3 group">
+                <label class="form-label">Search By Name</label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="col-md-3 group">
+                <label class="form-label">Filter By Group</label>
+                <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
+                  <option selected disabled value="">Choose...</option>
+                  <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-3 group">
+                <label class="form-label">Filter By Roles</label>
+                <select controlName="group" id="ddlRoles" class="form-select" (change)="getGroup()">
+                  <option selected disabled value="">Choose...</option>
+                  <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
+                </select>
+              </div>
+            </div>
             <table class="table">
               <thead>
                 <tr>
-                  <th width="2%" scope="col">id</th>
+                  <th width="2%" scope="col">Id</th>
                   <th width="30%" scope="col">Name</th>
                   <th width="20%" scope="col">Email</th>
                   <th width="30%" scope="col">Group</th>
@@ -26,17 +44,20 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of usersList , let indexOfelement=index ">
-                  <th scope="row">{{indexOfelement+1}}</th>
+                <tr *ngFor="let user of usersList , let indexOfElement = index">
+                  <th scope="row">{{indexOfElement + 1}}</th>
                   <td>{{user.firstName}} {{user.lastName}}</td>
                   <td>{{user.email}}</td>
                   <ng-container *ngFor="let group of groupsList">
                     <td *ngIf="group.id == user.group">{{ group.name }}</td>
                   </ng-container>
-
-
                   <td>
-                    <div *ngFor="let role of user.roles">{{role.name}}</div>
+                    [
+                    <span *ngFor="let role of user.roles, let i = index">
+                      {{role.name}}
+                      <span *ngIf=" i != user.roles.length - 1">,</span>
+                    </span>
+                    ]
                   </td>
                   <td>
                     <button (click)="deleteUser(user.id)" type="button" class="btn btn-danger">
@@ -44,7 +65,7 @@
                     </button>
                   </td>
 
-                  <td><button  (click)="deleteUser(user.id)" type="button" class="btn btn-secondary">
+                  <td><button (click)="deleteUser(user.id)" type="button" class="btn btn-secondary">
                       <i class="ri-edit-box-line"></i>
                     </button>
                   </td>
