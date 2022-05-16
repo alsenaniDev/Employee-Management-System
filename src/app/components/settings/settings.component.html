@@ -72,6 +72,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert" style="display: none;">
+            <i class="bi bi-exclamation-octagon me-1"></i>
+            Please Enter {{dataName}} Name
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
           <div style="display: flex;justify-content: space-between;">
             <div class="col-md-4">
               <label class="form-label" id="label-name"></label>
@@ -98,8 +103,16 @@
               <tr *ngFor="let d of data">
                 <th scope="row">{{d.id}}</th>
                 <td>{{d.name}}</td>
-                <td><button type="button" class="btn btn-secondary"><i class="ri-edit-box-line"></i></button></td>
-                <td><button type="button" class="btn btn-danger"><i class="ri-delete-bin-6-line"></i></button></td>
+                <td>
+                  <button type="button" class="btn btn-secondary" id="{{d.id}}" (click)="EditElement(d.id)">
+                    <i class="ri-edit-box-line"></i>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger" id="{{d.id}}" (click)="DeleteElement(d.id)">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
