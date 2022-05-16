@@ -1,5 +1,6 @@
 import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 declare var $: any;
 @Component({
   selector: 'app-add-users',
@@ -41,7 +42,7 @@ export class AddUsersComponent {
     },
   ];
 
-  constructor(public formBuilder: FormBuilder) {
+  constructor(public formBuilder: FormBuilder , private router : Router) {
     this.SignUpForm = this.formBuilder.group({
       fname: ['', Validators.required],
       lname: ['', Validators.required],
@@ -71,6 +72,9 @@ export class AddUsersComponent {
       }
       this.usersList.push(user)
       localStorage.setItem("Users", JSON.stringify(this.usersList))
+      this.SignUpForm.reset()
+      this.router.navigateByUrl("/dashboard/admin")
+
 
     }
 
