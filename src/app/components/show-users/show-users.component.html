@@ -2,7 +2,7 @@
   <div class="pagetitle">
     <h1>Show Users</h1>
     <hr />
-  </div><!-- End Page Title -->
+  </div>
 
   <section class="section">
     <div class="row">
@@ -11,7 +11,7 @@
           <div class="card-body">
             <h5 class="card-title">Default Table</h5>
 
-            <!-- Default Table -->
+
             <table class="table">
               <thead>
                 <tr>
@@ -20,59 +20,49 @@
                   <th width="20%" scope="col">Email</th>
                   <th width="30%" scope="col">Group</th>
                   <th width="40%" scope="col">Roles</th>
+                  <th width="40%" scope="col">Delete</th>
+                  <th width="40%" scope="col">Edit</th>
+                  <th width="40%" scope="col">Send</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of usersList ">
-                  <th scope="row">{{user.id}}</th>
+                <tr *ngFor="let user of usersList , let indexOfelement=index ">
+                  <th scope="row">{{indexOfelement+1}}</th>
                   <td>{{user.firstName}} {{user.lastName}}</td>
                   <td>{{user.email}}</td>
-                  <!-- <div *ngFor="let group of groupsList">
-                    <td *ngIf="group.id == user.id">{{group.name}}</td>
-                  </div> -->
                   <ng-container *ngFor="let group of groupsList">
                     <td *ngIf="group.id == user.group">{{ group.name }}</td>
                   </ng-container>
 
-                  <ng-container *ngFor="let role of rolesList">
-                    <td *ngIf="role.id == user.roles">{{ role.name }}</td>
-                  </ng-container>
+
+                  <td>
+                    <div *ngFor="let role of user.roles">{{role.name}}</div>
+                  </td>
+                  <td>
+                    <button (click)="deleteUser(user.id)" type="button" class="btn btn-danger">
+                      <i class="ri-delete-bin-6-line"></i>
+                    </button>
+                  </td>
+
+                  <td><button  (click)="deleteUser(user.id)" type="button" class="btn btn-secondary">
+                      <i class="ri-edit-box-line"></i>
+                    </button>
+                  </td>
+                  <td><button (click)="deleteUser(user.id)" type="button" class="btn btn-primary">
+                      <i class=" ri-message-2-line"></i>
+                    </button>
+                  </td>
+
                 </tr>
-                <!-- <tr>
-                  <th scope="row">2</th>
-                  <td>Bridie Kessler</td>
-                  <td>Developer</td>
-                  <td>35</td>
-                  <td>2014-12-05</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Ashleigh Langosh</td>
-                  <td>Finance</td>
-                  <td>45</td>
-                  <td>2011-08-12</td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>Angus Grady</td>
-                  <td>HR</td>
-                  <td>34</td>
-                  <td>2012-06-11</td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>Raheem Lehner</td>
-                  <td>Dynamic Division Officer</td>
-                  <td>47</td>
-                  <td>2011-04-19</td>
-                </tr> -->
+
+
               </tbody>
             </table>
-            <!-- End Default Table Example -->
+
           </div>
         </div>
       </div>
     </div>
   </section>
 
-</main><!-- End #main -->
+</main>

@@ -14,6 +14,7 @@ import { AlertsComponent } from './components/alerts/alerts.component';
 import { InputComponent } from './components/input/input.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {MatIconModule} from '@angular/material/icon'
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule ,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
