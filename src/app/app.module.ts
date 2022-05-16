@@ -32,7 +32,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule ,
+    ReactiveFormsModule,
     NgSelectModule
   ],
   providers: [],
