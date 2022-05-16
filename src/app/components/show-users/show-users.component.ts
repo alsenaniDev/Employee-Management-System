@@ -16,12 +16,25 @@ export class ShowUsersComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.groupsList)
   }
+
   deleteUser(id: any) {
     let i = this.usersList.findIndex((user: any) => user.id == id)
     this.usersList.splice(i, 1)
     localStorage.setItem("Users", JSON.stringify(this.usersList))
   }
 
+  getGroup() {
+    let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
+    let group = e.value;
+
+    this.usersList = this.Users.filter((u: any) => u.group == group);
+  }
+
+  getRoles() {
+    let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
+    let role = e.value;
+
+    this.Users.filter((u: any) => console.log(u))
+  }
 }
