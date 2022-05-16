@@ -24,7 +24,7 @@
               </div>
               <div class="col-md-3 group">
                 <label class="form-label">Filter By Roles</label>
-                <select controlName="group" id="ddlRoles" class="form-select" (change)="getGroup()">
+                <select controlName="group" id="ddlRoles" class="form-select" (change)="getRoles()">
                   <option selected disabled value="">Choose...</option>
                   <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
                 </select>
@@ -65,11 +65,11 @@
                     </button>
                   </td>
 
-                  <td><button (click)="deleteUser(user.id)" type="button" class="btn btn-secondary">
+                  <td><button type="button" class="btn btn-secondary">
                       <i class="ri-edit-box-line"></i>
                     </button>
                   </td>
-                  <td><button (click)="deleteUser(user.id)" type="button" class="btn btn-primary">
+                  <td><button type="button" class="btn btn-primary">
                       <i class=" ri-message-2-line"></i>
                     </button>
                   </td>

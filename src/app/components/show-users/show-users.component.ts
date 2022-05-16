@@ -34,7 +34,6 @@ export class ShowUsersComponent implements OnInit {
   getRoles() {
     let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
     let role = e.value;
-
-    this.Users.filter((u: any) => console.log(u))
+    this.usersList = this.Users.filter((user: any) => user.roles.find((r: any) => r.id == role))
   }
 }
