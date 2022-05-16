@@ -12,10 +12,10 @@ export class AddUsersComponent {
   SignUpForm: FormGroup;
   groups = JSON.parse(localStorage.getItem("Groups") || "[]")
   roles = JSON.parse(localStorage.getItem("Roles") || '[]')
-  Users =  JSON.parse(localStorage.getItem("Users") || "[]")
+  Users = JSON.parse(localStorage.getItem("Users") || "[]")
   groupsList: any = [...this.groups]
   rolesList: any = [...this.roles]
-  usersList : any = [...this.Users]
+  usersList: any = [...this.Users]
 
   controls = [
     {
@@ -70,8 +70,8 @@ export class AddUsersComponent {
         roles: this.SignUpForm.value.roles
       }
       this.usersList.push(user)
-      localStorage.setItem("Users" , JSON.stringify(this.usersList))
-      
+      localStorage.setItem("Users", JSON.stringify(this.usersList))
+
     }
 
   }

@@ -17,6 +17,7 @@ export class SettingsComponent implements OnInit {
   }
 
   showModel(name: string) {
+    (<HTMLInputElement>document.getElementById("inputValue")).value = "";
     document.getElementById("model-title")!.innerHTML = name + " Model"
     document.getElementById("label-name")!.innerHTML = "Name of " + name
     document.getElementById("label-table")!.innerHTML = name + " Table"

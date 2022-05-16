@@ -12,7 +12,7 @@
             <h5 class="card-title">User Information</h5>
             <form class="row g-3" [formGroup]="SignUpForm" (ngSubmit)="onSubmit()">
 
-              <div class="col-md-4 mb-5" *ngFor="let control of controls">
+              <div class="col-md-4 mb-3" *ngFor="let control of controls">
                 <label class="form-label">{{control.title}}</label>
                 <input type={{control.type}} class="form-control" formControlName={{control.controlName}}>
                 <app-alerts [title]="control.title" [controlName]="control.controlName"></app-alerts>
@@ -26,16 +26,17 @@
                 </select>
                 <app-alerts [title]="'group'" [controlName]="'group'"></app-alerts>
               </div>
-              <label>Roles</label>
-              <ng-select formControlName="roles" [maxSelectedItems]="3" [multiple]="true" [items]="rolesList"
-                bindLabel="name" bindValue="" placeholder="Select Roles">
-              </ng-select>
-              <app-alerts [title]="'roles'" [controlName]="'roles'"></app-alerts>
+              <div class="col-md-4">
+                <label class="form-label">Roles</label>
+                <ng-select formControlName="roles" [maxSelectedItems]="3" [multiple]="true" [items]="rolesList"
+                  bindLabel="name" bindValue="" placeholder="Select Roles">
+                </ng-select>
+                <app-alerts [title]="'roles'" [controlName]="'roles'"></app-alerts>
+              </div>
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">Save</button>
               </div>
               <br />
-              form status is: {{SignUpForm.status}}
             </form>
           </div>
         </div>
