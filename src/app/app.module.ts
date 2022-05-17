@@ -15,7 +15,6 @@ import { InputComponent } from './components/input/input.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatIconModule } from '@angular/material/icon';
-import { SelectComponent } from './select/select.component'
 
 @NgModule({
   declarations: [
@@ -29,7 +28,7 @@ import { SelectComponent } from './select/select.component'
     AlertsComponent,
     InputComponent,
     SettingsComponent,
-    SelectComponent
+
   ],
   imports: [
     BrowserModule,
