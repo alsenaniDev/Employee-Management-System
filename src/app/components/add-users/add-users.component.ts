@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import {Guid} from "guid-typescript"
+import { Guid } from "guid-typescript"
 declare var $: any;
 @Component({
   selector: 'app-add-users',
@@ -43,7 +43,7 @@ export class AddUsersComponent {
     },
   ];
 
-  constructor(public formBuilder: FormBuilder , private router : Router) {
+  constructor(public formBuilder: FormBuilder, private router: Router) {
     this.SignUpForm = this.formBuilder.group({
       fname: ['', Validators.required],
       lname: ['', Validators.required],
@@ -62,9 +62,10 @@ export class AddUsersComponent {
     if (this.SignUpForm.invalid) {
       this.SignUpForm.markAllAsTouched()
     } else {
+      let guid = Guid.create().toJSON();
       let user = {
-        
-        id: new Date().getTime().toString(),
+
+        id: guid.value,
         firstName: this.SignUpForm.value.fname,
         lastName: this.SignUpForm.value.lname,
         email: this.SignUpForm.value.email,
@@ -84,16 +85,6 @@ export class AddUsersComponent {
 
 
 
-  updateData() {
-    this.SignUpForm.patchValue({
-      fname: "Mohammed",
-      lname: "Alsenani",
-      username: "Moha",
-      salary: 15000,
-      role: "Admin",
-      password: 123,
-      re_password: 123,
-    });
-  }
+
 
 }
