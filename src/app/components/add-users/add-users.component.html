@@ -24,14 +24,14 @@
                   <option selected disabled value="">Choose...</option>
                   <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
                 </select>
-                <app-alerts [title]="'group'" [controlName]="'group'"></app-alerts>
+                <app-alerts [formName]="SignUpForm" [title]="'group'" [controlName]="'group'"></app-alerts>
               </div>
               <div class="col-md-4">
                 <label class="form-label">Roles</label>
                 <ng-select formControlName="roles" [maxSelectedItems]="3" [multiple]="true" [items]="rolesList"
                   bindLabel="name"  placeholder="Select Roles">
                 </ng-select>
-                <app-alerts [title]="'roles'" [controlName]="'roles'"></app-alerts>
+                <app-alerts [formName]="SignUpForm" [title]="'roles'" [controlName]="'roles'"></app-alerts>
               </div>
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">Save</button>
