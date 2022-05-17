@@ -1,6 +1,7 @@
 import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import {Guid} from "guid-typescript"
 declare var $: any;
 @Component({
   selector: 'app-add-users',
