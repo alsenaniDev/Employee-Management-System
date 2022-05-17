@@ -28,7 +28,6 @@ import { MatIconModule } from '@angular/material/icon';
     AlertsComponent,
     InputComponent,
     SettingsComponent,
-
   ],
   imports: [
     BrowserModule,

@@ -11,13 +11,17 @@ export class ShowUsersComponent implements OnInit {
   Groups = JSON.parse(localStorage.getItem("Groups") || "[]")
   Roles = JSON.parse(localStorage.getItem("Roles") || "[]")
   userToken = (localStorage.getItem("token") || "null")
+
   usersList: any = [...this.Users]
   groupsList: any = [...this.Groups]
   rolesList: any = [...this.Roles]
+
   userFound = this.Users.find((user: any) => user.id == this.userToken)
   userRoles = this.userFound.roles.map((role: any) => role.id)
   findGroup = this.Groups.find((group: any) => group.id == this.userFound.group)
-  myUsersGroupsAndRoles = this.Users.filter((user: any) => user.id != this.userFound.id && user.roles.find((userRole: any) => this.userRoles.includes(userRole.id) || user.group == this.userFound.group));
+  myUsersGroupsAndRoles = this.Users.filter((user: any) => user.id != this.userFound.id
+    && user.roles.find((userRole: any) => this.userRoles.includes(userRole.id)
+      || user.group == this.userFound.group));
 
   constructor() {
     if (this.findGroup.name == "Admin") {
