@@ -11,17 +11,30 @@
           <div class="card-body">
             <h5 class="card-title">Default Table</h5>
             <div class="search-bar">
-              <div class="col-md-3 group">
+              <!-- <div class="col-md-3 group">
                 <label class="form-label">Search By Name</label>
                 <input type="text" class="form-control">
+              </div> -->
+              <div class="col-md-6 group">
+                <div *ngIf="isAdmin() , else user">
+                  <label class="form-label">Filter By Group</label>
+                  <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
+                    <option selected disabled value="">Choose...</option>
+                    <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
+                  </select>
+                </div>
               </div>
               <div class="col-md-3 group">
-                <label class="form-label">Filter By Group</label>
-                <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
-                  <option selected disabled value="">Choose...</option>
-                  <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
-                </select>
+                <ng-template #user>
+                  <label class="form-label">Filter By Group</label>
+                  <input type="checkbox" (change)="filterByGroup()" id="checked" style="margin: 0 10px;">
+                  <small>check to filter by your Group</small>
+                  <input disabled value="{{findGroup.name}}" type="text" class="form-control">
+                </ng-template>
               </div>
+
+
+
               <div class="col-md-3 group">
                 <label class="form-label">Filter By Roles</label>
                 <select controlName="group" id="ddlRoles" class="form-select" (change)="getRoles()">
@@ -59,7 +72,7 @@
                     </span>
                     ]
                   </td>
-                  <td  *ngIf="isAdmin()">
+                  <td *ngIf="isAdmin()">
                     <button (click)="deleteUser(user.id)" type="button" class="btn btn-danger">
                       <i class="ri-delete-bin-6-line"></i>
                     </button>

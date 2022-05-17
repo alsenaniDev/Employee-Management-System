@@ -62,6 +62,7 @@ export class AddUsersComponent {
       this.SignUpForm.markAllAsTouched()
     } else {
       let user = {
+        
         id: new Date().getTime().toString(),
         firstName: this.SignUpForm.value.fname,
         lastName: this.SignUpForm.value.lname,
