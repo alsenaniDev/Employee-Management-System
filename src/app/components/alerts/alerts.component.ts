@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { AddUsersComponent } from '../add-users/add-users.component';
 
 @Component({
@@ -10,12 +10,13 @@ import { AddUsersComponent } from '../add-users/add-users.component';
 export class AlertsComponent implements OnInit {
   @Input() title?: string
   @Input() controlName?: string
-  @Input() formName?:any
+  @Input() formName?: any
   constructor() {
-    
   }
 
   ngOnInit(): void {
   }
 
 }
+// ElementRef
+// ViewContainerRef
