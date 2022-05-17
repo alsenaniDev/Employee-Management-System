@@ -7,7 +7,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })
-@Injectable({providedIn : "root"})
+
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup
   userToken =(localStorage.getItem("token") || "null")

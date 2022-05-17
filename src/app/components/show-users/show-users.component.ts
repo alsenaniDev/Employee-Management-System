@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-show-users',
   templateUrl: './show-users.component.html',
   styleUrls: ['./show-users.component.css']
 })
+
 export class ShowUsersComponent implements OnInit {
   Users = JSON.parse(localStorage.getItem("Users") || "[]")
   Groups = JSON.parse(localStorage.getItem("Groups") || "[]")
@@ -26,14 +27,11 @@ export class ShowUsersComponent implements OnInit {
     } else {
       this.usersList = [...this.myUsersGroupsAndRoles]
       this.rolesList = this.Roles.filter((role: any) => this.userRoles.includes(role.id))
-      this.groupsList = this.Groups.filter((group: any) => group.id == this.userFound.group)
+
     }
   }
 
   ngOnInit(): void {
-    console.log(this.Groups)
-    console.log(this.findGroup.name == "Admin")
-    console.log(this.myUsersGroupsAndRoles)
   }
 
   deleteUser(id: any) {
@@ -54,11 +52,23 @@ export class ShowUsersComponent implements OnInit {
     let role = e.value;
     this.usersList = this.Users.filter((user: any) => user.roles.find((r: any) => r.id == role))
   }
+
   isAdmin() {
     if (this.findGroup.name == "Admin") {
       return true
     } else {
       return false
+    }
+  }
+
+  filterByGroup() {
+    const checkbox = document.getElementById(
+      'checked',
+    ) as HTMLInputElement | null;
+    if (checkbox?.checked) {
+      this.usersList = this.Users.filter((u: any) => u.group == this.userFound.group);
+    } else {
+      this.usersList = [...this.myUsersGroupsAndRoles]
     }
   }
 }
