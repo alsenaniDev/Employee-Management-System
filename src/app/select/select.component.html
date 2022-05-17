@@ -1,0 +1,7 @@
+<div class="col-md-3 group">
+    <label class="form-label">Filter By {{label}}</label>
+    <select controlName="controlName" id="ddlGroup" class="form-select" (change)="getChange">
+      <option selected disabled value="">Choose...</option>
+      <option *ngFor="let items of list" [value]="value">{{items.name}}</option>
+    </select>
+  </div>

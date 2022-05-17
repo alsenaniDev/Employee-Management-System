@@ -38,7 +38,7 @@
                   <th width="20%" scope="col">Email</th>
                   <th width="30%" scope="col">Group</th>
                   <th width="40%" scope="col">Roles</th>
-                  <th width="40%" scope="col">Delete</th>
+                  <th *ngIf="isAdmin()" width="40%" scope="col">Delete</th>
                   <th width="40%" scope="col">Edit</th>
                   <th width="40%" scope="col">Send</th>
                 </tr>
@@ -59,7 +59,7 @@
                     </span>
                     ]
                   </td>
-                  <td>
+                  <td  *ngIf="isAdmin()">
                     <button (click)="deleteUser(user.id)" type="button" class="btn btn-danger">
                       <i class="ri-delete-bin-6-line"></i>
                     </button>

@@ -14,7 +14,8 @@ import { AlertsComponent } from './components/alerts/alerts.component';
 import { InputComponent } from './components/input/input.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
+import { SelectComponent } from './select/select.component'
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MatIconModule } from '@angular/material/icon'
     DashboardLayoutComponent,
     AlertsComponent,
     InputComponent,
-    SettingsComponent
+    SettingsComponent,
+    SelectComponent
   ],
   imports: [
     BrowserModule,
