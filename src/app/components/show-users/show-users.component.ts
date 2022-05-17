@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-show-users',
   templateUrl: './show-users.component.html',
   styleUrls: ['./show-users.component.css']
 })
+
 export class ShowUsersComponent implements OnInit {
   Users = JSON.parse(localStorage.getItem("Users") || "[]")
   Groups = JSON.parse(localStorage.getItem("Groups") || "[]")
@@ -30,14 +31,11 @@ export class ShowUsersComponent implements OnInit {
     } else {
       this.usersList = [...this.myUsersGroupsAndRoles]
       this.rolesList = this.Roles.filter((role: any) => this.userRoles.includes(role.id))
-      this.groupsList = this.Groups.filter((group: any) => group.id == this.userFound.group)
+
     }
   }
 
   ngOnInit(): void {
-    console.log(this.Groups)
-    console.log(this.findGroup.name == "Admin")
-    console.log(this.myUsersGroupsAndRoles)
   }
 
   deleteUser(id: any) {
@@ -50,19 +48,27 @@ export class ShowUsersComponent implements OnInit {
     let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
     let group = e.value;
 
-    this.usersList = this.Users.filter((u: any) => u.group == group);
+    this.usersList = this.Users.filter((u: any) =>u.id != this.userFound.id && u.group == group);
   }
 
   getRoles() {
     let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
     let role = e.value;
-    this.usersList = this.Users.filter((user: any) => user.roles.find((r: any) => r.id == role))
+    this.usersList = this.Users.filter((user: any) => user.id != this.userFound.id && user.roles.find((r: any) => r.id == role))
   }
+
   isAdmin() {
-    if (this.findGroup.name == "Admin") {
-      return true
+    return this.findGroup.name == "Admin";
+  }
+
+  filterByGroup() {
+    const checkbox = document.getElementById(
+      'checked',
+    ) as HTMLInputElement | null;
+    if (checkbox?.checked) {
+      this.usersList = this.Users.filter((u: any) => u.id != this.userFound.id && u.group == this.userFound.group);
     } else {
-      return false
+      this.usersList = [...this.myUsersGroupsAndRoles]
     }
   }
 }

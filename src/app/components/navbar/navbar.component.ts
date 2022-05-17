@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginPageComponent } from 'src/app/login/login-page/login-page.component';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +6,15 @@ import { LoginPageComponent } from 'src/app/login/login-page/login-page.componen
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-userProfile : any
-  constructor(private user : LoginPageComponent ) {
+  userProfile: any
+  userToken = (localStorage.getItem("token") || "null")
+  Users = JSON.parse(localStorage.getItem("Users") || "[]")
+  userFound = this.Users.find((user: any) => user.id == this.userToken)
 
+  Groups = JSON.parse(localStorage.getItem("Groups") || "[]")
+  findGroup = this.Groups.find((group: any) => group.id == this.userFound.group)
+  constructor() {
+    
   }
 
   ngOnInit(): void {

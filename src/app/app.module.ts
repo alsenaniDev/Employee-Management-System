@@ -27,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
     DashboardLayoutComponent,
     AlertsComponent,
     InputComponent,
-    SettingsComponent
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
