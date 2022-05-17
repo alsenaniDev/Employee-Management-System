@@ -10,9 +10,9 @@ import { AddUsersComponent } from '../add-users/add-users.component';
 export class AlertsComponent implements OnInit {
   @Input() title?: string
   @Input() controlName?: string
-  signupForm: any
-  constructor(private form: AddUsersComponent) {
-    this.signupForm = form.SignUpForm
+  @Input() formName?:any
+  constructor() {
+    
   }
 
   ngOnInit(): void {

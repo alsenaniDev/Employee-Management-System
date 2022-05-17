@@ -44,21 +44,17 @@ export class ShowUsersComponent implements OnInit {
     let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
     let group = e.value;
 
-    this.usersList = this.Users.filter((u: any) => u.group == group);
+    this.usersList = this.Users.filter((u: any) =>u.id != this.userFound.id && u.group == group);
   }
 
   getRoles() {
     let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
     let role = e.value;
-    this.usersList = this.Users.filter((user: any) => user.roles.find((r: any) => r.id == role))
+    this.usersList = this.Users.filter((user: any) => user.id != this.userFound.id && user.roles.find((r: any) => r.id == role))
   }
 
   isAdmin() {
-    if (this.findGroup.name == "Admin") {
-      return true
-    } else {
-      return false
-    }
+    return this.findGroup.name == "Admin";
   }
 
   filterByGroup() {
@@ -66,7 +62,7 @@ export class ShowUsersComponent implements OnInit {
       'checked',
     ) as HTMLInputElement | null;
     if (checkbox?.checked) {
-      this.usersList = this.Users.filter((u: any) => u.group == this.userFound.group);
+      this.usersList = this.Users.filter((u: any) => u.id != this.userFound.id && u.group == this.userFound.group);
     } else {
       this.usersList = [...this.myUsersGroupsAndRoles]
     }
