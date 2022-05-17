@@ -15,6 +15,7 @@ export class AddUsersComponent {
   groups = JSON.parse(localStorage.getItem("Groups") || "[]")
   roles = JSON.parse(localStorage.getItem("Roles") || '[]')
   Users = JSON.parse(localStorage.getItem("Users") || "[]")
+  usersEmail = this.Users.map((user: any) => user.email)
   groupsList: any = [...this.groups]
   rolesList: any = [...this.roles]
   usersList: any = [...this.Users]
@@ -45,10 +46,10 @@ export class AddUsersComponent {
 
   constructor(public formBuilder: FormBuilder, private router: Router) {
     this.SignUpForm = this.formBuilder.group({
-      fname: ['', Validators.required],
-      lname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
-      password: ['', [Validators.required, Validators.minLength(4)]],
+      fname: ['', [Validators.required, Validators.minLength(3)]],
+      lname: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       group: ['', Validators.required],
       roles: ['', Validators.required],
     });
@@ -61,6 +62,9 @@ export class AddUsersComponent {
   onSubmit() {
     if (this.SignUpForm.invalid) {
       this.SignUpForm.markAllAsTouched()
+
+    } else if (this.usersEmail.includes(this.SignUpForm.value.email)) {
+      this.SignUpForm.invalid
     } else {
       let guid = Guid.create().toJSON();
       let user = {

@@ -10,12 +10,16 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">User Information</h5>
+            <div *ngIf="usersEmail.includes(SignUpForm.value.email)" class="alert alert-danger alert-dismissible fade show" role="alert">
+               User Found
+            </div>
             <form class="row g-3" [formGroup]="SignUpForm" (ngSubmit)="onSubmit()">
 
               <div class="col-md-4 mb-3" *ngFor="let control of controls">
                 <label class="form-label">{{control.title}}</label>
                 <input type={{control.type}} class="form-control" formControlName={{control.controlName}}>
-                <app-alerts [formName]="SignUpForm" [title]="control.title" [controlName]="control.controlName"></app-alerts>
+                <app-alerts [formName]="SignUpForm" [title]="control.title" [controlName]="control.controlName">
+                </app-alerts>
               </div>
 
               <div class="col-md-4">
@@ -29,7 +33,7 @@
               <div class="col-md-4">
                 <label class="form-label">Roles</label>
                 <ng-select formControlName="roles" [maxSelectedItems]="3" [multiple]="true" [items]="rolesList"
-                  bindLabel="name"  placeholder="Select Roles">
+                  bindLabel="name" placeholder="Select Roles">
                 </ng-select>
                 <app-alerts [formName]="SignUpForm" [title]="'roles'" [controlName]="'roles'"></app-alerts>
               </div>
