@@ -32,40 +32,40 @@ export class SettingsComponent implements OnInit {
         let dataName = name.split(" ");
 
         if (dataName[0] == "Groups") {
-          let groups = localStorage.getItem("Groups");
+          let groups = localStorage.getItem("GroupsDB");
           if (groups == null) {
             let newGroups = [{
               id: 1,
               name: (<HTMLInputElement>document.getElementById("inputValue")).value,
             }];
-            localStorage.setItem("Groups", JSON.stringify(newGroups));
+            localStorage.setItem("GroupsDB", JSON.stringify(newGroups));
           } else {
-            let groups = JSON.parse(localStorage.getItem("Groups") || '');
+            let groups = JSON.parse(localStorage.getItem("GroupsDB") || '');
             let lastItem = groups[groups.length - 1];
             let newItem = {
               id: lastItem.id + 1,
               name: (<HTMLInputElement>document.getElementById("inputValue")).value,
             };
             groups.push(newItem);
-            localStorage.setItem("Groups", JSON.stringify(groups));
+            localStorage.setItem("GroupsDB", JSON.stringify(groups));
           }
-        } else if (dataName[0] == "Roles") {
-          let roles = localStorage.getItem("Roles");
+        } else if (dataName[0] == "RolesDB") {
+          let roles = localStorage.getItem("RolesDB");
           if (roles == null) {
             let newRoles = [{
               id: 1,
               name: (<HTMLInputElement>document.getElementById("inputValue")).value,
             }];
-            localStorage.setItem("Roles", JSON.stringify(newRoles));
+            localStorage.setItem("RolesDB", JSON.stringify(newRoles));
           } else {
-            let roles = JSON.parse(localStorage.getItem("Roles") || '');
+            let roles = JSON.parse(localStorage.getItem("RolesDB") || '');
             let lastItem = roles[roles.length - 1];
             let newItem = {
               id: lastItem.id + 1,
               name: (<HTMLInputElement>document.getElementById("inputValue")).value,
             };
             roles.push(newItem);
-            localStorage.setItem("Roles", JSON.stringify(roles));
+            localStorage.setItem("RolesDB", JSON.stringify(roles));
           }
         }
 
@@ -77,14 +77,14 @@ export class SettingsComponent implements OnInit {
         let name = document.getElementById("model-title")!.innerHTML;
         let dataName = name.split(" ");
 
-        if (dataName[0] == "Groups") {
-          let groups = JSON.parse(localStorage.getItem("Groups") || '');
+        if (dataName[0] == "GroupsDB") {
+          let groups = JSON.parse(localStorage.getItem("GroupsDB") || '');
           groups.find((x: any) => x.id == this.elementId).name = (<HTMLInputElement>document.getElementById("inputValue")).value;
-          localStorage.setItem("Groups", JSON.stringify(groups));
-        } else if (dataName[0] == "Roles") {
-          let roles = JSON.parse(localStorage.getItem("Roles") || '');
+          localStorage.setItem("GroupsDB", JSON.stringify(groups));
+        } else if (dataName[0] == "RolesDB") {
+          let roles = JSON.parse(localStorage.getItem("RolesDB") || '');
           roles.find((x: any) => x.id == this.elementId).name = (<HTMLInputElement>document.getElementById("inputValue")).value;
-          localStorage.setItem("Roles", JSON.stringify(roles));
+          localStorage.setItem("RolesDB", JSON.stringify(roles));
         }
 
         (<HTMLInputElement>document.getElementById("inputValue")).value = "";
@@ -99,10 +99,10 @@ export class SettingsComponent implements OnInit {
   }
 
   getCounts() {
-    let countGroups = (JSON.parse(localStorage.getItem("Groups") || ''));
+    let countGroups = (JSON.parse(localStorage.getItem("GroupsDB") || ''));
     document.getElementById("groups-count")!.innerHTML = countGroups.length;
 
-    let countRoles = (JSON.parse(localStorage.getItem("Roles") || ''));
+    let countRoles = (JSON.parse(localStorage.getItem("RolesDB") || ''));
     document.getElementById("roles-count")!.innerHTML = countRoles.length;
   }
 

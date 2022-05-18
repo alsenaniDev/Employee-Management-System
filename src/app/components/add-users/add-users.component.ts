@@ -12,8 +12,8 @@ declare var $: any;
 @Injectable({ providedIn: "root" })
 export class AddUsersComponent {
   SignUpForm: FormGroup;
-  groups = JSON.parse(localStorage.getItem("Groups") || "[]")
-  roles = JSON.parse(localStorage.getItem("Roles") || '[]')
+  groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
+  roles = JSON.parse(localStorage.getItem("RolesDB") || '[]')
   Users = JSON.parse(localStorage.getItem("Users") || "[]")
   usersEmail = this.Users.map((user: any) => user.email)
   groupsList: any = [...this.groups]

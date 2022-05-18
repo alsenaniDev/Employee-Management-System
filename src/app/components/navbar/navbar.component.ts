@@ -11,8 +11,8 @@ export class NavbarComponent implements OnInit {
   Users = JSON.parse(localStorage.getItem("Users") || "[]")
   userFound = this.Users.find((user: any) => user.id == this.userToken)
 
-  Groups = JSON.parse(localStorage.getItem("Groups") || "[]")
-  findGroup = this.Groups.find((group: any) => group.id == this.userFound.group)
+  Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+  findGroup = this.Roles.find((role: any) => role.id == this.userFound.roles)
   constructor() {
     
   }
