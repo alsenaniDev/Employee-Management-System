@@ -10,8 +10,9 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">User Information</h5>
-            <div *ngIf="usersEmail.includes(SignUpForm.value.email)" class="alert alert-danger alert-dismissible fade show" role="alert">
-               User Found
+            <div *ngIf="usersEmail.includes(SignUpForm.value.email)"
+              class="alert alert-danger alert-dismissible fade show" role="alert">
+              User Found
             </div>
             <form class="row g-3" [formGroup]="SignUpForm" (ngSubmit)="onSubmit()">
 
@@ -23,19 +24,19 @@
               </div>
 
               <div class="col-md-4">
-                <label class="form-label">Group</label>
-                <select controlName="group" class="form-select" formControlName="group">
+                <label class="form-label">Role</label>
+                <select controlName="roles" class="form-select" formControlName="roles">
                   <option selected disabled value="">Choose...</option>
-                  <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
+                  <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
                 </select>
-                <app-alerts [formName]="SignUpForm" [title]="'group'" [controlName]="'group'"></app-alerts>
+                <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'roles'"></app-alerts>
               </div>
               <div class="col-md-4">
-                <label class="form-label">Roles</label>
-                <ng-select formControlName="roles" [maxSelectedItems]="3" [multiple]="true" [items]="rolesList"
-                  bindLabel="name" placeholder="Select Roles">
+                <label class="form-label">Groups</label>
+                <ng-select formControlName="group" [maxSelectedItems]="3" [multiple]="true" [items]="groupsList"
+                  bindLabel="name" placeholder="Select Groups">
                 </ng-select>
-                <app-alerts [formName]="SignUpForm" [title]="'roles'" [controlName]="'roles'"></app-alerts>
+                <app-alerts [formName]="SignUpForm" [title]="'Groups'" [controlName]="'group'"></app-alerts>
               </div>
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">Save</button>
