@@ -31,6 +31,7 @@
                 </select>
                 <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'roles'"></app-alerts>
               </div>
+
               <div class="col-md-4">
                 <label class="form-label">Groups</label>
                 <ng-select formControlName="group" [maxSelectedItems]="3" [multiple]="true" [items]="groupsList"
@@ -38,6 +39,7 @@
                 </ng-select>
                 <app-alerts [formName]="SignUpForm" [title]="'Groups'" [controlName]="'group'"></app-alerts>
               </div>
+              
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">Save</button>
               </div>

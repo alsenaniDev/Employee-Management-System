@@ -48,7 +48,6 @@ export class ShowUsersComponent implements OnInit {
     let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
     let group = e.value;
 
-  
     this.usersList = this.Users.filter((user: any) => user.id != this.userFound.id && user.group.find((g: any) => g.id == group))
   }
 
@@ -62,7 +61,7 @@ export class ShowUsersComponent implements OnInit {
     return this.findRole.name == "Admin";
   }
 
-  filterByGroup() {
+  filterByRole() {
     const checkbox = document.getElementById(
       'checked',
     ) as HTMLInputElement | null;
