@@ -29,7 +29,7 @@
                   <label class="form-label">Filter By Role</label>
                   <input type="checkbox" (change)="filterByRole()" id="checked" style="margin: 0 10px;">
                   <small>check to filter by your Role</small>
-                  <input disabled value="{{findGroup.name}}" type="text" class="form-control">
+                  <input disabled value="{{findRole.name}}" type="text" class="form-control">
                 </ng-template>
               </div>
 
@@ -61,14 +61,14 @@
                   <th scope="row">{{indexOfElement + 1}}</th>
                   <td>{{user.firstName}} {{user.lastName}}</td>
                   <td>{{user.email}}</td>
-                  <ng-container *ngFor="let group of groupsList">
-                    <td *ngIf="group.id == user.group">{{ group.name }}</td>
+                  <ng-container *ngFor="let role of rolesList">
+                    <td *ngIf="role.id == user.roles">{{ role.name }}</td>
                   </ng-container>
                   <td>
                     [
-                    <span *ngFor="let role of user.roles, let i = index">
-                      {{role.name}}
-                      <span *ngIf=" i != user.roles.length - 1">,</span>
+                    <span *ngFor="let group of user.group, let i = index">
+                      {{group.name}}
+                      <span *ngIf=" i != user.group.length - 1">,</span>
                     </span>
                     ]
                   </td>

@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit {
             groups.push(newItem);
             localStorage.setItem("GroupsDB", JSON.stringify(groups));
           }
-        } else if (dataName[0] == "RolesDB") {
+        } else if (dataName[0] == "Roles") {
           let roles = localStorage.getItem("RolesDB");
           if (roles == null) {
             let newRoles = [{
@@ -99,16 +99,29 @@ export class SettingsComponent implements OnInit {
   }
 
   getCounts() {
-    let countGroups = (JSON.parse(localStorage.getItem("GroupsDB") || ''));
-    document.getElementById("groups-count")!.innerHTML = countGroups.length;
+    let countGroups = (JSON.parse(localStorage.getItem("GroupsDB") || 'null'));
+    if (countGroups != null) {
+      document.getElementById("groups-count")!.innerHTML = countGroups.length;
+    } else {
+      document.getElementById("groups-count")!.innerHTML = "0";
+    }
 
-    let countRoles = (JSON.parse(localStorage.getItem("RolesDB") || ''));
-    document.getElementById("roles-count")!.innerHTML = countRoles.length;
+    let countRoles = (JSON.parse(localStorage.getItem("RolesDB") || 'null'));
+    if (countRoles != null) {
+      document.getElementById("roles-count")!.innerHTML = countRoles.length;
+    } else {
+      document.getElementById("roles-count")!.innerHTML = "0";
+    }
   }
 
   getData(name: string) {
     this.data = [];
-    this.data = JSON.parse(localStorage.getItem(name) || '')
+    this.data = JSON.parse(localStorage.getItem(name + "DB") || 'null')
+    if (this.data != null) {
+      this.data = JSON.parse(localStorage.getItem(name + "DB") || 'null')
+    } else {
+      this.data = [];
+    }
   }
 
   DeleteElement(id: string) {
