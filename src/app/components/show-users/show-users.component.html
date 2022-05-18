@@ -18,16 +18,16 @@
               <div class="col-md-6 group">
                 <div *ngIf="isAdmin() , else user">
                   <label class="form-label">Filter By Role</label>
-                  <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
+                  <select controlName="roles" id="ddlRoles" class="form-select" (change)="getRoles()">
                     <option selected disabled value="">Choose...</option>
-                    <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
+                    <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-3 group">
                 <ng-template #user>
                   <label class="form-label">Filter By Role</label>
-                  <input type="checkbox" (change)="filterByGroup()" id="checked" style="margin: 0 10px;">
+                  <input type="checkbox" (change)="filterByRole()" id="checked" style="margin: 0 10px;">
                   <small>check to filter by your Role</small>
                   <input disabled value="{{findGroup.name}}" type="text" class="form-control">
                 </ng-template>
@@ -37,9 +37,9 @@
 
               <div class="col-md-3 group">
                 <label class="form-label">Filter By Groups</label>
-                <select controlName="group" id="ddlRoles" class="form-select" (change)="getRoles()">
+                <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
                   <option selected disabled value="">Choose...</option>
-                  <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
+                  <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
                 </select>
               </div>
             </div>
