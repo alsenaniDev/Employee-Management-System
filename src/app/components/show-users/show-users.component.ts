@@ -8,8 +8,8 @@ import { Component, Injectable, OnInit } from '@angular/core';
 
 export class ShowUsersComponent implements OnInit {
   Users = JSON.parse(localStorage.getItem("Users") || "[]")
-  Groups = JSON.parse(localStorage.getItem("Groups") || "[]")
-  Roles = JSON.parse(localStorage.getItem("Roles") || "[]")
+  Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
+  Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
   userToken = (localStorage.getItem("token") || "null")
 
   usersList: any = [...this.Users]
@@ -17,20 +17,20 @@ export class ShowUsersComponent implements OnInit {
   rolesList: any = [...this.Roles]
 
   userFound = this.Users.find((user: any) => user.id == this.userToken)
-  userRoles = this.userFound.roles.map((role: any) => role.id)
-  findGroup = this.Groups.find((group: any) => group.id == this.userFound.group)
+  userGroups = this.userFound.group.map((group: any) => group.id)
+  findRole = this.Roles.find((role: any) => role.id == this.userFound.roles)
   myUsersGroupsAndRoles = this.Users.filter((user: any) => user.id != this.userFound.id
-    && user.roles.find((userRole: any) => this.userRoles.includes(userRole.id)
-      || user.group == this.userFound.group));
+    && user.group.find((userGroup: any) => this.userGroups.includes(userGroup.id)
+      || user.roles == this.userFound.roles));
 
   constructor() {
-    if (this.findGroup.name == "Admin") {
+    if (this.findRole.name == "Admin") {
       this.usersList = [...this.Users]
       this.rolesList = [...this.Roles]
       this.groupsList = [...this.Groups]
     } else {
       this.usersList = [...this.myUsersGroupsAndRoles]
-      this.rolesList = this.Roles.filter((role: any) => this.userRoles.includes(role.id))
+      this.groupsList = this.Groups.filter((group: any) => this.userGroups.includes(group.id))
 
     }
   }
@@ -48,17 +48,18 @@ export class ShowUsersComponent implements OnInit {
     let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
     let group = e.value;
 
-    this.usersList = this.Users.filter((u: any) =>u.id != this.userFound.id && u.group == group);
+  
+    this.usersList = this.Users.filter((user: any) => user.id != this.userFound.id && user.group.find((g: any) => g.id == group))
   }
 
   getRoles() {
     let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
     let role = e.value;
-    this.usersList = this.Users.filter((user: any) => user.id != this.userFound.id && user.roles.find((r: any) => r.id == role))
+    this.usersList = this.Users.filter((u: any) =>u.id != this.userFound.id && u.roles == role);
   }
 
   isAdmin() {
-    return this.findGroup.name == "Admin";
+    return this.findRole.name == "Admin";
   }
 
   filterByGroup() {
@@ -66,7 +67,7 @@ export class ShowUsersComponent implements OnInit {
       'checked',
     ) as HTMLInputElement | null;
     if (checkbox?.checked) {
-      this.usersList = this.Users.filter((u: any) => u.id != this.userFound.id && u.group == this.userFound.group);
+      this.usersList = this.Users.filter((u: any) => u.id != this.userFound.id && u.roles == this.userFound.roles);
     } else {
       this.usersList = [...this.myUsersGroupsAndRoles]
     }
