@@ -17,7 +17,7 @@
               </div> -->
               <div class="col-md-6 group">
                 <div *ngIf="isAdmin() , else user">
-                  <label class="form-label">Filter By Group</label>
+                  <label class="form-label">Filter By Role</label>
                   <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
                     <option selected disabled value="">Choose...</option>
                     <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
@@ -26,9 +26,9 @@
               </div>
               <div class="col-md-3 group">
                 <ng-template #user>
-                  <label class="form-label">Filter By Group</label>
+                  <label class="form-label">Filter By Role</label>
                   <input type="checkbox" (change)="filterByGroup()" id="checked" style="margin: 0 10px;">
-                  <small>check to filter by your Group</small>
+                  <small>check to filter by your Role</small>
                   <input disabled value="{{findGroup.name}}" type="text" class="form-control">
                 </ng-template>
               </div>
@@ -36,7 +36,7 @@
 
 
               <div class="col-md-3 group">
-                <label class="form-label">Filter By Roles</label>
+                <label class="form-label">Filter By Groups</label>
                 <select controlName="group" id="ddlRoles" class="form-select" (change)="getRoles()">
                   <option selected disabled value="">Choose...</option>
                   <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
@@ -49,8 +49,8 @@
                   <th width="2%" scope="col">Id</th>
                   <th width="30%" scope="col">Name</th>
                   <th width="20%" scope="col">Email</th>
-                  <th width="30%" scope="col">Group</th>
-                  <th width="40%" scope="col">Roles</th>
+                  <th width="30%" scope="col">Role</th>
+                  <th width="40%" scope="col">Groups</th>
                   <th *ngIf="isAdmin()" width="40%" scope="col">Delete</th>
                   <th width="40%" scope="col">Edit</th>
                   <th width="40%" scope="col">Send</th>

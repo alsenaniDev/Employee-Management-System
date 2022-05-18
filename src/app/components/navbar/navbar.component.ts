@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
   Groups = JSON.parse(localStorage.getItem("Groups") || "[]")
   findGroup = this.Groups.find((group: any) => group.id == this.userFound.group)
   constructor() {
-    
+
   }
 
   ngOnInit(): void {
