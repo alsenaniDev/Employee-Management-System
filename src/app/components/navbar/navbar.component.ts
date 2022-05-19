@@ -6,13 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  userProfile: any
-  userToken = (localStorage.getItem("token") || "null")
-  Users = JSON.parse(localStorage.getItem("Users") || "[]")
-  userFound = this.Users.find((user: any) => user.id == this.userToken)
-  Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-  findRole = this.Roles.find((role: any) => role.id == this.userFound.roles)
 
+  userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
   constructor() {
 
   }

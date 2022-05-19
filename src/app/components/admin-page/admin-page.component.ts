@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-page.component.css']
 })
 export class AdminPageComponent implements OnInit {
-  users = JSON.parse(localStorage.getItem("Users") || "[]")
+  users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
   
   constructor() { }
 
