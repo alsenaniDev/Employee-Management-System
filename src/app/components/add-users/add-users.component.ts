@@ -14,11 +14,14 @@ export class AddUsersComponent {
   SignUpForm: FormGroup;
   groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
   roles = JSON.parse(localStorage.getItem("RolesDB") || '[]')
-  Users = JSON.parse(localStorage.getItem("Users") || "[]")
+  Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+  userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
+  usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
   usersEmail = this.Users.map((user: any) => user.email)
   groupsList: any = [...this.groups]
   rolesList: any = [...this.roles]
   usersList: any = [...this.Users]
+  usersInfoList : any = [...this.usersInfo]
 
   controls = [
     {
@@ -42,6 +45,11 @@ export class AddUsersComponent {
       controlName: 'password',
       type: "password"
     },
+    {
+      title: 'Phone Number',
+      controlName: 'phoneNumber',
+      type: "text"
+    },
   ];
 
   constructor(public formBuilder: FormBuilder, private router: Router) {
@@ -50,8 +58,9 @@ export class AddUsersComponent {
       lname: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      group: ['', Validators.required],
-      roles: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
+      groups: ['', Validators.required],
+      role: ['', Validators.required],
     });
   }
   ngOnInit(): void {
@@ -67,18 +76,32 @@ export class AddUsersComponent {
       this.SignUpForm.invalid
     } else {
       let guid = Guid.create().toJSON();
+      let userGuid = guid.value
+      let dateObj = new Date();
+      let month = dateObj.getMonth() + 1;
+      let day = dateObj.getDate();
+      let year = dateObj.getFullYear();
+      let newdate = year + "-" + month + "-" + day;  
       let user = {
-
-        id: guid.value,
+        userId: userGuid,
         firstName: this.SignUpForm.value.fname,
         lastName: this.SignUpForm.value.lname,
         email: this.SignUpForm.value.email,
         password: this.SignUpForm.value.password,
-        group: this.SignUpForm.value.group,
-        roles: this.SignUpForm.value.roles
+        phoneNumber: this.SignUpForm.value.phoneNumber,
+        CreatedBy: this.userProfile.userId ,
+        CreatedAt: newdate 
       }
       this.usersList.push(user)
-      localStorage.setItem("Users", JSON.stringify(this.usersList))
+      localStorage.setItem("UsersDB", JSON.stringify(this.usersList))
+      const userInfo = {
+        userId: userGuid,
+        role: this.SignUpForm.value.role,
+        groups: this.SignUpForm.value.groups
+      }
+      this.usersInfoList.push(userInfo)
+      localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfoList))
+      this.usersInfoList = this.usersInfo
       this.SignUpForm.reset()
       this.router.navigateByUrl("/dashboard/admin")
 

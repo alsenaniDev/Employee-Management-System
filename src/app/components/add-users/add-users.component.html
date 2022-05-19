@@ -25,19 +25,19 @@
 
               <div class="col-md-4">
                 <label class="form-label">Role</label>
-                <select controlName="roles" class="form-select" formControlName="roles">
+                <select controlName="role" class="form-select" formControlName="role">
                   <option selected disabled value="">Choose...</option>
                   <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
                 </select>
-                <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'roles'"></app-alerts>
+                <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'role'"></app-alerts>
               </div>
 
               <div class="col-md-4">
                 <label class="form-label">Groups</label>
-                <ng-select formControlName="group" [maxSelectedItems]="3" [multiple]="true" [items]="groupsList"
-                  bindLabel="name" placeholder="Select Groups">
+                <ng-select formControlName="groups" [maxSelectedItems]="3" [multiple]="true" [items]="groupsList"
+                  bindLabel="name"  bindValue="id" placeholder="Select Groups">
                 </ng-select>
-                <app-alerts [formName]="SignUpForm" [title]="'Groups'" [controlName]="'group'"></app-alerts>
+                <app-alerts [formName]="SignUpForm" [title]="'Groups'" [controlName]="'groups'"></app-alerts>
               </div>
               
               <div class="col-12">

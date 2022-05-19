@@ -16,7 +16,7 @@
                 <input type="text" class="form-control">
               </div> -->
               <div class="col-md-6 group">
-                <div *ngIf="isAdmin() , else user">
+                <div *ngIf="checkRole('Admin') , else user">
                   <label class="form-label">Filter By Role</label>
                   <select controlName="roles" id="ddlRoles" class="form-select" (change)="getRoles()">
                     <option selected disabled value="">Choose...</option>
@@ -29,7 +29,7 @@
                   <label class="form-label">Filter By Role</label>
                   <input type="checkbox" (change)="filterByRole()" id="checked" style="margin: 0 10px;">
                   <small>check to filter by your Role</small>
-                  <input disabled value="{{findRole.name}}" type="text" class="form-control">
+                  <input disabled type="text" class="form-control">
                 </ng-template>
               </div>
 
@@ -51,7 +51,7 @@
                   <th width="20%" scope="col">Email</th>
                   <th width="30%" scope="col">Role</th>
                   <th width="40%" scope="col">Groups</th>
-                  <th *ngIf="isAdmin()" width="40%" scope="col">Delete</th>
+                  <th *ngIf="checkRole('Admin')" width="40%" scope="col">Delete</th>
                   <th width="40%" scope="col">Edit</th>
                   <th width="40%" scope="col">Send</th>
                 </tr>
@@ -59,20 +59,43 @@
               <tbody>
                 <tr *ngFor="let user of usersList , let indexOfElement = index">
                   <th scope="row">{{indexOfElement + 1}}</th>
-                  <td>{{user.firstName}} {{user.lastName}}</td>
-                  <td>{{user.email}}</td>
+                  <ng-container *ngFor="let userInformation of Users">
+                    <td *ngIf="userInformation.userId == user.userId">{{userInformation.firstName}}
+                      {{userInformation.lastName}}</td>
+                    <td *ngIf="userInformation.userId == user.userId">{{userInformation.email}}</td>
+                  </ng-container>
                   <ng-container *ngFor="let role of rolesList">
-                    <td *ngIf="role.id == user.roles">{{ role.name }}</td>
+                    <td *ngIf="role.id == user.role">{{ role.name }}</td>
                   </ng-container>
                   <td>
+                    <ng-container *ngFor="let group of groupsList , let i = index">
+                      <span *ngIf="user.groups.includes(group.id)">
+                        {{group.name}} <br />
+                        <!-- <span *ngIf="user.groups.length - 1">,</span> -->
+                      </span>
+                    </ng-container>
+
+                  </td>
+                  <!-- <ng-container *ngFor="let group of groupsList ,  let i = index">
+                  <ng-container *ngFor="let group of groupsList ,  let i = index">
+                    <td>
+                      [
+                      <span *ngIf="user.groups.includes(group.id)">
+                        {{group.name}}
+                        <span *ngIf=" i != user.group.length - 1">,</span>
+                      </span>
+                      ]
+                    </td>
+                  </ng-container> -->
+                  <!-- <td>
                     [
-                    <span *ngFor="let group of user.group, let i = index">
+                    <span *ngFor="let group of user.groups, let i = index">
                       {{group.name}}
                       <span *ngIf=" i != user.group.length - 1">,</span>
                     </span>
                     ]
-                  </td>
-                  <td *ngIf="isAdmin()">
+                  </td> -->
+                  <td *ngIf="checkRole('Admin')">
                     <button (click)="deleteUser(user.id)" type="button" class="btn btn-danger">
                       <i class="ri-delete-bin-6-line"></i>
                     </button>
