@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
+  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
   constructor() {
 
   }

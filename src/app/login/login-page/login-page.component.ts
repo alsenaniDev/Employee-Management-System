@@ -10,11 +10,11 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup
-  userToken = JSON.parse(localStorage.getItem("profileDB") || "null")
+  userToken = JSON.parse(localStorage.getItem("userInfo") || "null")
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-  
+
   groupsId = this.Groups.map((group: any) => group.id)
   user: any
   userFound: any
@@ -50,7 +50,7 @@ export class LoginPageComponent implements OnInit {
         role: this.roleFound.name,
         groups: myGroupsName
       }
-      localStorage.setItem("profileDB", JSON.stringify(userInformation))
+      localStorage.setItem("userInfo", JSON.stringify(userInformation))
       console.log(userInformation)
       this.router.navigate(['/dashboard/admin']);
 

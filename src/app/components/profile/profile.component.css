@@ -1,0 +1,38 @@
+.user-name {
+    color: #596066;
+}
+
+.user-role {
+    color: #596066;
+}
+
+.container-user-info {
+    /* border: 1px solid #6c757d; */
+    margin-top: 120px;
+    border-top-left-radius: 9px;
+    border-bottom-right-radius: 9px;
+}
+
+.vertical-line {
+    height: 100%;
+    width: 1px;
+    background-color: #596066;
+}
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #f6d365;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+    }
+    .btn-edit{
+        background-color: transparent;
+        border: none;
+        color: #596066;
+    }
+    .groupName{
+        width: 61px;
+    }

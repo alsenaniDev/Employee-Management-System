@@ -15,6 +15,7 @@ import { InputComponent } from './components/input/input.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatIconModule } from '@angular/material/icon';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
     AlertsComponent,
     InputComponent,
     SettingsComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
