@@ -26,18 +26,20 @@ export class ProfileComponent implements OnInit {
     this.editForm = this.fb.group({
       firstName: [userInfo.firstName, [Validators.required, Validators.minLength(3)]],
       lastName: [userInfo.lastName, [Validators.required, Validators.minLength(3)]],
-      password: ["", [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ["", [Validators.required, Validators.minLength(6)]],
+      password: [userInfo.password, [Validators.required, Validators.minLength(6)]],
+      confirmPassword: [userInfo.password, [Validators.required, Validators.minLength(6)]],
       phoneNumber: [userInfo.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]]
     })
   }
   editProfile() {
     if (this.editForm.invalid) {
       this.editForm.markAllAsTouched()
+      
     } else {
       let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
       this.Users[userIndex] = Object.assign({}, this.Users[userIndex], { firstName: this.editForm.value.firstName, lastName: this.editForm.value.lastName, phoneNumber: this.editForm.value.phoneNumber })
       localStorage.setItem("UsersDB", JSON.stringify(this.Users))
+     
     }
 
   }
@@ -49,11 +51,13 @@ export class ProfileComponent implements OnInit {
 
       this.editForm.invalid
 
+
     } else {
       let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
       this.Users[userIndex] = Object.assign({}, this.Users[userIndex], { password: this.editForm.value.password })
       localStorage.setItem("UsersDB", JSON.stringify(this.Users))
-      
+
+
 
     }
 
