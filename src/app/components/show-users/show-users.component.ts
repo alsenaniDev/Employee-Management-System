@@ -5,16 +5,15 @@ import { Component, Injectable, OnInit } from '@angular/core';
   templateUrl: './show-users.component.html',
   styleUrls: ['./show-users.component.css']
 })
-
 export class ShowUsersComponent implements OnInit {
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-  userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
+  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
 
   usersList: any = []
-  usersDetailedInformation : any = []
+  usersDetailedInformation: any = []
   groupsList: any = [...this.Groups]
   rolesList: any = [...this.Roles]
 
@@ -34,7 +33,7 @@ export class ShowUsersComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.checkRole("Admin"))
- 
+
   }
 
   deleteUser(id: any) {
@@ -47,7 +46,7 @@ export class ShowUsersComponent implements OnInit {
     let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
     let group = e.value;
 
- 
+
   }
 
   getRoles() {
@@ -56,9 +55,8 @@ export class ShowUsersComponent implements OnInit {
 
   }
 
-  checkRole(name : string) {
+  checkRole(name: string) {
     return this.userProfile.role == name;
-    
   }
 
   filterByRole() {

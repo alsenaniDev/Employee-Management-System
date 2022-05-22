@@ -15,7 +15,7 @@ export class AddUsersComponent {
   groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
   roles = JSON.parse(localStorage.getItem("RolesDB") || '[]')
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-  userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
+  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
   usersEmail = this.Users.map((user: any) => user.email)
   groupsList: any = [...this.groups]
