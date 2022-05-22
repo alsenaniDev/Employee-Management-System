@@ -43,7 +43,6 @@ import { ProfileComponent } from './components/profile/profile.component';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    MatIconModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatButtonModule,

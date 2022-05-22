@@ -78,7 +78,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 
 export class ShowUsersComponent implements AfterViewInit {
-  displayedColumns: string[] = ['name', 'email', 'phoneNumber', 'role', 'groups', 'delete', 'edit', 'send', 'select'];
+  displayedColumns: string[] = ['id', 'name', 'email', 'phoneNumber', 'role', 'groups', 'edit', 'select'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -101,6 +101,7 @@ export class ShowUsersComponent implements AfterViewInit {
 
   constructor() {
     this.getDataSource();
+
     if (this.userProfile.role == "Admin") {
       this.usersList = [...this.usersInfo]
       this.rolesList = [...this.Roles]
@@ -126,32 +127,28 @@ export class ShowUsersComponent implements AfterViewInit {
     return this.userProfile.role == name;
   }
 
-  getRoles() {
-    let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
-    let role = e.value;
+  filterTableData() {
+    let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
 
-    let dataFilteredByRole = JSON.parse(localStorage.getItem("tempTable") || "[]");
+    let elemRole = (<HTMLInputElement>document.getElementById("ddlRoles"));
+    let role = elemRole.value;
 
-    dataFilteredByRole = dataFilteredByRole.filter((users: any) => users.role.id == role)
-    ELEMENT_DATA = JSON.parse(localStorage.getItem("tempTable") || "[]");
-  }
+    let elemGroup = (<HTMLInputElement>document.getElementById("ddlGroup"));
+    let group = elemGroup.value;
 
-  getGroup() {
-    let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
-    let group = e.value;
-  }
+    if (role != "0" && role != "") {
+      dataFiltered = dataFiltered.filter((users: any) => users.role.id == role)
+      this.dataSource.data = dataFiltered
+    } else if (role == "0") {
+      this.dataSource.data = dataFiltered
+    }
 
-  filterUsersByGroup() {
-    //   let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
-    //   let group = e.value;
-
-    //   this.dataSource.data = this.Users.filter((user: any) => user.id != this.userProfile.id && user.group.find((g: any) => g.id == group))
-  }
-
-  filterUsersByRoles() {
-    //   let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
-    //   let role = e.value;
-    //   this.dataSource.data = this.Users.filter((u: any) => u.id != this.userProfile.id && u.roles == role);
+    if (group != "" && group != "0") {
+      dataFiltered = dataFiltered.filter((users: any) => users.groups.find((usersGroup: any) => usersGroup.id == group))
+      this.dataSource.data = dataFiltered
+    } else if (group == "0") {
+      this.dataSource.data = dataFiltered
+    }
   }
 
   filterUsers() {
@@ -202,8 +199,13 @@ export class ShowUsersComponent implements AfterViewInit {
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     if (this.isAllSelected()) {
+      document.getElementById("delete").setAttribute("disabled", "disabled");
+      document.getElementById("send").setAttribute("disabled", "disabled");
       this.selection.clear();
       return;
+    } else {
+      document.getElementById("delete").removeAttribute("disabled");
+      document.getElementById("send").removeAttribute("disabled");
     }
 
     this.selection.select(...this.dataSource.data);

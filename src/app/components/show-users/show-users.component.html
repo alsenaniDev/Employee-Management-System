@@ -114,8 +114,9 @@
               <div class="col-md-6 group">
                 <div *ngIf="checkRole('Admin') , else user">
                   <label class="form-label">Filter By Role</label>
-                  <select controlName="roles" id="ddlRoles" class="form-select" (change)="getRoles()">
+                  <select controlName="roles" id="ddlRoles" class="form-select" (change)="filterTableData()">
                     <option selected disabled value="">Choose...</option>
+                    <option value="0">All</option>
                     <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
                   </select>
                 </div>
@@ -132,8 +133,9 @@
 
               <div class="col-md-3 group">
                 <label class="form-label">Filter By Groups</label>
-                <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
+                <select controlName="group" id="ddlGroup" class="form-select" (change)="filterTableData()">
                   <option selected disabled value="">Choose...</option>
+                  <option value="0">All</option>
                   <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
                 </select>
               </div>
@@ -144,24 +146,38 @@
               <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
                 aria-label="Select page of periodic elements">
               </mat-paginator>
+
+              <div class="delete-and-message">
+                <button type="button" class="btn btn-danger" disabled id="delete">
+                  <i class="ri-delete-bin-6-line"></i>
+                </button>
+
+                <button type="button" class="btn btn-primary" style="margin-left: 15px;" disabled id="send">
+                  <i class=" ri-message-2-line"></i>
+                </button>
+              </div>
+
               <table mat-table [dataSource]="dataSource">
-                <!-- <ng-container matColumnDef="id">
+                <ng-container matColumnDef="id">
                   <th mat-header-cell *matHeaderCellDef> ID </th>
                   <td mat-cell *matCellDef="let element, let indexOfElement = index"> {{indexOfElement + 1}} </td>
-                </ng-container> -->
+                </ng-container>
 
                 <ng-container matColumnDef="select">
+
                   <th mat-header-cell *matHeaderCellDef>
                     <mat-checkbox (change)="$event ? masterToggle() : null"
                       [checked]="selection.hasValue() && isAllSelected()"
                       [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
                     </mat-checkbox>
                   </th>
+
                   <td mat-cell *matCellDef="let row">
                     <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
                       [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
                     </mat-checkbox>
                   </td>
+                  
                 </ng-container>
 
                 <ng-container matColumnDef="name">
@@ -191,14 +207,14 @@
                   </td>
                 </ng-container>
 
-                <ng-container matColumnDef="delete">
+                <!-- <ng-container matColumnDef="delete">
                   <th mat-header-cell *matHeaderCellDef class="Table-title"> Delete </th>
                   <td mat-cell *matCellDef="let element">
                     <button (click)="deleteUser(element.id)" type="button" class="btn btn-danger">
                       <i class="ri-delete-bin-6-line"></i>
                     </button>
                   </td>
-                </ng-container>
+                </ng-container> -->
 
                 <ng-container matColumnDef="edit">
                   <th mat-header-cell *matHeaderCellDef class="Table-title"> Edit </th>
@@ -209,14 +225,14 @@
                   </td>
                 </ng-container>
 
-                <ng-container matColumnDef="send">
+                <!-- <ng-container matColumnDef="send">
                   <th mat-header-cell *matHeaderCellDef class="Table-title"> Send </th>
                   <td mat-cell *matCellDef="let element">
                     <button type="button" class="btn btn-primary">
                       <i class=" ri-message-2-line"></i>
                     </button>
                   </td>
-                </ng-container>
+                </ng-container> -->
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
