@@ -23,6 +23,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProfileComponent } from './components/profile/profile.component';
 
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +51,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    SweetAlert2Module
   ],
   providers: [],
   bootstrap: [AppComponent]

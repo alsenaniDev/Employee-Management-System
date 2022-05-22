@@ -1,71 +1,3 @@
-// import { Component, Injectable, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-show-users',
-//   templateUrl: './show-users.component.html',
-//   styleUrls: ['./show-users.component.css']
-// })
-
-// export class ShowUsersComponent implements OnInit {
-//   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-//   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-//   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-//   userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
-//   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
-
-//   usersList: any = []
-//   usersDetailedInformation: any = []
-//   groupsList: any = [...this.Groups]
-//   rolesList: any = [...this.Roles]
-
-
-
-//   constructor() {
-//     if (this.userProfile.role == "Admin") {
-//       this.usersList = [...this.usersInfo]
-//       this.rolesList = [...this.Roles]
-//       this.groupsList = [...this.Groups]
-//     } else {
-//       this.usersList = [...this.usersInfo]
-//     }
-//   }
-
-//   ngOnInit(): void {
-//     console.log(this.checkRole("Admin"))
-//   }
-
-//   deleteUser(id: any) {
-//     let i = this.usersList.findIndex((user: any) => user.id == id)
-//     this.usersList.splice(i, 1)
-//     localStorage.setItem("UsersDB", JSON.stringify(this.usersList))
-//   }
-
-//   getGroup() {
-//     let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
-//     let group = e.value;
-//   }
-
-//   getRoles() {
-//     let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
-//     let role = e.value;
-//   }
-
-//   checkRole(name: string) {
-//     return this.userProfile.role == name;
-//   }
-
-//   filterByRole() {
-//     const checkbox = document.getElementById(
-//       'checked',
-//     ) as HTMLInputElement | null;
-//     if (checkbox?.checked) {
-//       // this.usersList = this.Users.filter((u: any) => u.id != this.userProfile.id && u.roles == this.userProfile.roles);
-//     } else {
-//       // this.usersList = [...this.myUsersGroupsAndRoles]
-//     }
-//   }
-// }
-
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -80,6 +12,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 export class ShowUsersComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'name', 'email', 'phoneNumber', 'role', 'groups', 'edit', 'select'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  elementsChecked: any = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -171,6 +104,26 @@ export class ShowUsersComponent implements AfterViewInit {
 
   checkRole(name: string) {
     return this.userProfile.role == name;
+  }
+
+  gitCheck(id: any) {
+    let element = (<HTMLInputElement>document.getElementById(id))
+    let isChecked = element.getAttribute("ng-reflect-checked")
+    let elementId = element.getAttribute("id")
+
+    if (isChecked == "false") {
+      this.elementsChecked.push(elementId)
+    } else if (isChecked == "true") {
+      this.elementsChecked = this.elementsChecked.filter((elem: any) => elem != elementId)
+    }
+
+    if (this.elementsChecked.length > 0) {
+      document.getElementById("delete").removeAttribute("disabled");
+      document.getElementById("send").removeAttribute("disabled");
+    } else {
+      document.getElementById("delete").setAttribute("disabled", "disabled");
+      document.getElementById("send").setAttribute("disabled", "disabled");
+    }
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
