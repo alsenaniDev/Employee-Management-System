@@ -12,3 +12,16 @@
   display: flex;
   justify-content: space-between;
 }
+
+table {
+  width: 100%;
+}
+
+.Table-title {
+  font-size: 18px;
+  color: #485adb;
+}
+
+.delete-and-message {
+  text-align: end;
+}
