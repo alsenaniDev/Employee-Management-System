@@ -84,9 +84,7 @@ export class ShowUsersComponent implements AfterViewInit {
 
   selection = new SelectionModel<PeriodicElement>(true, []);
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+
 
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
@@ -94,26 +92,30 @@ export class ShowUsersComponent implements AfterViewInit {
   userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
 
-  usersList: any = []
+  usersList: any = [...this.Users]
   usersDetailedInformation: any = []
   groupsList: any = [...this.Groups]
   rolesList: any = [...this.Roles]
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    (<HTMLInputElement>(document.getElementById("UserRole"))).value = this.userProfile.role
+  }
   constructor() {
     this.getDataSource();
-
     if (this.userProfile.role == "Admin") {
-      this.usersList = [...this.usersInfo]
+      this.dataSource.data = JSON.parse(localStorage.getItem("tempTable") || "[]");
       this.rolesList = [...this.Roles]
       this.groupsList = [...this.Groups]
     } else {
-      this.usersList = [...this.usersInfo]
+      let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
+      dataFiltered = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role)
+      this.dataSource.data = dataFiltered
     }
   }
 
 
   ngOnInit(): void {
-    this.dataSource.data = JSON.parse(localStorage.getItem("tempTable") || "[]");
   }
 
   deleteUser(id: any) {
@@ -129,25 +131,39 @@ export class ShowUsersComponent implements AfterViewInit {
 
   filterTableData() {
     let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
-
     let elemRole = (<HTMLInputElement>document.getElementById("ddlRoles"));
-    let role = elemRole.value;
-
-    let elemGroup = (<HTMLInputElement>document.getElementById("ddlGroup"));
-    let group = elemGroup.value;
-
-    if (role != "0" && role != "") {
-      dataFiltered = dataFiltered.filter((users: any) => users.role.id == role)
-      this.dataSource.data = dataFiltered
-    } else if (role == "0") {
-      this.dataSource.data = dataFiltered
+    let role = '';
+    if (elemRole != null) {
+      role = elemRole.value;
     }
 
-    if (group != "" && group != "0") {
-      dataFiltered = dataFiltered.filter((users: any) => users.groups.find((usersGroup: any) => usersGroup.id == group))
-      this.dataSource.data = dataFiltered
-    } else if (group == "0") {
-      this.dataSource.data = dataFiltered
+    let elemGroup = (<HTMLInputElement>document.getElementById("ddlGroup"));
+    let group = '';
+    if (elemGroup != null) {
+      group = elemGroup.value;
+    }
+
+    if (this.userProfile.role == "Admin") {
+      if (role != "0" && role != "") {
+        dataFiltered = dataFiltered.filter((users: any) => users.role.id == role)
+        this.dataSource.data = dataFiltered
+      } else if (role == "0") {
+        this.dataSource.data = dataFiltered
+      }
+
+      if (group != "" && group != "0") {
+        dataFiltered = dataFiltered.filter((users: any) => users.groups.find((usersGroup: any) => usersGroup.id == group))
+        this.dataSource.data = dataFiltered
+      } else if (group == "0") {
+        this.dataSource.data = dataFiltered
+      }
+    } else {
+      if (group != "" && group != "0") {
+        dataFiltered = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role && users.groups.find((usersGroup: any) => usersGroup.id == group))
+        this.dataSource.data = dataFiltered
+      } else if (group == "0") {
+        this.dataSource.data = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role)
+      }
     }
   }
 
@@ -172,10 +188,6 @@ export class ShowUsersComponent implements AfterViewInit {
     //       console.log("u.id: " + u.id + " != " + " this.userProfile.id: " + this.userProfile.id + ", u.roles: " + u.roles + ", roleValue: " + roleValue);
     //     });
     // }
-  }
-
-  isAdmin() {
-    return this.userProfile.name == "Admin";
   }
 
   filterByRole() {

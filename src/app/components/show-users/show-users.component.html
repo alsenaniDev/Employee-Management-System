@@ -124,10 +124,10 @@
 
               <div class="col-md-3 group">
                 <ng-template #user>
-                  <label class="form-label">Filter By Role</label>
-                  <input type="checkbox" (change)="filterByRole()" id="checked" style="margin: 0 10px;">
-                  <small>check to filter by your Role</small>
-                  <input disabled type="text" class="form-control">
+                  <label class="form-label">Your Role</label>
+                  <!-- <input type="checkbox" (change)="filterByRole()" id="checked" style="margin: 0 10px;">
+                  <small>Check To Filter By Your Role</small> -->
+                  <input disabled type="text" class="form-control" id="UserRole">
                 </ng-template>
               </div>
 
@@ -135,8 +135,10 @@
                 <label class="form-label">Filter By Groups</label>
                 <select controlName="group" id="ddlGroup" class="form-select" (change)="filterTableData()">
                   <option selected disabled value="">Choose...</option>
-                  <option value="0">All</option>
-                  <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
+                  <option value="0" *ngIf="checkRole('Admin')">All</option>
+                  <ng-container *ngFor="let group of groupsList">
+                    <option [value]="group.id" *ngIf="userProfile.groups.includes(group.name)">{{group.name}}</option>
+                  </ng-container>
                 </select>
               </div>
             </div>
@@ -177,7 +179,7 @@
                       [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
                     </mat-checkbox>
                   </td>
-                  
+
                 </ng-container>
 
                 <ng-container matColumnDef="name">
