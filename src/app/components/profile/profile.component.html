@@ -14,7 +14,9 @@
 
                         <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" alt="Profile"
                             class="rounded-circle">
-                        <h2>{{userProfile.name}}</h2>
+                        <ng-container *ngFor="let user of Users">
+                            <h2 *ngIf="user.userId == userProfile.userId">{{user.firstName}} {{user.lastName}}</h2>
+                        </ng-container>
                         <h3>{{userProfile.role}}</h3>
 
                     </div>
@@ -41,11 +43,6 @@
 
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#profile-settings">Groups</button>
-                            </li>
-
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#profile-change-password">Change Password</button>
                             </li>
 
@@ -56,21 +53,24 @@
 
 
                                 <h5 class="card-title">Profile Details</h5>
+                                <ng-container *ngFor="let user of Users">
+                                    <div *ngIf="user.userId == userProfile.userId" class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            {{user.firstName}} {{user.lastName}}</div>
+                                    </div>
+                                    <div *ngIf="user.userId == userProfile.userId" class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Email</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            {{user.email}}</div>
+                                    </div>
 
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">{{userProfile.name}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Email</div>
-                                    <div class="col-lg-9 col-md-8">{{userInfo.email}}</div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Phone</div>
-                                    <div class="col-lg-9 col-md-8">{{userInfo.phoneNumber}}</div>
-                                </div>
-
+                                    <div *ngIf="user.userId == userProfile.userId" class="row">
+                                        <div class="col-lg-3 col-md-4 label">Phone</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            {{user.phoneNumber}}</div>
+                                    </div>
+                                </ng-container>
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Role</div>
                                     <div class="col-lg-9 col-md-8">{{userProfile.role}}</div>
@@ -84,30 +84,41 @@
 
 
                                 </div>
+
                             </div>
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                 <!-- Profile Edit Form -->
-                                <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-                                    <div class="row mb-3">
+                                <form [formGroup]="editForm" (ngSubmit)="editProfile()">
+                                    <div class=" row mb-3">
                                         <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First
                                             Name</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input formControlName="firstName" type="text" class="form-control">
+                                            <app-alerts [title]="'First Name'" [controlName]="'firstName'"
+                                                [formName]="editForm">
+                                            </app-alerts>
                                         </div>
+
                                     </div>
                                     <div class="row mb-3">
                                         <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input [defaultValue]="userInfo.lastName" formControlName="lastName" type="text" class="form-control"
-                                                id="fullName" >
+                                            <input [defaultValue]="userInfo.lastName" formControlName="lastName"
+                                                type="text" class="form-control" id="fullName">
+                                            <app-alerts [title]="'Last Name'" [controlName]="'lastName'"
+                                                [formName]="editForm">
+                                            </app-alerts>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input  formControlName="phoneNumber" type="text" class="form-control"
+                                            <input formControlName="phoneNumber" type="text" class="form-control"
                                                 id="Phone" value="{{userInfo.phoneNumber}}">
+                                            <app-alerts [title]="'Phone Number'" [controlName]="'phoneNumber'"
+                                                [formName]="editForm">
+                                            </app-alerts>
                                         </div>
                                     </div>
 
@@ -125,54 +136,32 @@
                                 <!-- Settings Form -->
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
-
-                                    <!-- <h5 class="card-title">Profile Details</h5>
-     -->
-                                    <div class="row">
-                                        <div *ngFor="let group of userProfile.groups" class="card info-card sales-card">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Group</h5>
-
-                                                <div class="d-flex align-items-center ">
-                                                    <div
-                                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                                        <i class=" ri-mini-program-line"></i>
-                                                    </div>
-                                                    <div class="ps-2 text-center">
-                                                        <h5>{{group}}</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-
-
                                 </div><!-- End settings Form -->
 
                             </div>
 
                             <div class="tab-pane fade pt-3" id="profile-change-password">
                                 <!-- Change Password Form -->
-                                <form>
+                                <form [formGroup]="editForm" (ngSubmit)="changePassword()">
 
-                                    <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
                                             <input name="password" type="password" class="form-control"
                                                 id="currentPassword">
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="row mb-3">
                                         <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="newpassword" type="password" class="form-control"
-                                                id="newPassword">
+                                            <input formControlName="password" name="newpassword" type="password"
+                                                class="form-control" id="newPassword">
+                                            <app-alerts [title]="'password'" [controlName]="'password'"
+                                                [formName]="editForm">
+                                            </app-alerts>
                                         </div>
                                     </div>
 
@@ -180,8 +169,19 @@
                                         <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="renewpassword" type="password" class="form-control"
-                                                id="renewPassword">
+                                            <input formControlName="confirmPassword" name="renewpassword"
+                                                type="password" class="form-control" id="renewPassword">
+                                            <app-alerts [title]="'password'" [controlName]="'confirmPassword'"
+                                                [formName]="editForm">
+                                            </app-alerts>
+                                            <div
+                                                *ngIf="editForm.controls['password'].value != editForm.controls['confirmPassword'].value">
+                                                <div class="alert alert-danger alert-dismissible fade show"
+                                                    role="alert">
+                                                    Password Must Match
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
 

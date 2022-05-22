@@ -92,6 +92,7 @@ export class ShowUsersComponent implements AfterViewInit {
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
 
   usersList: any = [...this.Users]
+
   usersDetailedInformation: any = []
   groupsList: any = [...this.Groups]
   rolesList: any = [...this.Roles]
@@ -130,10 +131,6 @@ export class ShowUsersComponent implements AfterViewInit {
     this.dataSource.data = JSON.parse(localStorage.getItem("UsersDB") || "[]");
   }
 
-  checkRole(name: string) {
-    return this.userProfile.role == name;
-  }
-
   filterTableData() {
     let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
     let elemRole = (<HTMLInputElement>document.getElementById("ddlRoles"));
@@ -170,6 +167,10 @@ export class ShowUsersComponent implements AfterViewInit {
         this.dataSource.data = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role)
       }
     }
+  }
+
+  checkRole(name: string) {
+    return this.userProfile.role == name;
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
