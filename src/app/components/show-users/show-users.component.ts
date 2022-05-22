@@ -80,11 +80,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 export class ShowUsersComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'name', 'email', 'phoneNumber', 'role', 'groups', 'edit', 'select'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   selection = new SelectionModel<PeriodicElement>(true, []);
-
-
 
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
@@ -99,8 +98,11 @@ export class ShowUsersComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    (<HTMLInputElement>(document.getElementById("UserRole"))).value = this.userProfile.role
+    if (document.getElementById("UserRole") != null) {
+      (<HTMLInputElement>(document.getElementById("UserRole"))).value = this.userProfile.role
+    }
   }
+
   constructor() {
     this.getDataSource();
     if (this.userProfile.role == "Admin") {
@@ -114,6 +116,9 @@ export class ShowUsersComponent implements AfterViewInit {
     }
   }
 
+  showMsg(id: any) {
+    console.log(id);
+  }
 
   ngOnInit(): void {
   }
@@ -165,40 +170,6 @@ export class ShowUsersComponent implements AfterViewInit {
         this.dataSource.data = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role)
       }
     }
-  }
-
-  filterUsers() {
-    //   let group = (<HTMLInputElement>document.getElementById("ddlGroup"));
-    //   let role = (<HTMLInputElement>document.getElementById("ddlRoles"));
-
-    //   console.log(group.value != "" && role.value != "");
-    //   console.log(group.value != "" && role.value == "");
-    //   console.log(group.value == "" && role.value != "");
-
-
-    //   if (group.value != "" && role.value != "") {
-    //   } else if (group.value != "" && role.value == "") {
-    //     let groupValue = group.value;
-    //     this.dataSource.data = this.Users.filter((user: any) => {
-    //       user.id != this.userProfile.id && user.group.find((g: any) => (g.id).toString() == groupValue)
-    //     })
-    //   } else if (group.value == "" && role.value != "") {
-    //     let roleValue = role.value;
-    //     this.dataSource.data = this.Users.filter((u: any) => {
-    //       console.log("u.id: " + u.id + " != " + " this.userProfile.id: " + this.userProfile.id + ", u.roles: " + u.roles + ", roleValue: " + roleValue);
-    //     });
-    // }
-  }
-
-  filterByRole() {
-    // const checkbox = document.getElementById(
-    //   'checked',
-    // ) as HTMLInputElement | null;
-    // if (checkbox?.checked) {
-    //   this.usersList = this.Users.filter((u: any) => u.id != this.userProfile.id && u.roles == this.userProfile.roles);
-    // } else {
-    //   this.usersList = [...this.myUsersGroupsAndRoles]
-    // }
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
