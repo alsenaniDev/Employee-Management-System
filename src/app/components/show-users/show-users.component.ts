@@ -1,4 +1,75 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+// import { Component, Injectable, OnInit } from '@angular/core';
+
+// @Component({
+//   selector: 'app-show-users',
+//   templateUrl: './show-users.component.html',
+//   styleUrls: ['./show-users.component.css']
+// })
+
+// export class ShowUsersComponent implements OnInit {
+//   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+//   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
+//   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+//   userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
+//   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
+
+//   usersList: any = []
+//   usersDetailedInformation: any = []
+//   groupsList: any = [...this.Groups]
+//   rolesList: any = [...this.Roles]
+
+
+
+//   constructor() {
+//     if (this.userProfile.role == "Admin") {
+//       this.usersList = [...this.usersInfo]
+//       this.rolesList = [...this.Roles]
+//       this.groupsList = [...this.Groups]
+//     } else {
+//       this.usersList = [...this.usersInfo]
+//     }
+//   }
+
+//   ngOnInit(): void {
+//     console.log(this.checkRole("Admin"))
+//   }
+
+//   deleteUser(id: any) {
+//     let i = this.usersList.findIndex((user: any) => user.id == id)
+//     this.usersList.splice(i, 1)
+//     localStorage.setItem("UsersDB", JSON.stringify(this.usersList))
+//   }
+
+//   getGroup() {
+//     let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
+//     let group = e.value;
+//   }
+
+//   getRoles() {
+//     let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
+//     let role = e.value;
+//   }
+
+//   checkRole(name: string) {
+//     return this.userProfile.role == name;
+//   }
+
+//   filterByRole() {
+//     const checkbox = document.getElementById(
+//       'checked',
+//     ) as HTMLInputElement | null;
+//     if (checkbox?.checked) {
+//       // this.usersList = this.Users.filter((u: any) => u.id != this.userProfile.id && u.roles == this.userProfile.roles);
+//     } else {
+//       // this.usersList = [...this.myUsersGroupsAndRoles]
+//     }
+//   }
+// }
+
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-show-users',
@@ -6,69 +77,187 @@ import { Component, Injectable, OnInit } from '@angular/core';
   styleUrls: ['./show-users.component.css']
 })
 
-export class ShowUsersComponent implements OnInit {
+export class ShowUsersComponent implements AfterViewInit {
+  displayedColumns: string[] = ['name', 'email', 'phoneNumber', 'role', 'groups', 'delete', 'edit', 'send', 'select'];
+  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  selection = new SelectionModel<PeriodicElement>(true, []);
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-  userProfile = JSON.parse(localStorage.getItem("profileDB") || "null")
+  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
 
   usersList: any = []
-  usersDetailedInformation : any = []
+  usersDetailedInformation: any = []
   groupsList: any = [...this.Groups]
   rolesList: any = [...this.Roles]
 
-
-
   constructor() {
+    this.getDataSource();
     if (this.userProfile.role == "Admin") {
       this.usersList = [...this.usersInfo]
       this.rolesList = [...this.Roles]
       this.groupsList = [...this.Groups]
     } else {
       this.usersList = [...this.usersInfo]
-
-
     }
   }
 
+
   ngOnInit(): void {
-    console.log(this.checkRole("Admin"))
- 
+    this.dataSource.data = JSON.parse(localStorage.getItem("tempTable") || "[]");
   }
 
   deleteUser(id: any) {
-    let i = this.usersList.findIndex((user: any) => user.id == id)
-    this.usersList.splice(i, 1)
-    localStorage.setItem("Users", JSON.stringify(this.usersList))
+    let i = this.dataSource.data.findIndex((user: any) => user.id == id)
+    this.dataSource.data.splice(i, 1)
+    localStorage.setItem("UsersDB", JSON.stringify(this.dataSource.data))
+    this.dataSource.data = JSON.parse(localStorage.getItem("UsersDB") || "[]");
   }
 
-  getGroup() {
-    let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
-    let group = e.value;
-
- 
+  checkRole(name: string) {
+    return this.userProfile.role == name;
   }
 
   getRoles() {
     let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
     let role = e.value;
 
+    let dataFilteredByRole = JSON.parse(localStorage.getItem("tempTable") || "[]");
+
+    dataFilteredByRole = dataFilteredByRole.filter((users: any) => users.role.id == role)
+    ELEMENT_DATA = JSON.parse(localStorage.getItem("tempTable") || "[]");
   }
 
-  checkRole(name : string) {
-    return this.userProfile.role == name;
-    
+  getGroup() {
+    let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
+    let group = e.value;
+  }
+
+  filterUsersByGroup() {
+    //   let e = (<HTMLInputElement>document.getElementById("ddlGroup"));
+    //   let group = e.value;
+
+    //   this.dataSource.data = this.Users.filter((user: any) => user.id != this.userProfile.id && user.group.find((g: any) => g.id == group))
+  }
+
+  filterUsersByRoles() {
+    //   let e = (<HTMLInputElement>document.getElementById("ddlRoles"));
+    //   let role = e.value;
+    //   this.dataSource.data = this.Users.filter((u: any) => u.id != this.userProfile.id && u.roles == role);
+  }
+
+  filterUsers() {
+    //   let group = (<HTMLInputElement>document.getElementById("ddlGroup"));
+    //   let role = (<HTMLInputElement>document.getElementById("ddlRoles"));
+
+    //   console.log(group.value != "" && role.value != "");
+    //   console.log(group.value != "" && role.value == "");
+    //   console.log(group.value == "" && role.value != "");
+
+
+    //   if (group.value != "" && role.value != "") {
+    //   } else if (group.value != "" && role.value == "") {
+    //     let groupValue = group.value;
+    //     this.dataSource.data = this.Users.filter((user: any) => {
+    //       user.id != this.userProfile.id && user.group.find((g: any) => (g.id).toString() == groupValue)
+    //     })
+    //   } else if (group.value == "" && role.value != "") {
+    //     let roleValue = role.value;
+    //     this.dataSource.data = this.Users.filter((u: any) => {
+    //       console.log("u.id: " + u.id + " != " + " this.userProfile.id: " + this.userProfile.id + ", u.roles: " + u.roles + ", roleValue: " + roleValue);
+    //     });
+    // }
+  }
+
+  isAdmin() {
+    return this.userProfile.name == "Admin";
   }
 
   filterByRole() {
-    const checkbox = document.getElementById(
-      'checked',
-    ) as HTMLInputElement | null;
-    if (checkbox?.checked) {
-      // this.usersList = this.Users.filter((u: any) => u.id != this.userFound.id && u.roles == this.userFound.roles);
-    } else {
-      // this.usersList = [...this.myUsersGroupsAndRoles]
+    // const checkbox = document.getElementById(
+    //   'checked',
+    // ) as HTMLInputElement | null;
+    // if (checkbox?.checked) {
+    //   this.usersList = this.Users.filter((u: any) => u.id != this.userProfile.id && u.roles == this.userProfile.roles);
+    // } else {
+    //   this.usersList = [...this.myUsersGroupsAndRoles]
+    // }
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
     }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: PeriodicElement): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  getDataSource() {
+    let dataSource = [{}];
+    let usersInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]");
+    let usersData = JSON.parse(localStorage.getItem("UsersDB") || "[]");
+    let usersRole = JSON.parse(localStorage.getItem("RolesDB") || "[]");
+    let usersGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]");
+
+
+    usersInfo.forEach((data: any) => {
+      let userD = usersData.find((d: any) => d.userId == data.userId);
+      let userR = usersRole.find((r: any) => r.id == data.role);
+      let userG = usersGroups.filter((g: any) => data.groups.includes(g.id));
+
+      let userData = {
+        id: userD.userId,
+        email: userD.email,
+        firstName: userD.firstName,
+        lastName: userD.lastName,
+        phoneNumber: userD.phoneNumber,
+        userId: userD.userId,
+        role: userR,
+        groups: userG
+      }
+      dataSource.push(userData);
+    })
+    dataSource.shift()
+
+    dataSource = dataSource.filter((users: any) => users.userId != this.userProfile.userId)
+    localStorage.setItem("tempTable", JSON.stringify(dataSource))
   }
 }
+
+export interface PeriodicElement {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  userId: string;
+  role: string,
+  groups: string;
+}
+
+let ELEMENT_DATA: PeriodicElement[] = JSON.parse(localStorage.getItem("tempTable") || "[]");
