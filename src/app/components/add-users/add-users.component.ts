@@ -21,7 +21,7 @@ export class AddUsersComponent {
   groupsList: any = [...this.groups]
   rolesList: any = [...this.roles]
   usersList: any = [...this.Users]
-  usersInfoList : any = [...this.usersInfo]
+  usersInfoList: any = [...this.usersInfo]
 
   controls = [
     {
@@ -81,7 +81,7 @@ export class AddUsersComponent {
       let month = dateObj.getMonth() + 1;
       let day = dateObj.getDate();
       let year = dateObj.getFullYear();
-      let newdate = year + "-" + month + "-" + day;  
+      let newdate = year + "-" + month + "-" + day;
       let user = {
         userId: userGuid,
         firstName: this.SignUpForm.value.fname,
@@ -89,8 +89,8 @@ export class AddUsersComponent {
         email: this.SignUpForm.value.email,
         password: this.SignUpForm.value.password,
         phoneNumber: this.SignUpForm.value.phoneNumber,
-        CreatedBy: this.userProfile.userId ,
-        CreatedAt: newdate 
+        CreatedBy: this.userProfile.userId,
+        CreatedAt: newdate
       }
       this.usersList.push(user)
       localStorage.setItem("UsersDB", JSON.stringify(this.usersList))
@@ -104,14 +104,6 @@ export class AddUsersComponent {
       this.usersInfoList = this.usersInfo
       this.SignUpForm.reset()
       this.router.navigateByUrl("/dashboard/admin")
-
-
     }
-
   }
-
-
-
-
-
 }
