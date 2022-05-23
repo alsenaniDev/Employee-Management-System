@@ -5,7 +5,8 @@ import { AdminPageComponent } from '../components/admin-page/admin-page.componen
 import { ShowUsersComponent } from '../components/show-users/show-users.component';
 import { DashboardComponent } from './dashboard.component';
 import { SettingsComponent } from '../components/settings/settings.component';
-import { ProfileComponent } from '../profile/profile.component';
+import { ProfileComponent } from '../components/profile/profile.component';
+
 
 const routes: Routes = [{
   path: '',
