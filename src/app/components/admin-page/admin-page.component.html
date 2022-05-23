@@ -13,7 +13,7 @@
         <div class="row">
 
           <!-- Sales Card -->
-          <div class="col-xxl-4 col-md-6">
+          <div *ngIf="checkRole('Admin') , else groups" class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
               <div class="card-body">
                 <h5 class="card-title">Users</h5>
@@ -27,29 +27,31 @@
                   </div>
                 </div>
               </div>
-
             </div>
-          </div><!-- End Sales Card -->
 
-          <!-- Revenue Card -->
-          <!-- <div class="col-xxl-4 col-md-6">
-            <div class="card info-card revenue-card">
+          </div>
+          <ng-template #groups>
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">My Groups</h5>
 
-              <div class="card-body">
-                <h5 class="card-title">Users <span>| Not active</span></h5>
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="ri-user-unfollow-fill"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>3</h6>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="ri-user-star-fill"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{userFound.groups.length}}</h6>
+                    </div>
                   </div>
                 </div>
+
+
+
               </div>
 
             </div>
-          </div> -->
-
+          </ng-template>
         </div>
       </div><!-- End Left side columns -->
 
