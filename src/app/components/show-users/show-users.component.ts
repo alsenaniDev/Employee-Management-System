@@ -77,7 +77,8 @@ export class ShowUsersComponent implements AfterViewInit {
       this.groupsList = [...this.Groups]
     } else {
       let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
-      dataFiltered = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role)
+      dataFiltered = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role || users.groups.find((g: any) => this.userProfile.groups.includes(g.name)))
+
       this.dataSource.data = dataFiltered
     }
 
@@ -109,6 +110,8 @@ export class ShowUsersComponent implements AfterViewInit {
   filterTableData() {
     let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
     let elemRole = (<HTMLInputElement>document.getElementById("ddlRoles"));
+    let checkRole = ((<HTMLInputElement>document.getElementById("checked")).checked);
+
     let role = '';
     if (elemRole != null) {
       role = elemRole.value;
@@ -135,13 +138,22 @@ export class ShowUsersComponent implements AfterViewInit {
         this.dataSource.data = dataFiltered
       }
     } else {
-      if (group != "" && group != "0") {
+      if (group != "" && checkRole) {
         dataFiltered = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role && users.groups.find((usersGroup: any) => usersGroup.id == group))
         this.dataSource.data = dataFiltered
-      } else if (group == "0") {
+      } else if (group == "" && checkRole) {
         this.dataSource.data = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role)
+      } else if (!checkRole && group != "") {
+        this.dataSource.data = dataFiltered.filter((users: any) => users.groups.find((usersGroup: any) => usersGroup.id == group))
+      } else if (!checkRole && group == "") {
+        dataFiltered = dataFiltered.filter((users: any) => users.groups.find((g: any) => this.userProfile.groups.includes(g.name)))
+        this.dataSource.data = dataFiltered
       }
     }
+  }
+
+  filterByRole() {
+
   }
 
   checkRole(name: string) {
