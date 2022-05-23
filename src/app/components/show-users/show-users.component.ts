@@ -110,7 +110,14 @@ export class ShowUsersComponent implements AfterViewInit {
   filterTableData() {
     let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
     let elemRole = (<HTMLInputElement>document.getElementById("ddlRoles"));
-    let checkRole = ((<HTMLInputElement>document.getElementById("checked")).checked);
+    let check = ((<HTMLInputElement>document.getElementById("checked")));
+
+
+    let checkRole
+    if (check != null) {
+      checkRole = check.checked
+    }
+
 
     let role = '';
     if (elemRole != null) {
