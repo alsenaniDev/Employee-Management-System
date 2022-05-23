@@ -144,8 +144,7 @@
 
                             <div class="tab-pane fade pt-3" id="profile-change-password">
                                 <!-- Change Password Form -->
-                                <form [formGroup]="editForm" (ngSubmit)="changePassword()">
-
+                                <form [formGroup]="editPass" (ngSubmit)="changePassword()">
                                     <!-- <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                             Password</label>
@@ -162,7 +161,7 @@
                                             <input formControlName="password" name="newpassword" type="password"
                                                 class="form-control" id="newPassword">
                                             <app-alerts [title]="'password'" [controlName]="'password'"
-                                                [formName]="editForm">
+                                                [formName]="editPass">
                                             </app-alerts>
                                         </div>
                                     </div>
@@ -174,10 +173,10 @@
                                             <input formControlName="confirmPassword" name="renewpassword"
                                                 type="password" class="form-control" id="renewPassword">
                                             <app-alerts [title]="'password'" [controlName]="'confirmPassword'"
-                                                [formName]="editForm">
+                                                [formName]="editPass">
                                             </app-alerts>
                                             <div
-                                                *ngIf="editForm.controls['password'].value != editForm.controls['confirmPassword'].value">
+                                                *ngIf="editPass.controls['password'].value != editPass.controls['confirmPassword'].value">
                                                 <div class="alert alert-danger alert-dismissible fade show"
                                                     role="alert">
                                                     Password Must Match
