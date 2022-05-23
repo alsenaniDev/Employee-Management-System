@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-show-users',
@@ -10,6 +11,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 
 export class ShowUsersComponent implements AfterViewInit {
+  EditForm: FormGroup;
   displayedColumns: string[] = ['id', 'name', 'email', 'phoneNumber', 'role', 'groups', 'edit', 'select'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   elementsChecked: any = [];
@@ -23,12 +25,42 @@ export class ShowUsersComponent implements AfterViewInit {
   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
   userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
+  usersEmail = this.Users.map((user: any) => user.email)
 
   usersList: any = [...this.Users]
 
   usersDetailedInformation: any = []
   groupsList: any = [...this.Groups]
   rolesList: any = [...this.Roles]
+
+  userRole: any = {};
+  userGroups: any = [];
+
+  userDataList: any = [];
+
+  controls = [
+    {
+      title: 'First Name',
+      controlName: 'fname',
+      type: "text"
+    },
+    {
+      title: 'Last Name',
+      controlName: 'lname',
+      type: "text"
+    },
+
+    {
+      title: 'Email',
+      controlName: 'email',
+      type: "text"
+    },
+    {
+      title: 'Phone Number',
+      controlName: 'phoneNumber',
+      type: "text"
+    },
+  ];
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -37,7 +69,7 @@ export class ShowUsersComponent implements AfterViewInit {
     }
   }
 
-  constructor() {
+  constructor(public formBuilder: FormBuilder) {
     this.getDataSource();
     if (this.userProfile.role == "Admin") {
       this.dataSource.data = JSON.parse(localStorage.getItem("tempTable") || "[]");
@@ -48,6 +80,16 @@ export class ShowUsersComponent implements AfterViewInit {
       dataFiltered = dataFiltered.filter((users: any) => users.role.name == this.userProfile.role)
       this.dataSource.data = dataFiltered
     }
+
+    this.EditForm = this.formBuilder.group({
+      fname: ['', [Validators.required, Validators.minLength(3)]],
+      lname: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
+      groups: ['', Validators.required],
+      role: [this.userRole.name, Validators.required],
+    });
   }
 
   showMsg(id: any) {
@@ -186,6 +228,51 @@ export class ShowUsersComponent implements AfterViewInit {
     dataSource = dataSource.filter((users: any) => users.userId != this.userProfile.userId)
     localStorage.setItem("tempTable", JSON.stringify(dataSource))
   }
+
+  getUserData(id: any) {
+    this.userDataList = []
+    let usersData = JSON.parse(localStorage.getItem("tempTable") || "[]");
+    let user = usersData.find((user: any) => user.userId == id);
+
+    this.userDataList.push(user.firstName);
+    this.userDataList.push(user.lastName);
+    this.userDataList.push(user.email);
+    this.userDataList.push(user.phoneNumber);
+
+    this.userRole = user.role;
+    this.userGroups = user.groups;
+  }
+
+  onSubmit() {
+    if (this.EditForm.invalid) {
+      this.EditForm.markAllAsTouched()
+
+    } else if (this.usersEmail.includes(this.EditForm.value.email)) {
+      this.EditForm.invalid
+    } else {
+      let dateObj = new Date();
+      let month = dateObj.getMonth() + 1;
+      let day = dateObj.getDate();
+      let year = dateObj.getFullYear();
+      let newdate = year + "-" + month + "-" + day;
+      let user = {
+        firstName: this.EditForm.value.fname,
+        lastName: this.EditForm.value.lname,
+        email: this.EditForm.value.email,
+        password: this.EditForm.value.password,
+        phoneNumber: this.EditForm.value.phoneNumber,
+        CreatedBy: this.userProfile.userId,
+        CreatedAt: newdate
+      }
+      this.usersList.push(user)
+      localStorage.setItem("UsersDB", JSON.stringify(this.usersList))
+      const userInfo = {
+        role: this.EditForm.value.role,
+        groups: this.EditForm.value.groups
+      }
+    }
+  }
+
 }
 
 export interface PeriodicElement {

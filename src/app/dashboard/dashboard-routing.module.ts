@@ -7,7 +7,6 @@ import { DashboardComponent } from './dashboard.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { ProfileComponent } from '../components/profile/profile.component';
 
-
 const routes: Routes = [{
   path: '',
   component: DashboardComponent,

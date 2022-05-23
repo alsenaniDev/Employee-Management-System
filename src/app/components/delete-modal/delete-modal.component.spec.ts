@@ -1,8 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DeleteModalComponent } from './delete-modal.component';
-
-
-
 describe('DeleteModalComponent', () => {
   let component: DeleteModalComponent;
   let fixture: ComponentFixture<DeleteModalComponent>;

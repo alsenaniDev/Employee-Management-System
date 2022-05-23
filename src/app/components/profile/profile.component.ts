@@ -32,19 +32,17 @@ export class ProfileComponent implements OnInit {
       phoneNumber: [userInfo.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]]
     })
   }
-
+  
   editProfile() {
-
     if (this.editForm.invalid) {
       this.editForm.markAllAsTouched()
     } else {
       let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
       this.Users[userIndex] = Object.assign({}, this.Users[userIndex], { firstName: this.editForm.value.firstName, lastName: this.editForm.value.lastName, phoneNumber: this.editForm.value.phoneNumber })
       localStorage.setItem("UsersDB", JSON.stringify(this.Users))
-
-
     }
   }
+
   changePassword() {
     if (this.editPass.invalid) {
       this.editPass.markAllAsTouched()
@@ -56,6 +54,5 @@ export class ProfileComponent implements OnInit {
       localStorage.setItem("UsersDB", JSON.stringify(this.Users))
       this.router.navigateByUrl("/login")
     }
-
   }
 }

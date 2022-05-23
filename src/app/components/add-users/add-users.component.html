@@ -15,7 +15,6 @@
               User Found
             </div>
             <form class="row g-3" [formGroup]="SignUpForm" (ngSubmit)="onSubmit()">
-
               <div class="col-md-4 mb-3" *ngFor="let control of controls">
                 <label class="form-label">{{control.title}}</label>
                 <input type={{control.type}} class="form-control" formControlName={{control.controlName}}>
