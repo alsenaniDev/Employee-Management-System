@@ -20,6 +20,8 @@ export class ShowUsersComponent implements AfterViewInit {
 
   selection = new SelectionModel<PeriodicElement>(true, []);
 
+  hide: boolean;
+
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
@@ -98,6 +100,11 @@ export class ShowUsersComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (this.userProfile.role == "Admin") {
+      this.hide = false;
+    } else {
+      this.hide = true;
+    }
   }
 
   deleteUser(id: any) {
@@ -109,19 +116,17 @@ export class ShowUsersComponent implements AfterViewInit {
 
   filterTableData() {
     let dataFiltered = JSON.parse(localStorage.getItem("tempTable") || "[]");
+
     let elemRole = (<HTMLInputElement>document.getElementById("ddlRoles"));
-    let check = ((<HTMLInputElement>document.getElementById("checked")));
-
-
-    let checkRole
-    if (check != null) {
-      checkRole = check.checked
-    }
-
-
     let role = '';
     if (elemRole != null) {
       role = elemRole.value;
+    }
+
+    let check = ((<HTMLInputElement>document.getElementById("checked")));
+    let checkRole
+    if (check != null) {
+      checkRole = check.checked
     }
 
     let elemGroup = (<HTMLInputElement>document.getElementById("ddlGroup"));
@@ -157,10 +162,6 @@ export class ShowUsersComponent implements AfterViewInit {
         this.dataSource.data = dataFiltered
       }
     }
-  }
-
-  filterByRole() {
-
   }
 
   checkRole(name: string) {
