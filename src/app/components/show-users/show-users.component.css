@@ -26,3 +26,10 @@ table {
   text-align: end;
 }
 
+.hide {
+  display: none;
+}
+
+.show {
+  display: "";
+}
