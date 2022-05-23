@@ -22,8 +22,6 @@ import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProfileComponent } from './profile/profile.component';
-
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 
 @NgModule({
@@ -53,8 +51,7 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatCheckboxModule,
-    SweetAlert2Module
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
