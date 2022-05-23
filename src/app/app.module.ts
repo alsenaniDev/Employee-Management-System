@@ -21,8 +21,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ProfileComponent } from './profile/profile.component';
-import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +35,8 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     DashboardLayoutComponent,
     AlertsComponent,
     InputComponent,
-    SettingsComponent,
     ProfileComponent,
+    SettingsComponent,
     DeleteModalComponent,
   ],
   imports: [

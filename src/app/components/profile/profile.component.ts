@@ -19,7 +19,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
-
   }
 
   Init_UpdateUserInfoForm(userInfo: any) {
@@ -56,10 +55,6 @@ export class ProfileComponent implements OnInit {
       let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
       this.Users[userIndex] = Object.assign({}, this.Users[userIndex], { password: this.editForm.value.password })
       localStorage.setItem("UsersDB", JSON.stringify(this.Users))
-
-
-
     }
-
   }
 }
