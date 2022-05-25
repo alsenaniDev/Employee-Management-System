@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
-import { AddUsersComponent } from '../../users/add-users/add-users.component';
 
 @Component({
   selector: 'app-alerts',
