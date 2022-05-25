@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddUsersComponent } from '../components/add-users/add-users.component';
+import { AddUsersComponent } from '../components/users/add-users/add-users.component';
 import { AdminPageComponent } from '../components/admin-page/admin-page.component';
-import { ShowUsersComponent } from '../components/show-users/show-users.component';
+import { ShowUsersComponent } from '../components/users/show-users/show-users.component';
 import { DashboardComponent } from './dashboard.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { ProfileComponent } from '../components/profile/profile.component';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ShowUsersComponent } from '../show-users/show-users.component';
+import { ShowUsersComponent } from '../../users/show-users/show-users.component';
 
 @Component({
   selector: 'app-sidebar',
