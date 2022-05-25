@@ -3,16 +3,16 @@
   <div class="pagetitle">
     <h1>Settings</h1>
     <hr />
-  </div><!-- End Page Title -->
+  </div>
 
   <section class="section dashboard">
     <div class="row">
 
-      <!-- Left side columns -->
+
       <div class="col-lg-8">
         <div class="row">
 
-          <!-- Sales Card -->
+  
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
               <div class="card-body">
@@ -23,7 +23,7 @@
                     <i class="ri-group-2-line"></i>
                   </div>
                   <div class="ps-3">
-                    <h6 id="roles-count"></h6>
+                    <h6 id="roles-count">{{Roles.length}}</h6>
                   </div>
                 </div>
                 <div class="btn-card">
@@ -34,9 +34,9 @@
                 </div>
               </div>
             </div>
-          </div><!-- End Sales Card -->
+          </div>
 
-          <!-- Revenue Card -->
+    
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
               <div class="card-body">
@@ -47,7 +47,7 @@
                     <i class=" ri-mini-program-line"></i>
                   </div>
                   <div class="ps-3">
-                    <h6 id="groups-count"></h6>
+                    <h6 id="groups-count">{{Groups.length}}</h6>
                   </div>
                 </div>
                 <div class="btn-card">
@@ -58,70 +58,11 @@
                 </div>
               </div>
             </div>
-          </div><!-- End Revenue Card -->
-        </div>
-      </div><!-- End Left side columns -->
-    </div>
-  </section>
-
-  <div class="modal fade" id="largeModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="model-title"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert" style="display: none;">
-            <i class="bi bi-exclamation-octagon me-1"></i>
-            Please Enter {{dataName}} Name
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
-          <div style="display: flex;justify-content: space-between;">
-            <div class="col-md-4">
-              <label class="form-label" id="label-name"></label>
-              <input type="text" class="form-control" id="inputValue">
-            </div>
-            <div style="margin-top: 32px;">
-              <button type="button" class="btn btn-outline-primary" (click)="AddData()">
-                Add
-              </button>
-            </div>
-          </div>
-          <hr />
-          <label class="form-label" id="label-table"></label>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let d of data">
-                <th scope="row">{{d.id}}</th>
-                <td>{{d.name}}</td>
-                <td>
-                  <button type="button" class="btn btn-secondary" id="{{d.id}}" (click)="EditElement(d.id)">
-                    <i class="ri-edit-box-line"></i>
-                  </button>
-                </td>
-                <td>
-                  <button type="button" class="btn btn-danger" id="{{d.id}}" (click)="DeleteElement(d.id)">
-                    <i class="ri-delete-bin-6-line"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+  <app-show-modal></app-show-modal>
 
-</main><!-- End #main -->
+</main>
