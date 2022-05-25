@@ -28,7 +28,6 @@
 
                 <div class="card">
                     <div class="card-body pt-3">
-                        <!-- Bordered Tabs -->
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
@@ -82,118 +81,56 @@
                                         <span>{{group}}</span><br>
                                     </div>
 
-
-
-
                                 </div>
 
                             </div>
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
-                                <!-- Profile Edit Form -->
                                 <form [formGroup]="editForm" (ngSubmit)="editProfile()">
-                                    <div class=" row mb-3">
-                                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First
-                                            Name</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input formControlName="firstName" type="text" class="form-control">
-                                            <app-alerts [title]="'First Name'" [controlName]="'firstName'"
-                                                [formName]="editForm">
-                                            </app-alerts>
-                                        </div>
-
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input [defaultValue]="userInfo.lastName" formControlName="lastName"
-                                                type="text" class="form-control" id="fullName">
-                                            <app-alerts [title]="'Last Name'" [controlName]="'lastName'"
-                                                [formName]="editForm">
-                                            </app-alerts>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input formControlName="phoneNumber" type="text" class="form-control"
-                                                id="Phone" value="{{userInfo.phoneNumber}}">
-                                            <app-alerts [title]="'Phone Number'" [controlName]="'phoneNumber'"
-                                                [formName]="editForm">
-                                            </app-alerts>
-                                        </div>
-                                    </div>
-
-
+                                    <app-form-edit [formName]="editForm" [type]="'text'" [label]="'First Name'"
+                                        [ControlName]="'firstName'"></app-form-edit>
+                                    <app-form-edit [formName]="editForm" [type]="'text'" [label]="'Last Name'"
+                                        [ControlName]="'lastName'"></app-form-edit>
+                                    <app-form-edit [formName]="editForm" [type]="'text'" [label]="'Phone Number'"
+                                        [ControlName]="'phoneNumber'"></app-form-edit>
 
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </div>
-                                </form><!-- End Profile Edit Form -->
-
-                            </div>
-
-                            <div class="tab-pane fade pt-3" id="profile-settings">
-
-                                <!-- Settings Form -->
-                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
-
-                                </div><!-- End settings Form -->
+                                </form>
 
                             </div>
 
                             <div class="tab-pane fade pt-3" id="profile-change-password">
-                                <!-- Change Password Form -->
+                                <div
+                                    *ngIf="editPass.controls['confirmPassword'].value != editPass.controls['password'].value  ">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        Password Must Match
+                                    </div>
+                                </div>
+
                                 <form [formGroup]="editPass" (ngSubmit)="changePassword()">
-                                    <!-- <div class="row mb-3">
-                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="password" type="password" class="form-control"
-                                                id="currentPassword">
-                                        </div>
-                                    </div> -->
-
-                                    <div class="row mb-3">
-                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input formControlName="password" name="newpassword" type="password"
-                                                class="form-control" id="newPassword">
-                                            <app-alerts [title]="'password'" [controlName]="'password'"
-                                                [formName]="editPass">
-                                            </app-alerts>
+                                    <div *ngIf="editPass.controls['currentPassword'].value != userInfo.password && editPass.controls['currentPassword'].value != '' ">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            Current Password Failed
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input formControlName="confirmPassword" name="renewpassword"
-                                                type="password" class="form-control" id="renewPassword">
-                                            <app-alerts [title]="'password'" [controlName]="'confirmPassword'"
-                                                [formName]="editPass">
-                                            </app-alerts>
-                                            <div
-                                                *ngIf="editPass.controls['password'].value != editPass.controls['confirmPassword'].value">
-                                                <div class="alert alert-danger alert-dismissible fade show"
-                                                    role="alert">
-                                                    Password Must Match
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
+                                    <app-form-edit [label]="'Current Password'" [ControlName]="'currentPassword'"
+                                        [formName]="editPass" (input)="onEnterPassword()" [type]="'password'">
+                                    </app-form-edit>
+                                    <app-form-edit id="newPass" [label]="'New Password'" [ControlName]="'password'"
+                                        [formName]="editPass" [type]="'password'"></app-form-edit>
+                                    <app-form-edit id="reEnterPass" [label]="'Re-enter New
+                                    Password'" [type]="'password'" [ControlName]="'confirmPassword'"
+                                        [formName]="editPass">
+                                    </app-form-edit>
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Change Password</button>
                                     </div>
-                                </form><!-- End Change Password Form -->
+                                </form>
 
                             </div>
 
-                        </div><!-- End Bordered Tabs -->
+                        </div>
 
                     </div>
                 </div>
