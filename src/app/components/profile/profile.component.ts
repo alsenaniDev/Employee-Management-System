@@ -11,11 +11,12 @@ export class ProfileComponent implements OnInit {
   userProfile = JSON.parse(localStorage.getItem("userInfo") || "null");
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]");
   userInfo = this.Users.find((user: any) => user.userId == this.userProfile.userId);
-
   editForm: FormGroup
   editPass: FormGroup
-  constructor(private fb: FormBuilder , private router : Router) {
+
+  constructor(private fb: FormBuilder, private router: Router) {
     this.editPass = this.fb.group({
+      currentPassword: ["", [Validators.required, Validators.minLength(6)]],
       password: ["", [Validators.required, Validators.minLength(6)]],
       confirmPassword: ["", [Validators.required, Validators.minLength(6)]],
     })
@@ -23,6 +24,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.userInfo.password)
   }
 
   Init_UpdateUserInfoForm(userInfo: any) {
@@ -31,11 +33,14 @@ export class ProfileComponent implements OnInit {
       lastName: [userInfo.lastName, [Validators.required, Validators.minLength(3)]],
       phoneNumber: [userInfo.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]]
     })
+
   }
-  
+
   editProfile() {
     if (this.editForm.invalid) {
+
       this.editForm.markAllAsTouched()
+
     } else {
       let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
       this.Users[userIndex] = Object.assign({}, this.Users[userIndex], { firstName: this.editForm.value.firstName, lastName: this.editForm.value.lastName, phoneNumber: this.editForm.value.phoneNumber })
@@ -45,8 +50,13 @@ export class ProfileComponent implements OnInit {
 
   changePassword() {
     if (this.editPass.invalid) {
+      console.log(this.editPass.value.currentPassword)
       this.editPass.markAllAsTouched()
-    } else if (this.editPass.value.password != this.editPass.value.confirmPassword) {
+    }
+    else if (this.editPass.value.currentPassword != this.userInfo.password) {
+      this.editPass.invalid
+    }
+    else if (this.editPass.value.password != this.editPass.value.confirmPassword) {
       this.editPass.invalid
     } else {
       let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
@@ -54,5 +64,18 @@ export class ProfileComponent implements OnInit {
       localStorage.setItem("UsersDB", JSON.stringify(this.Users))
       this.router.navigateByUrl("/login")
     }
+  }
+
+  onEnterPassword() {
+    const reEnterPass = document.getElementById('reEnterPass') as HTMLInputElement | null;
+    const newPass = document.getElementById('newPass') as HTMLInputElement | null;
+    if (this.editPass.value.currentPassword != this.userInfo.password) {
+      reEnterPass.getElementsByTagName("input")[0].setAttribute('disabled', '')
+      newPass.getElementsByTagName("input")[0].setAttribute('disabled', '')
+    } else {
+      reEnterPass.getElementsByTagName("input")[0].removeAttribute('disabled')
+      newPass.getElementsByTagName("input")[0].removeAttribute('disabled')
+    }
+
   }
 }

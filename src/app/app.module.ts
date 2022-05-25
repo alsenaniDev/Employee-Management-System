@@ -22,6 +22,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DeleteModalComponent } from './components/common/delete-modal/delete-modal.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { FormEditComponent } from './components/common/form-edit/form-edit.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     ProfileComponent,
     SettingsComponent,
     DeleteModalComponent,
+    FormEditComponent,
   ],
   imports: [
     BrowserModule,

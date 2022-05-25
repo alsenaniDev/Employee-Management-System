@@ -1,0 +1,11 @@
+<div class="row mb-3">
+    <label class="col-md-4 col-lg-3 col-form-label">{{label}}</label>
+    <div class="col-md-8 col-lg-9">
+        <div [formGroup]="formName">
+            <input type="{{type}}" id="{{id}}" maxlength="maxLength" formControlName="{{ControlName}}"
+                class="form-control">
+            <app-alerts [title]="label" [controlName]="ControlName" [formName]="formName">
+            </app-alerts>
+        </div>
+    </div>
+</div>
