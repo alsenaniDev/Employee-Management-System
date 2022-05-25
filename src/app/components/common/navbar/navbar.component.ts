@@ -40,15 +40,15 @@ export class NavbarComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    if (document.getElementById("user-form") != null) {
-      if (event.target.innerWidth >= 1200) {
-        document.getElementById("sidebar")!.style.left = "0px";
-        document.getElementById("main")!.style.marginLeft = "300px";
-      } else {
-        document.getElementById("sidebar")!.style.left = "-300px";
-        document.getElementById("main")!.style.marginLeft = "0px";
-      }
+    if (event.target.innerWidth >= 1200) {
+      document.getElementById("sidebar")!.style.left = "0px";
+      document.getElementById("main")!.style.marginLeft = "300px";
+    } else {
+      document.getElementById("sidebar")!.style.left = "-300px";
+      document.getElementById("main")!.style.marginLeft = "0px";
+    }
 
+    if (document.getElementById("user-form") != null) {
       if (event.target.innerWidth <= 1600) {
         document.getElementById("user-form")!.classList.add("col-lg-12");
       } else {
