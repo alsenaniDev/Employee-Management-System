@@ -1,22 +1,18 @@
 <!-- alert required -->
-<div
-  *ngIf="formName.controls[controlName].errors?.['required'] && formName.controls[controlName].touched">
+<div *ngIf="formName.controls[controlName].errors?.['required'] && formName.controls[controlName].touched">
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{title}} is required
   </div>
 </div>
-<div
-  *ngIf="formName.controls[controlName].errors?.['minlength']">
+
+<div *ngIf="formName.controls[controlName].errors?.['minlength']">
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{title}} Should Atleast {{formName.controls[controlName].errors.minlength.requiredLength}}
+    {{title}} Should at least {{formName.controls[controlName].errors.minlength.requiredLength}}
   </div>
 </div>
-<div
-  *ngIf="formName.controls[controlName].errors?.['pattern']">
+
+<div *ngIf="formName.controls[controlName].errors?.['pattern']">
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{title}} Should Correct
   </div>
 </div>
-
-
-

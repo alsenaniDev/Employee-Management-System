@@ -3,21 +3,17 @@
   <div class="pagetitle">
     <h1>Home</h1>
     <hr />
-  </div><!-- End Page Title -->
+  </div>
 
   <section class="section dashboard">
     <div class="row">
-
-      <!-- Left side columns -->
       <div class="col-lg-8">
         <div class="row">
 
-          <!-- Sales Card -->
           <div *ngIf="checkRole('Admin') , else groups" class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
               <div class="card-body">
                 <h5 class="card-title">Users</h5>
-
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="ri-user-star-fill"></i>
@@ -28,14 +24,13 @@
                 </div>
               </div>
             </div>
-
           </div>
+
           <ng-template #groups>
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
                 <div class="card-body">
                   <h5 class="card-title">My Groups</h5>
-
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="ri-user-star-fill"></i>
@@ -45,17 +40,12 @@
                     </div>
                   </div>
                 </div>
-
-
-
               </div>
-
             </div>
           </ng-template>
-        </div>
-      </div><!-- End Left side columns -->
 
+        </div>
+      </div>
     </div>
   </section>
-
-</main><!-- End #main -->
+</main>
