@@ -14,13 +14,12 @@ declare var $: any;
 
 export class AddUsersComponent {
   SignUpForm: FormGroup;
-  
+
   groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
   roles = JSON.parse(localStorage.getItem("RolesDB") || '[]')
   Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
   userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
-
   usersEmail = this.Users.map((user: any) => user.email)
 
   controls = [
@@ -90,7 +89,7 @@ export class AddUsersComponent {
         email: this.SignUpForm.value.email,
         password: this.SignUpForm.value.password,
         phoneNumber: this.SignUpForm.value.phoneNumber,
-        CreatedBy: this.userProfile.userId,
+        // CreatedBy: this.userProfile.userId,
         CreatedAt: newDate
       }
 
@@ -104,9 +103,17 @@ export class AddUsersComponent {
         groups: this.SignUpForm.value.groups
       }
 
-      this.usersInfo.push(userInfo)
-      localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
-      this.usersInfo = this.usersInfo
+      if (this.usersInfo != null) {
+        this.usersInfo.push(userInfo)
+        localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
+      } else {
+        let newUser = [{
+          userId: userGuid,
+          role: this.SignUpForm.value.role,
+          groups: this.SignUpForm.value.groups
+        }]
+        localStorage.setItem("usersInfoDB", JSON.stringify(newUser))
+      }
 
       this.SignUpForm.reset()
       this.router.navigateByUrl("/dashboard/show")
