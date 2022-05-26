@@ -14,7 +14,6 @@ export class LoginPageComponent implements OnInit {
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
   Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
   Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-
   groupsId = this.Groups.map((group: any) => group.id)
   user: any
   userFound: any
