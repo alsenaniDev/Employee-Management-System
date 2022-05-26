@@ -1,0 +1,59 @@
+<div class="modal fade" id="largeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="model-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert" style="display: none;">
+            <i class="bi bi-exclamation-octagon me-1"></i>
+            Please Enter {{dataName}} Name
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <div style="display: flex;justify-content: space-between;">
+            <div class="col-md-4">
+              <label class="form-label" id="label-name"></label>
+              <input type="text" class="form-control" id="inputValue">
+            </div>
+            <div style="margin-top: 32px;">
+              <button type="button" class="btn btn-outline-primary" (click)="AddData()">
+                Add
+              </button>
+            </div>
+          </div>
+          <hr />
+          <label class="form-label" id="label-table"></label>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of data">
+                <th scope="row">{{element.id}}</th>
+                <td>{{element.name}}</td>
+                <td>
+                  <button type="button" class="btn btn-secondary" id="{{element.id}}" (click)="EditElement(element.id)">
+                    <i class="ri-edit-box-line"></i>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger" id="{{element.id}}" (click)="DeleteElement(element.id)">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

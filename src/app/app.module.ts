@@ -23,6 +23,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DeleteModalComponent } from './components/common/delete-modal/delete-modal.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { FormEditComponent } from './components/common/form-edit/form-edit.component';
+import { ShowModalComponent } from './components/common/show-modal/show-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { FormEditComponent } from './components/common/form-edit/form-edit.compo
     SettingsComponent,
     DeleteModalComponent,
     FormEditComponent,
+    ShowModalComponent,
   ],
   imports: [
     BrowserModule,
