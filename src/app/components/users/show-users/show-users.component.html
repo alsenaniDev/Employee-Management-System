@@ -1,102 +1,3 @@
-<!--
-  <main id="main" class="main">
-  <div class="pagetitle">
-    <h1>Show Users</h1>
-    <hr />
-  </div>
-
-  <section class="section">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Default Table</h5>
-            <div class="search-bar">
-
-              <div class="col-md-6 group">
-                <div *ngIf="checkRole('Admin') , else user">
-                  <label class="form-label">Filter By Role</label>
-                  <select controlName="roles" id="ddlRoles" class="form-select" (change)="getRoles()">
-                    <option selected disabled value="">Choose...</option>
-                    <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-3 group">
-                <ng-template #user>
-                  <label class="form-label">Filter By Role</label>
-                  <input type="checkbox" (change)="filterByRole()" id="checked" style="margin: 0 10px;">
-                  <small>check to filter by your Role</small>
-                  <input disabled type="text" class="form-control">
-                </ng-template>
-              </div>
-
-              <div class="col-md-3 group">
-                <label class="form-label">Filter By Groups</label>
-                <select controlName="group" id="ddlGroup" class="form-select" (change)="getGroup()">
-                  <option selected disabled value="">Choose...</option>
-                  <option *ngFor="let group of groupsList" [value]="group.id">{{group.name}}</option>
-                </select>
-              </div>
-            </div>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th width="2%" scope="col">Id</th>
-                  <th width="30%" scope="col">Name</th>
-                  <th width="20%" scope="col">Email</th>
-                  <th width="30%" scope="col">Role</th>
-                  <th width="40%" scope="col">Groups</th>
-                  <th *ngIf="checkRole('Admin')" width="40%" scope="col">Delete</th>
-                  <th width="40%" scope="col">Edit</th>
-                  <th width="40%" scope="col">Send</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of usersList , let indexOfElement = index">
-                  <th scope="row">{{indexOfElement + 1}}</th>
-                  <ng-container *ngFor="let userInformation of Users">
-                    <td *ngIf="userInformation.userId == user.userId">{{userInformation.firstName}}
-                      {{userInformation.lastName}}</td>
-                    <td *ngIf="userInformation.userId == user.userId">{{userInformation.email}}</td>
-                  </ng-container>
-                  <ng-container *ngFor="let role of rolesList">
-                    <td *ngIf="role.id == user.role">{{ role.name }}</td>
-                  </ng-container>
-                  <td>
-                    <ng-container *ngFor="let group of groupsList , let i = index">
-                      <span *ngIf="user.groups.includes(group.id)">
-                        {{group.name}} <br />
-                      </span>
-                    </ng-container>
-
-                  </td>
-                  <td *ngIf="checkRole('Admin')">
-                    <button (click)="deleteUser(user.id)" type="button" class="btn btn-danger">
-                      <i class="ri-delete-bin-6-line"></i>
-                    </button>
-                  </td>
-
-                  <td><button type="button" class="btn btn-secondary">
-                      <i class="ri-edit-box-line"></i>
-                    </button>
-                  </td>
-                  <td><button type="button" class="btn btn-primary">
-                      <i class=" ri-message-2-line"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
--->
-
 <main id="main" class="main">
   <div class="pagetitle">
     <h1>Show Users</h1>
@@ -117,7 +18,7 @@
                   <select controlName="roles" id="ddlRoles" class="form-select" (change)="filterTableData()">
                     <option selected disabled value="">Choose...</option>
                     <option value="0">All</option>
-                    <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
+                    <option *ngFor="let role of Roles" [value]="role.id">{{role.name}}</option>
                   </select>
                 </div>
               </div>
@@ -125,9 +26,9 @@
               <div class="col-md-3 group">
                 <ng-template #user>
                   <label class="form-label">Your Role</label>
-                  <input type="checkbox" (change)="filterTableData()" id="checked" style="margin: 0 10px;">
+                  <input type="checkbox" id="checked" style="margin: 0 10px;" (change)="filterTableData()">
                   <small>Check To Filter By Your Role</small>
-                  <input disabled type="text" class="form-control" id="UserRole">
+                  <input disabled type="text" class="form-control" id="UserRole" value="{{userProfile.role}}">
                 </ng-template>
               </div>
 
@@ -137,7 +38,7 @@
                   <select controlName="group" id="ddlGroup" class="form-select" (change)="filterTableData()">
                     <option selected disabled value="">Choose...</option>
                     <option value="0" *ngIf="checkRole('Admin')">All</option>
-                    <ng-container *ngFor="let group of groupsList">
+                    <ng-container *ngFor="let group of Groups">
                       <option [value]="group.id">{{group.name}}</option>
                     </ng-container>
                   </select>
@@ -150,7 +51,7 @@
                   <select controlName="group" id="ddlGroup" class="form-select" (change)="filterTableData()">
                     <option selected disabled value="">Choose...</option>
                     <option value="0" *ngIf="checkRole('Admin')">All</option>
-                    <ng-container *ngFor="let group of groupsList">
+                    <ng-container *ngFor="let group of Groups">
                       <option [value]="group.id" *ngIf="userProfile.groups.includes(group.name)">{{group.name}}</option>
                     </ng-container>
                   </select>
@@ -177,88 +78,107 @@
               </div>
               <app-delete-modal></app-delete-modal>
 
-              <table mat-table [dataSource]="dataSource">
-                <ng-container matColumnDef="id">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> ID </th>
-                  <td mat-cell *matCellDef="let element, let indexOfElement = index"> {{indexOfElement + 1}} </td>
-                </ng-container>
+              <!-- Table -->
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
+                <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
-
                   <th mat-header-cell *matHeaderCellDef>
                     <mat-checkbox (change)="$event ? masterToggle() : null"
                       [checked]="selection.hasValue() && isAllSelected()"
                       [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
                     </mat-checkbox>
                   </th>
-
                   <td mat-cell *matCellDef="let row">
                     <mat-checkbox (click)="$event.stopPropagation()" #check
                       (change)="$event ? selection.toggle(row) : null; gitCheck(check.id)"
                       [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
                     </mat-checkbox>
                   </td>
-
                 </ng-container>
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef> ID </th>
+                  <td mat-cell *matCellDef="let element , let indexOfElement = index"> {{indexOfElement + 1}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
 
                 <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> Name </th>
-                  <td mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lastName}} </td>
+                  <th mat-header-cell *matHeaderCellDef> Name </th>
+
+                  <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let user of Users ">
+                      <ng-container *ngIf="element.userId == user.userId ">
+                        {{user.firstName}} {{user.lastName}}
+                      </ng-container>
+                    </ng-container>
+                  </td>
+
+
                 </ng-container>
 
+
+
+                <!-- Weight Column -->
                 <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> Email </th>
-                  <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                  <th mat-header-cell *matHeaderCellDef> email </th>
+                  <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let user of Users ">
+                      <ng-container *ngIf="element.userId == user.userId ">
+                        {{user.email}}
+                      </ng-container>
+                    </ng-container>
+                  </td>
                 </ng-container>
 
+                <!-- Symbol Column -->
                 <ng-container matColumnDef="phoneNumber">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> Phone Number </th>
-                  <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+                  <th mat-header-cell *matHeaderCellDef> phoneNumber </th>
+                  <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let user of Users ">
+                      <ng-container *ngIf="element.userId == user.userId ">
+                        {{user.phoneNumber}}
+                      </ng-container>
+                    </ng-container>
+                  </td>
                 </ng-container>
-
                 <ng-container matColumnDef="role">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> Role </th>
-                  <td mat-cell *matCellDef="let element"> {{element.role.name}} </td>
+                  <th mat-header-cell *matHeaderCellDef> role </th>
+                  <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let role of Roles ">
+                      <ng-container *ngIf="element.role == role.id ">
+                        {{role.name}}
+                      </ng-container>
+                    </ng-container>
+                  </td>
                 </ng-container>
-
                 <ng-container matColumnDef="groups">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> Groups </th>
+                  <th mat-header-cell *matHeaderCellDef> groups </th>
                   <td mat-cell *matCellDef="let element">
-                    <span *ngFor="let group of element.groups">{{group.name}}<br /></span>
+                    <ng-container *ngFor="let group of Groups">
+                      <ng-container *ngIf="element.groups.includes(group.id)">
+                        {{group.name}} <br />
+                      </ng-container>
+                    </ng-container>
                   </td>
                 </ng-container>
-
-                <!-- <ng-container matColumnDef="delete">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> Delete </th>
-                  <td mat-cell *matCellDef="let element">
-                    <button (click)="deleteUser(element.id)" type="button" class="btn btn-danger">
-                      <i class="ri-delete-bin-6-line"></i>
-                    </button>
-                  </td>
-                </ng-container> -->
-
                 <ng-container matColumnDef="edit">
-                  <th mat-header-cell *matHeaderCellDef [hidden]="hide" class="Table-title"> Edit </th>
-                  <td mat-cell *matCellDef="let element" [hidden]="hide">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#largeModal"
-                      id="{{element.id}}" (click)="getUserData(element.id)">
+                  <th mat-header-cell *matHeaderCellDef> edit </th>
+                  <td mat-cell *matCellDef="let element"> <button type="button" class="btn btn-secondary"
+                      data-bs-toggle="modal" data-bs-target="#largeModal" id="{{element.userId}}">
                       <i class="ri-edit-box-line"></i>
-                    </button>
-                  </td>
+                    </button> </td>
                 </ng-container>
 
-                <!-- <ng-container matColumnDef="send">
-                  <th mat-header-cell *matHeaderCellDef class="Table-title"> Send </th>
-                  <td mat-cell *matCellDef="let element">
-                    <button type="button" class="btn btn-primary">
-                      <i class=" ri-message-2-line"></i>
-                    </button>
-                  </td>
-                </ng-container> -->
+
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                </tr>
               </table>
+
             </div>
           </div>
         </div>
@@ -280,22 +200,21 @@
               <label class="form-label">{{control.title}}</label>
               <input [readonly]="true" type={{control.type}} class="form-control" value={{userDataList[indexOfElement]}}
                 formControlName={{control.controlName}}>
-              <!-- <app-alerts [formName]="EditForm" [title]="control.title" [controlName]="control.controlName">
-              </app-alerts> -->
+
             </div>
 
             <div class="col-md-4">
               <label class="form-label">Role</label>
               <select controlName="role" class="form-select" formControlName="role" [selectedIndex]="userRole.id">
                 <option selected disabled value="">Choose...</option>
-                <option *ngFor="let role of rolesList" [value]="role.id">{{role.name}}</option>
+                <option *ngFor="let role of Roles" [value]="role.id">{{role.name}}</option>
               </select>
               <app-alerts [formName]="EditForm" [title]="'Role'" [controlName]="'role'"></app-alerts>
             </div>
 
             <div class="col-md-4">
               <label class="form-label">Groups</label>
-              <ng-select formControlName="groups" [maxSelectedItems]="3" [multiple]="true" [items]="groupsList"
+              <ng-select formControlName="groups" [maxSelectedItems]="3" [multiple]="true" [items]="Groups"
                 id="testGroups" bindLabel="name" bindValue="id" placeholder="Select Groups">
               </ng-select>
               <app-alerts [formName]="EditForm" [title]="'Groups'" [controlName]="'groups'"></app-alerts>
