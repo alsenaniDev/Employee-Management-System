@@ -64,9 +64,7 @@ export class ShowUsersComponent implements AfterViewInit {
   }
 
 
-  constructor(public formBuilder: FormBuilder ) {
-
-
+  constructor(public formBuilder: FormBuilder) {
     this.EditForm = this.formBuilder.group({
       fname: ['', [Validators.required, Validators.minLength(3)]],
       lname: ['', [Validators.required, Validators.minLength(3)]],
@@ -77,6 +75,7 @@ export class ShowUsersComponent implements AfterViewInit {
       role: [this.userRole.name, Validators.required],
     });
   }
+
 
 
 
@@ -209,6 +208,26 @@ export class ShowUsersComponent implements AfterViewInit {
         role: this.EditForm.value.role,
         groups: this.EditForm.value.groups
       }
+    }
+
+  }
+  gitCheck(id: any) {
+    let element = (<HTMLInputElement>document.getElementById(id))
+    let isChecked = element.getAttribute("ng-reflect-checked")
+    let elementId = element.getAttribute("id")
+
+    if (isChecked == "false") {
+      this.elementsChecked.push(elementId)
+    } else if (isChecked == "true") {
+      this.elementsChecked = this.elementsChecked.filter((elem: any) => elem != elementId)
+    }
+
+    if (this.elementsChecked.length > 0) {
+      document.getElementById("delete").removeAttribute("disabled");
+      document.getElementById("send").removeAttribute("disabled");
+    } else {
+      document.getElementById("delete").setAttribute("disabled", "disabled");
+      document.getElementById("send").setAttribute("disabled", "disabled");
     }
   }
 
