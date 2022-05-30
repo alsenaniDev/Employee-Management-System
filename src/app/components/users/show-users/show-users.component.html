@@ -43,7 +43,7 @@
       </ng-template>
 
       <ng-template pTemplate="right">
-        <button pButton pRipple label="Message" icon="pi pi-send" class="p-button-success"
+        <button pButton pRipple label="Message" icon="pi pi-send" class="p-button-info"
           [disabled]="!selectedUsers || !selectedUsers.length"></button>
         <button *ngIf="checkuserRole('Admin')" pButton pRipple icon="pi pi-trash" [label]="'Delete'"
           class="p-button-danger" (click)="deleteSelectedUsers()"
@@ -59,17 +59,17 @@
           <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th pSortableColumn="id">Id
+          <th>Id
           </th>
-          <th pSortableColumn="name">Name
+          <th>Name
           </th>
-          <th pSortableColumn="email">Email
+          <th>Email
           </th>
-          <th pSortableColumn="phone">Phone Number
+          <th>Phone Number
           </th>
-          <th pSortableColumn="role">Role
+          <th>Role
           </th>
-          <th pSortableColumn="groups">Groups
+          <th>Groups
           </th>
           <th *ngIf="checkuserRole('Admin')">Edit</th>
           <th *ngIf="checkuserRole('Admin')">Delete</th>
@@ -78,9 +78,7 @@
       <ng-template pTemplate="body" let-User let-rowIndex="rowIndex">
         <tr>
           <td>
-            <p-tableCheckbox [value]="User">
-
-            </p-tableCheckbox>
+            <p-tableCheckbox [value]="User"></p-tableCheckbox>
           </td>
           <td>{{rowIndex + 1}}</td>
           <ng-container *ngFor="let user of UsersData ">
@@ -98,15 +96,16 @@
           <td>
             <ng-container *ngFor="let group of Groups">
               <ng-container *ngIf="User.groups.includes(group.id)">
-                {{group.name}} <br>
+                <span>{{group.name}}</span> <br>
               </ng-container>
             </ng-container>
           </td>
           <td *ngIf="checkuserRole('Admin')">
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2"
+              (click)="editUser(User.userId)"></button>
           </td>
           <td *ngIf="checkuserRole('Admin')">
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
               (click)="deleteUser(User.userId)"></button>
           </td>
         </tr>
@@ -120,51 +119,11 @@
   </div>
 
   <p-dialog [(visible)]="UserDialog" [style]="{width: '450px'}" header="User Details" [modal]="true"
-    styleClass="p-fluid">
+    styleClass="p-fluid" [draggable]="false">
     <ng-template pTemplate="content">
-      <div class="p-field">
-        <label for="name">Name</label>
+      <div class="p-field" *ngFor="let control of controls">
+        <label for="name">{{control.title}}</label>
         <input type="text" pInputText id="name" autofocus />
-      </div>
-      <div class="p-field">
-        <label for="description">Description</label>
-        <textarea id="description" pInputTextarea rows="3" cols="20"></textarea>
-      </div>
-
-      <div class="p-field">
-        <label class="p-mb-3">Category</label>
-        <div class="p-formgrid p-grid">
-          <div class="p-field-radiobutton p-col-6">
-            <p-radioButton id="category1" name="category">
-            </p-radioButton>
-            <label for="category1">Accessories</label>
-          </div>
-          <div class="p-field-radiobutton p-col-6">
-            <p-radioButton id="category2" name="category"></p-radioButton>
-            <label for="category2">Clothing</label>
-          </div>
-          <div class="p-field-radiobutton p-col-6">
-            <p-radioButton id="category3" name="category">
-            </p-radioButton>
-            <label for="category3">Electronics</label>
-          </div>
-          <div class="p-field-radiobutton p-col-6">
-            <p-radioButton id="category4" name="category"></p-radioButton>
-            <label for="category4">Fitness</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col">
-          <label for="price">Price</label>
-          <p-inputNumber id="price">
-          </p-inputNumber>
-        </div>
-        <div class="p-field p-col">
-          <label for="quantity">Quantity</label>
-          <p-inputNumber></p-inputNumber>
-        </div>
       </div>
     </ng-template>
 

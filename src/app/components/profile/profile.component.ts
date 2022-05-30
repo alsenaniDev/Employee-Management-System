@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProfileService } from './profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -8,18 +9,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null");
-  Users = JSON.parse(localStorage.getItem("UsersDB") || "[]");
-  userInfo = this.Users.find((user: any) => user.userId == this.userProfile.userId);
+  userProfile: any = [];
+  Users: any = [];
+  userInfo: any = []
   editForm: FormGroup
   editPass: FormGroup
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private profileService: ProfileService) {
     this.editPass = this.fb.group({
       currentPassword: ["", [Validators.required, Validators.minLength(6)]],
       password: ["", [Validators.required, Validators.minLength(6)]],
       confirmPassword: ["", [Validators.required, Validators.minLength(6)]],
     })
+    this.userProfile = this.profileService.userProfile
+    this.Users = this.profileService.Users
+    this.userInfo = this.profileService.userInfo
     this.Init_UpdateUserInfoForm(this.userInfo)
   }
 
@@ -38,9 +42,7 @@ export class ProfileComponent implements OnInit {
 
   editProfile() {
     if (this.editForm.invalid) {
-
       this.editForm.markAllAsTouched()
-
     } else {
       let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
       this.Users[userIndex] = Object.assign({}, this.Users[userIndex], { firstName: this.editForm.value.firstName, lastName: this.editForm.value.lastName, phoneNumber: this.editForm.value.phoneNumber })
@@ -76,6 +78,5 @@ export class ProfileComponent implements OnInit {
       reEnterPass.getElementsByTagName("input")[0].removeAttribute('disabled')
       newPass.getElementsByTagName("input")[0].removeAttribute('disabled')
     }
-
   }
 }

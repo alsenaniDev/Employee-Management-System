@@ -1,6 +1,7 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
+import { LogInService } from './login-page.service'
 
 @Component({
   selector: 'app-login-page',
@@ -10,16 +11,22 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup
-  userToken = JSON.parse(localStorage.getItem("userInfo") || "null")
-  usersInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-  Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-  Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-  groupsId = this.Groups.map((group: any) => group.id)
+  userToken: any = []
+  usersInfo: any = []
+  Roles: any = []
+  Groups: any = []
+  groupsId: any = []
   user: any
   userFound: any
   roleFound: any
   groupFound: any
-  constructor(private fb: FormBuilder, private router: Router) {
+
+  constructor(private fb: FormBuilder, private router: Router, private LogInService: LogInService) {
+    this.userToken = this.LogInService.userToken
+    this.usersInfo = this.LogInService.usersInfo
+    this.Roles = this.LogInService.Roles
+    this.Groups = this.LogInService.Groups
+    this.groupsId = this.LogInService.groupsId
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
       password: ["", Validators.required]
