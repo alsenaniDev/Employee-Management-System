@@ -1,35 +1,6 @@
-.btn-icon {
-  border: none;
-  background-color: transparent;
-  display: inline;
+.form-control{
+    height: 43px;
 }
-
-.group {
-  margin-bottom: 20px;
-}
-
-.search-bar {
-  display: flex;
-  justify-content: space-between;
-}
-
-table {
-  width: 100%;
-}
-
-.Table-title {
-  font-size: 18px;
-  color: #485adb;
-}
-
-.delete-and-message {
-  text-align: end;
-}
-
-.hide {
-  display: none;
-}
-
-.show {
-  display: "";
+.userRole{
+    margin-right: 40px;
 }

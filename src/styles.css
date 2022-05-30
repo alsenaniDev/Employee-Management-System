@@ -22,3 +22,77 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
+/* body {
+  padding: 50px;
+} */
+
+.p-button {
+  margin: 5px;
+  display: inline-flex;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  align-items: center;
+  vertical-align: bottom;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.filter-toolbar {
+  display: flex;
+}
+
+.p-dropdown {
+  width: 15rem;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 20px;
+  border: 3px solid #fff;
+}
+
+.p-button.p-button-warning,
+.p-buttonset.p-button-warning>.p-button,
+.p-splitbutton.p-button-warning>.p-button {
+  color: #ffffff;
+  background: #cf0e0e;
+  border: 1px solid #cf0e0e;
+}
+
+.p-button.p-button-warning:enabled:hover,
+.p-buttonset.p-button-warning>.p-button:enabled:hover,
+.p-splitbutton.p-button-warning>.p-button:enabled:hover {
+  color: #ffffff;
+  background: #b90c0c;
+  border: 1px solid #b90c0c;
+}
+
+.p-button.p-button-icon-only.p-button-rounded {
+  border-radius: 15%;
+}
+
+@media only screen and (max-width: 600px) {
+  .filter-toolbar {
+    display: block;
+  }
+
+  .ml-20 {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+}
