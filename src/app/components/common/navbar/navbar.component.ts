@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { NavbarServices } from './navbarSevices';
 
 @Component({
   selector: 'app-navbar',
@@ -6,8 +7,11 @@ import { Component, HostListener, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
-  constructor() {
+  userProfile: any
+
+
+  constructor(private navbarServices: NavbarServices) {
+    this.userProfile = this.navbarServices.userProfile
 
   }
 

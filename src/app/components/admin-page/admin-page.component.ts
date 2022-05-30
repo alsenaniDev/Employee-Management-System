@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminPageServices } from './admin-page-services';
 
 @Component({
   selector: 'app-admin-page',
@@ -6,13 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-page.component.css']
 })
 export class AdminPageComponent implements OnInit {
-  users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
-  usersInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-  userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
+  users: any
+  userProfile: any
+  usersInfo: any
+  userFound: any
 
 
-  constructor() { }
+  constructor(private adminPageServices: AdminPageServices) {
+    this.users = this.adminPageServices.users
+    this.userProfile = this.adminPageServices.userProfile
+    this.usersInfo = this.adminPageServices.usersInfo
+    this.userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
+  }
 
   ngOnInit(): void {
 
