@@ -24,6 +24,31 @@ import { DeleteModalComponent } from './components/common/delete-modal/delete-mo
 import { ProfileComponent } from './components/profile/profile.component';
 import { FormEditComponent } from './components/common/form-edit/form-edit.component';
 import { ShowModalComponent } from './components/common/show-modal/show-modal.component';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
+import { SliderModule } from 'primeng/slider';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { InputTextModule } from 'primeng/inputtext';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToolbarModule } from 'primeng/toolbar';
+import { RatingModule } from 'primeng/rating';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { AccordionModule } from 'primeng/accordion';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -53,9 +78,24 @@ import { ShowModalComponent } from './components/common/show-modal/show-modal.co
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    TableModule,
+    ToastModule,
+    MultiSelectModule,
+    DialogModule,
+    ButtonModule,
+    DropdownModule,
+    InputTextModule,
+    ConfirmDialogModule,
+    AccordionModule,
+    ToolbarModule,
+    CalendarModule,
+    ProgressBarModule,
+    FileUploadModule,
+    RadioButtonModule,
+    InputNumberModule
   ],
-  providers: [],
+  providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
