@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ShowModalComponent } from '../common/show-modal/show-modal.component';
+import { SettingService } from './settings.service'
 
 @Component({
   selector: 'app-settings',
@@ -7,20 +8,22 @@ import { ShowModalComponent } from '../common/show-modal/show-modal.component';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-  Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+  Groups: any = []
+  Roles: any = []
   dataName: string = "";
-  showModal : any
+  showModal: any
 
-  constructor() { }
+  constructor(private SettingService: SettingService) {
+    this.Groups = this.SettingService.Groups
+    this.Roles = this.SettingService.Roles
+  }
   @ViewChild(ShowModalComponent) modalShow: ShowModalComponent
 
   ngOnInit(): void {
+  }
 
-    }
   ngAfterViewInit(): void {
-    this.showModal 
-    
+    this.showModal
   }
 
   showModel(name: string) {
@@ -30,8 +33,5 @@ export class SettingsComponent implements OnInit {
     document.getElementById("label-table")!.innerHTML = name + " Table"
     this.dataName = name;
     this.modalShow.getData(name)
-    
-    
   }
-
 }

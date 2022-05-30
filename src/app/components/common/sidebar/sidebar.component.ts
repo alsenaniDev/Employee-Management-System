@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ShowUsersComponent } from '../../users/show-users/show-users.component';
+import { SidebarService } from './sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,14 +7,15 @@ import { ShowUsersComponent } from '../../users/show-users/show-users.component'
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
+  userProfile: any = [];
 
-  constructor() { 
-
+  constructor(private sidebarService: SidebarService) {
+    this.userProfile = this.sidebarService.userProfile
   }
 
   ngOnInit(): void {
   }
+
   checkRole(name: string) {
     return this.userProfile.role == name;
   }

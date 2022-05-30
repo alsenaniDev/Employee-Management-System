@@ -19,29 +19,29 @@ export class ShowUsersComponent {
   usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
 
 
-  // controls = [
-  //   {
-  //     title: 'First Name',
-  //     controlName: 'fname',
-  //     type: "text"
-  //   },
-  //   {
-  //     title: 'Last Name',
-  //     controlName: 'lname',
-  //     type: "text"
-  //   },
+  controls = [
+    {
+      title: 'First Name',
+      controlName: 'fname',
+      type: "text"
+    },
+    {
+      title: 'Last Name',
+      controlName: 'lname',
+      type: "text"
+    },
 
-  //   {
-  //     title: 'Email',
-  //     controlName: 'email',
-  //     type: "text"
-  //   },
-  //   {
-  //     title: 'Phone Number',
-  //     controlName: 'phoneNumber',
-  //     type: "text"
-  //   },
-  // ];
+    {
+      title: 'Email',
+      controlName: 'email',
+      type: "text"
+    },
+    {
+      title: 'Phone Number',
+      controlName: 'phoneNumber',
+      type: "text"
+    },
+  ];
 
   UserDialog!: boolean;
   Users: User[] = this.usersInfo;
@@ -74,14 +74,6 @@ export class ShowUsersComponent {
     }
   }
 
-
-
-  // openNew() {
-  //   this.User = {};
-  //   this.submitted = false;
-  //   this.UserDialog = true;
-  // }
-
   deleteSelectedUsers() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected Users?',
@@ -102,10 +94,10 @@ export class ShowUsersComponent {
     });
   }
 
-  // editUser(userId: any) {
-  //   this.User = { ...User };
-  //   this.UserDialog = true;
-  // }
+  editUser(userId: any) {
+    // this.User = { ...User };
+    this.UserDialog = true;
+  }
 
   deleteUser(userId: any) {
     this.confirmationService.confirm({
@@ -173,12 +165,8 @@ export class ShowUsersComponent {
     }
   }
 
-  getValue(id: any) {
-    console.log(id);
-  }
   checkuserRole(name: string) {
     return this.userProfile.role == name;
   }
-
 }
 
