@@ -51,8 +51,6 @@ export class ShowUsersComponent {
   selectedRole: any
   selectedGroup: any
   submitted!: boolean;
-
-
   check!: any
 
   constructor(
@@ -167,6 +165,16 @@ export class ShowUsersComponent {
 
   checkuserRole(name: string) {
     return this.userProfile.role == name;
+  }
+
+  clearGroup() {
+    this.selectedGroup = undefined;
+    this.filterTableData()
+  }
+
+  clearRole() {
+    this.selectedRole = undefined;
+    this.filterTableData()
   }
 }
 

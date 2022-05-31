@@ -20,6 +20,8 @@
               <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="id"
                 [(ngModel)]="selectedRole" (ngModelChange)="filterTableData()">
               </p-dropdown>
+              <button pButton pRipple label="All Roles" icon="pi pi-align-justify" class="p-button-info"
+                (click)="clearRole()"></button>
             </div>
           </div>
           <div class="userRole">
@@ -37,7 +39,11 @@
               <p-dropdown placeholder="Select Group" [options]="userGroups" optionLabel="name" optionValue="id"
                 [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData()">
               </p-dropdown>
+              <button pButton pRipple label="All Groups" icon="pi pi-align-justify" class="p-button-info"
+                (click)="clearGroup()"></button>
             </div>
+          </div>
+          <div>
           </div>
         </div>
       </ng-template>
