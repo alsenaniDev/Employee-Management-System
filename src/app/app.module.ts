@@ -45,6 +45,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AccordionModule } from 'primeng/accordion';
+import { EditUserComponent } from './components/users/edit-user/edit-user.component';
 
 
 
@@ -65,6 +66,7 @@ import { AccordionModule } from 'primeng/accordion';
     DeleteModalComponent,
     FormEditComponent,
     ShowModalComponent,
+    EditUserComponent,
   ],
   imports: [
     BrowserModule,

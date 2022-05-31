@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { getGroupModel, getRoleModel, getUserModel } from './Show-users-Dto';
+import { ShowUserServices } from './show-users-services';
 import { User } from './UserDto';
 
 @Component({
@@ -12,13 +14,64 @@ import { User } from './UserDto';
 
 export class ShowUsersComponent {
   EditForm: FormGroup;
-  UsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-  Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-  Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
-  usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
+  UsersData: getUserModel[];
+  Groups: getGroupModel[
+
+  ]
+  Roles: getRoleModel[]
+  userProfile: any
+  usersInfo: any
+  Users: User[]
+  User: User;
+  userGroups: any[]
+  selectedUsers: User[]
+  selectedRole: any
+  selectedGroup: any
+  UserDialog!: boolean;
+  submitted!: boolean;
+  check!: any
+  findUser: getUserModel;
+  findRole: getRoleModel
+  findGroups: any
+  GroupSelect: any
+
+  constructor(
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private userServices: ShowUserServices,
+    private fb: FormBuilder
+  ) {
+    this.UsersData = this.userServices.UsersData
+    this.Groups = this.userServices.Groups
+    this.Roles = this.userServices.Roles
+    this.userProfile = this.userServices.userProfile
+    this.usersInfo = this.userServices.usersInfo
+    this.Users = this.usersInfo
+    this.userGroups = [...this.Groups]
 
 
+  }
+
+  ngOnInit() {
+    console.log(this.GroupSelect)
+    if (this.userProfile.role != "Admin") {
+      this.userGroups = this.Groups.filter((group: any) => this.userProfile.groups.includes(group.name))
+      console.log(this.Groups)
+    } else {
+      this.userGroups = this.Groups
+    }
+    this.Init_UpdateUserInfoForm();
+  }
+  Init_UpdateUserInfoForm(userInfo?: getUserModel, userRole?: getRoleModel, userGroups?: getGroupModel) {
+    this.EditForm = this.fb.group({
+      fname: [userInfo?.firstName, [Validators.required, Validators.minLength(3)]],
+      lname: [userInfo?.lastName, [Validators.required, Validators.minLength(3)]],
+      email: [userInfo?.email, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
+      phoneNumber: [userInfo?.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
+      role: [userRole?.name, Validators.required],
+      groups: [userGroups?.name, Validators.required],
+    })
+  }
   controls = [
     {
       title: 'First Name',
@@ -43,34 +96,14 @@ export class ShowUsersComponent {
     },
   ];
 
-  UserDialog!: boolean;
-  Users: User[] = this.usersInfo;
-  User: User;
-  userGroups = [...this.Groups]
-  selectedUsers: User[]
-  selectedRole: any
-  selectedGroup: any
-  submitted!: boolean;
-  check!: any
 
-  constructor(
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
 
-  ) {
 
-    console.log(this.Users)
-    console.log(this.UsersData)
+
+  onsubmit() {
+
   }
 
-  ngOnInit() {
-    if (this.userProfile.role != "Admin") {
-      this.userGroups = this.Groups.filter((group: any) => this.userProfile.groups.includes(group.name))
-      console.log(this.Groups)
-    } else {
-      this.userGroups = this.Groups
-    }
-  }
 
   deleteSelectedUsers() {
     this.confirmationService.confirm({
@@ -95,6 +128,14 @@ export class ShowUsersComponent {
   editUser(userId: any) {
     // this.User = { ...User };
     this.UserDialog = true;
+    this.findUser = this.UsersData.find((user: getUserModel) => user.userId == userId);
+    let userInformation = this.usersInfo.find((user: User) => user.userId == this.findUser.userId);
+    this.findRole = this.Roles.find((role: getRoleModel) => role.id == userInformation.role)
+    this.findGroups = this.Groups.filter((group: getGroupModel) => userInformation.groups.includes(group.id))
+    console.log(this.findGroups);
+
+    this.Init_UpdateUserInfoForm(this.findUser, this.findRole, this.findGroups)
+    
   }
 
   deleteUser(userId: any) {
@@ -114,7 +155,6 @@ export class ShowUsersComponent {
       }
     });
   }
-
   hideDialog() {
     this.UserDialog = false;
     this.submitted = false;

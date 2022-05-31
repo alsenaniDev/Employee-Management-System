@@ -1,0 +1,13 @@
+<p-dialog [(visible)]="UserDialog" [style]="{width: '450px'}" header="User Details" [modal]="true" styleClass="p-fluid"
+    [draggable]="false">
+    <ng-template pTemplate="content">
+        <div class="p-field" *ngFor="let control of controls">
+            <label for="name">{{control.title}}</label>
+            <input type="text" pInputText id="name"  />
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"></button>
+    </ng-template>
+</p-dialog>

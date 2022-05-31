@@ -95,7 +95,7 @@ export class AddUsersComponent {
         email: this.SignUpForm.value.email,
         password: this.SignUpForm.value.password,
         phoneNumber: this.SignUpForm.value.phoneNumber,
-        // CreatedBy: this.userProfile.userId,
+        CreatedBy: this.userProfile.userId,
         CreatedAt: newDate
       }
 
