@@ -2,6 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Guid } from "guid-typescript"
+import { AddUserServices } from './add-users-services';
 
 declare var $: any;
 @Component({
@@ -14,13 +15,12 @@ declare var $: any;
 
 export class AddUsersComponent {
   SignUpForm: FormGroup;
-
-  groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-  roles = JSON.parse(localStorage.getItem("RolesDB") || '[]')
-  Users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-  userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
-  usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
-  usersEmail = this.Users.map((user: any) => user.email)
+  Users: any
+  groups: any
+  roles: any
+  usersEmail: any
+  userProfile: any
+  usersInfo: any
 
   controls = [
     {
@@ -51,7 +51,7 @@ export class AddUsersComponent {
     },
   ];
 
-  constructor(public formBuilder: FormBuilder, private router: Router) {
+  constructor(public formBuilder: FormBuilder, private router: Router, private usersServices: AddUserServices) {
     this.SignUpForm = this.formBuilder.group({
       fname: ['', [Validators.required, Validators.minLength(3)]],
       lname: ['', [Validators.required, Validators.minLength(3)]],
@@ -61,6 +61,12 @@ export class AddUsersComponent {
       groups: ['', Validators.required],
       role: ['', Validators.required],
     });
+    this.Users = this.usersServices.Users
+    this.usersEmail = this.Users.map((user: any) => user.email)
+    this.groups = this.usersServices.groups
+    this.roles = this.usersServices.roles
+    this.userProfile = this.usersServices.userProfile
+    this.usersInfo = this.usersServices.usersInfo
   }
 
   ngOnInit(): void {

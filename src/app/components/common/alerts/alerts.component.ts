@@ -17,5 +17,3 @@ export class AlertsComponent implements OnInit {
   }
 
 }
-// ElementRef
-// ViewContainerRef
