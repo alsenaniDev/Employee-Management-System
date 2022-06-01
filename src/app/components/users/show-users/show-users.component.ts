@@ -53,7 +53,6 @@ export class ShowUsersComponent {
   }
 
   ngOnInit() {
-    console.log(this.GroupSelect)
     if (this.userProfile.role != "Admin") {
       this.userGroups = this.Groups.filter((group: any) => this.userProfile.groups.includes(group.name))
       console.log(this.Groups)
@@ -63,14 +62,21 @@ export class ShowUsersComponent {
     this.Init_UpdateUserInfoForm();
   }
   Init_UpdateUserInfoForm(userInfo?: getUserModel, userRole?: getRoleModel, userGroups?: getGroupModel) {
+
+
     this.EditForm = this.fb.group({
+
       fname: [userInfo?.firstName, [Validators.required, Validators.minLength(3)]],
       lname: [userInfo?.lastName, [Validators.required, Validators.minLength(3)]],
       email: [userInfo?.email, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
       phoneNumber: [userInfo?.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
+      password: [userInfo?.password, [Validators.required, Validators.minLength(6)]],
       role: [userRole?.name, Validators.required],
       groups: [userGroups?.name, Validators.required],
     })
+    console.log(userRole?.name);
+    console.log(this.EditForm.value.role);
+
   }
   controls = [
     {
@@ -94,14 +100,37 @@ export class ShowUsersComponent {
       controlName: 'phoneNumber',
       type: "text"
     },
+    {
+      title: 'Password',
+      controlName: 'password',
+      type: "password"
+    },
+
   ];
 
-
-
-
-
   onsubmit() {
+    if (this.EditForm.invalid) {
+      this.EditForm.markAllAsTouched()
+    } else {
+      let userIndex = this.UsersData.findIndex((user: getUserModel) => user.userId == this.findUser?.userId)
+      let userInfoIndex = this.usersInfo.findIndex((user: User) => user.userId == this.findUser?.userId)
+      let findUserRole = this.Roles.find((role: getRoleModel) => role.name == this.EditForm.value.role)
+      let findGroupsIds = this.EditForm.value.groups.map((ids: any) => ids.id)
+      if (this.userProfile.role == "Admin") {
+        this.UsersData[userIndex] = Object.assign({}, this.UsersData[userIndex], {
+          firstName: this.EditForm.value.fname,
+          lastName: this.EditForm.value.lname,
+          email: this.EditForm.value.email,
+          phoneNumber: this.EditForm.value.phoneNumber,
+          password: this.EditForm.value.password
+        })
+        localStorage.setItem("UsersDB", JSON.stringify(this.UsersData))
+        this.usersInfo[userInfoIndex] = Object.assign({}, this.usersInfo[userInfoIndex], { role: findUserRole.id, groups: findGroupsIds })
+        localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
+        this.UserDialog = false;
 
+      }
+    }
   }
 
 
@@ -132,10 +161,11 @@ export class ShowUsersComponent {
     let userInformation = this.usersInfo.find((user: User) => user.userId == this.findUser.userId);
     this.findRole = this.Roles.find((role: getRoleModel) => role.id == userInformation.role)
     this.findGroups = this.Groups.filter((group: getGroupModel) => userInformation.groups.includes(group.id))
-    console.log(this.findGroups);
+    this.selectedGroup = this.findGroups
+    console.log(this.findRole);
 
-    this.Init_UpdateUserInfoForm(this.findUser, this.findRole, this.findGroups)
-    
+    this.Init_UpdateUserInfoForm(this.findUser, this.findRole, this.selectedGroup)
+
   }
 
   deleteUser(userId: any) {
@@ -155,6 +185,7 @@ export class ShowUsersComponent {
       }
     });
   }
+  
   hideDialog() {
     this.UserDialog = false;
     this.submitted = false;
@@ -172,7 +203,8 @@ export class ShowUsersComponent {
 
     if (this.userProfile.role == "Admin") {
       if (this.selectedRole != undefined) {
-        dataFiltered = dataFiltered.filter((user: any) => user.role == this.selectedRole)
+        console.log(dataFiltered);
+        dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userProfile.userId && user.role == this.selectedRole)
         this.Users = dataFiltered
       } else if (this.selectedRole == undefined) {
         this.Users = dataFiltered

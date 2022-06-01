@@ -131,25 +131,24 @@
 
         <div class="p-field" *ngFor="let control of controls">
           <label for="name">{{control.title}}</label>
-          <input formControlName="{{control.controlName}}" type="text" pInputText id="name" autofocus />
+          <input formControlName="{{control.controlName}}" type={{control.type}} pInputText id="name" autofocus />
         </div>
         <div class="col-md-12 mt-3">
           <label class="form-label">Role</label>
-          <select controlName="role" class="form-select" formControlName="role">
-            <option selected disabled value="">Choose...</option>
-            <option *ngFor="let role of Roles">{{role.name}}</option>
+          <select label="Select Role" class="form-select" formControlName="role">
+            <option selected disabled>Choose...</option>
+            <option *ngFor="let role of Roles" [ngValue]="role.name">{{role.name}}</option>
           </select>
           <label class="form-label">Groups</label>
-          <p-multiSelect  formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="selectedGroup" defaultLabel="Select a City"
-            optionLabel="name" display="chip"></p-multiSelect>
+          <p-multiSelect formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="selectedGroup"
+            defaultLabel="Select a Groups" optionLabel="name" display="chip"></p-multiSelect>
           <!-- <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'role'"></app-alerts> -->
         </div>
-        <!-- <app-alerts [formName]="EditForm" [title]="'control.title'" [controlName]="'control.controlName'"></app-alerts> -->
       </ng-template>
 
       <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" type="submit"></button>
       </ng-template>
 
     </p-dialog>
