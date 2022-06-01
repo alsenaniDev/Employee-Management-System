@@ -21,14 +21,15 @@ export class ProfileComponent implements OnInit {
       password: ["", [Validators.required, Validators.minLength(6)]],
       confirmPassword: ["", [Validators.required, Validators.minLength(6)]],
     })
-    this.userProfile = this.profileService.userProfile
-    this.Users = this.profileService.Users
-    this.userInfo = this.profileService.userInfo
-    this.Init_UpdateUserInfoForm(this.userInfo)
+
   }
 
   ngOnInit(): void {
     console.log(this.userInfo.password)
+    this.userProfile = this.profileService.userProfile
+    this.Users = this.profileService.Users
+    this.userInfo = this.profileService.userInfo
+    this.Init_UpdateUserInfoForm(this.userInfo)
   }
 
   Init_UpdateUserInfoForm(userInfo: any) {

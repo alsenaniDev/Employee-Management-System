@@ -14,15 +14,17 @@ export class SettingsComponent implements OnInit {
   showModal: any
 
   constructor(private SettingService: SettingService) {
-    this.Groups = this.SettingService.Groups
-    this.Roles = this.SettingService.Roles
+
   }
   @ViewChild(ShowModalComponent) modalShow: ShowModalComponent
 
   ngOnInit(): void {
+    this.Groups = this.SettingService.Groups
+    this.Roles = this.SettingService.Roles
   }
 
   ngAfterViewInit(): void {
+
     this.showModal
   }
 

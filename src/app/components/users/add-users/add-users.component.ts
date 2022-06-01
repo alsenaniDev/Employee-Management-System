@@ -61,16 +61,15 @@ export class AddUsersComponent {
       groups: ['', Validators.required],
       role: ['', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
     this.Users = this.usersServices.Users
     this.usersEmail = this.Users.map((user: any) => user.email)
     this.groups = this.usersServices.groups
     this.roles = this.usersServices.roles
     this.userProfile = this.usersServices.userProfile
     this.usersInfo = this.usersServices.usersInfo
-  }
-
-  ngOnInit(): void {
-    this.usersInfo
   }
 
   onSubmit() {
@@ -122,7 +121,7 @@ export class AddUsersComponent {
         localStorage.setItem("usersInfoDB", JSON.stringify(newUser))
       }
       this.SignUpForm.reset()
-      this.router.navigateByUrl("/dashboard/show")
+      this.router.navigate(["/dashboard/show"])
     }
   }
 }

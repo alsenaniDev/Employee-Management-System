@@ -22,11 +22,7 @@ export class LoginPageComponent implements OnInit {
   groupFound: any
 
   constructor(private fb: FormBuilder, private router: Router, private LogInService: LogInService) {
-    this.userToken = this.LogInService.userToken
-    this.usersInfo = this.LogInService.usersInfo
-    this.Roles = this.LogInService.Roles
-    this.Groups = this.LogInService.Groups
-    this.groupsId = this.LogInService.groupsId
+
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
       password: ["", Validators.required]
@@ -34,6 +30,11 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userToken = this.LogInService.userToken
+    this.usersInfo = this.LogInService.usersInfo
+    this.Roles = this.LogInService.Roles
+    this.Groups = this.LogInService.Groups
+    this.groupsId = this.LogInService.groupsId
   }
 
   logIn() {

@@ -14,14 +14,14 @@ export class AdminPageComponent implements OnInit {
 
 
   constructor(private adminPageServices: AdminPageServices) {
+
+  }
+
+  ngOnInit(): void {
     this.users = this.adminPageServices.users
     this.userProfile = this.adminPageServices.userProfile
     this.usersInfo = this.adminPageServices.usersInfo
     this.userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
-  }
-
-  ngOnInit(): void {
-
   }
 
   checkRole(name: string) {
