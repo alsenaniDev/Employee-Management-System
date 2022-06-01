@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.userProfile.name = ""
     if (window.innerWidth >= 1200 && window.innerHeight <= 1600) {
       document.getElementById("sidebar")!.style.left = "0px";
       document.getElementById("main")!.style.marginLeft = "300px";
@@ -59,5 +60,10 @@ export class NavbarComponent implements OnInit {
         document.getElementById("user-form")!.classList.remove("col-lg-12");
       }
     }
+  }
+
+  clearData() {
+    localStorage.setItem("userInfo", "")
+   
   }
 }

@@ -65,6 +65,7 @@ import { AccordionModule } from 'primeng/accordion';
     DeleteModalComponent,
     FormEditComponent,
     ShowModalComponent,
+
   ],
   imports: [
     BrowserModule,

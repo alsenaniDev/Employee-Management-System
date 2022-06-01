@@ -55,9 +55,7 @@ export class LoginPageComponent implements OnInit {
         groups: myGroupsName
       }
       localStorage.setItem("userInfo", JSON.stringify(userInformation))
-      console.log(userInformation)
-      this.router.navigate(['/dashboard/admin']);
-
+      window.location.href = '/dashboard/admin'
     } else {
       document.getElementById("alert")!.style.display = "";
     }
