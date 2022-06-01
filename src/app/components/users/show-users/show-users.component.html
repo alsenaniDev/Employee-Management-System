@@ -5,21 +5,13 @@
     <p-toolbar styleClass="p-mb-4">
       <ng-template pTemplate="left">
         <div class="filter-toolbar">
-          <!-- <div class="p-d-flex p-ai-center p-jc-between">
-          <h5 class="p-m-0">User Name</h5>
-          <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input pInputText type="text" placeholder="Search..."
-              (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
-          </span>
-        </div> -->
-
           <div>
             <div *ngIf="checkuserRole('Admin'), else userData" class="p-d-flex p-ai-center p-jc-between">
               <h5 class="p-m-0">Filter By Role</h5>
               <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="id"
                 [(ngModel)]="selectedRole" (ngModelChange)="filterTableData()">
               </p-dropdown>
+              <br />
               <button pButton pRipple label="All Roles" icon="pi pi-align-justify" class="p-button-info"
                 (click)="clearRole()"></button>
             </div>
@@ -39,6 +31,7 @@
               <p-dropdown placeholder="Select Group" [options]="userGroups" optionLabel="name" optionValue="id"
                 [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData()">
               </p-dropdown>
+              <br />
               <button pButton pRipple label="All Groups" icon="pi pi-align-justify" class="p-button-info"
                 (click)="clearGroup()"></button>
             </div>
@@ -49,11 +42,13 @@
       </ng-template>
 
       <ng-template pTemplate="right">
-        <button pButton pRipple label="Message" icon="pi pi-send" class="p-button-info"
-          [disabled]="!selectedUsers || !selectedUsers.length"></button>
-        <button *ngIf="checkuserRole('Admin')" pButton pRipple icon="pi pi-trash" [label]="'Delete'"
-          class="p-button-danger" (click)="deleteSelectedUsers()"
-          [disabled]="!selectedUsers || !selectedUsers.length"></button>
+        <div class="container-button-header">
+          <button pButton pRipple label="Message" icon="pi pi-send" class="p-button-info"
+            [disabled]="!selectedUsers || !selectedUsers.length"></button>
+          <button *ngIf="checkuserRole('Admin')" pButton pRipple icon="pi pi-trash" [label]="'Delete'"
+            class="p-button-danger" (click)="deleteSelectedUsers()"
+            [disabled]="!selectedUsers || !selectedUsers.length"></button>
+        </div>
       </ng-template>
     </p-toolbar>
 

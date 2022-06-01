@@ -10,10 +10,11 @@ export class SidebarComponent implements OnInit {
   userProfile: any = [];
 
   constructor(private sidebarService: SidebarService) {
-    this.userProfile = this.sidebarService.userProfile
+
   }
 
   ngOnInit(): void {
+    this.userProfile = this.sidebarService.userProfile
   }
 
   checkRole(name: string) {

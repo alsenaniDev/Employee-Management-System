@@ -11,12 +11,13 @@ export class NavbarComponent implements OnInit {
 
 
   constructor(private navbarServices: NavbarServices) {
-    this.userProfile = this.navbarServices.userProfile
+
 
   }
 
   ngOnInit(): void {
-    // this.userProfile.name = ""
+    this.userProfile = this.navbarServices.userProfile
+    
     if (window.innerWidth >= 1200 && window.innerHeight <= 1600) {
       document.getElementById("sidebar")!.style.left = "0px";
       document.getElementById("main")!.style.marginLeft = "300px";
@@ -64,6 +65,6 @@ export class NavbarComponent implements OnInit {
 
   clearData() {
     localStorage.setItem("userInfo", "")
-   
+
   }
 }

@@ -1,4 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { getGroupModel, getRoleModel } from '../../users/show-users/Show-users-Dto';
+import { ShowUserServices } from '../../users/show-users/show-users-services';
+import { ShowModalServices } from './show-modal-services';
+import { ShowUserModalDTO } from './Show-User-Dto';
 
 @Component({
   selector: 'app-show-modal',
@@ -6,16 +10,23 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./show-modal.component.css']
 })
 export class ShowModalComponent implements OnInit {
-
-  userFound = JSON.parse(localStorage.getItem("userInfo") || "[]")
-  Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-  Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+  userFound: ShowUserModalDTO
+  Groups: getGroupModel[]
+  Roles: getRoleModel[]
   data: any = [];
   isEdit: boolean = false;
   elementId: string = "";
   dataName: string = "";
 
+  constructor(private userModal: ShowModalServices) {
 
+  }
+
+  ngOnInit(): void {
+    this.userFound = this.userModal.userFound
+    this.Groups = this.userModal.Groups
+    this.Roles = this.userModal.Roles
+  }
   AddData() {
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -149,9 +160,6 @@ export class ShowModalComponent implements OnInit {
     this.elementId = element.id;
     this.isEdit = true;
   }
-  constructor() { }
 
-  ngOnInit(): void {
-  }
 
 }
