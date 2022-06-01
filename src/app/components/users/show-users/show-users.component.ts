@@ -48,22 +48,20 @@ export class ShowUsersComponent {
     this.usersInfo = this.userServices.usersInfo
     this.Users = this.usersInfo
     this.userGroups = [...this.Groups]
-
-
   }
 
   ngOnInit() {
+    this.Users = this.usersInfo.filter((user: User) => user.userId != this.userProfile.userId)
     if (this.userProfile.role != "Admin") {
       this.userGroups = this.Groups.filter((group: any) => this.userProfile.groups.includes(group.name))
-      console.log(this.Groups)
     } else {
       this.userGroups = this.Groups
     }
     this.Init_UpdateUserInfoForm();
   }
+
+
   Init_UpdateUserInfoForm(userInfo?: getUserModel, userRole?: getRoleModel, userGroups?: getGroupModel) {
-
-
     this.EditForm = this.fb.group({
 
       fname: [userInfo?.firstName, [Validators.required, Validators.minLength(3)]],
@@ -78,6 +76,7 @@ export class ShowUsersComponent {
     console.log(this.EditForm.value.role);
 
   }
+
   controls = [
     {
       title: 'First Name',
@@ -161,10 +160,10 @@ export class ShowUsersComponent {
     let userInformation = this.usersInfo.find((user: User) => user.userId == this.findUser.userId);
     this.findRole = this.Roles.find((role: getRoleModel) => role.id == userInformation.role)
     this.findGroups = this.Groups.filter((group: getGroupModel) => userInformation.groups.includes(group.id))
-    this.selectedGroup = this.findGroups
+    this.GroupSelect = this.findGroups
     console.log(this.findRole);
 
-    this.Init_UpdateUserInfoForm(this.findUser, this.findRole, this.selectedGroup)
+    this.Init_UpdateUserInfoForm(this.findUser, this.findRole, this.GroupSelect)
 
   }
 
@@ -185,7 +184,7 @@ export class ShowUsersComponent {
       }
     });
   }
-  
+
   hideDialog() {
     this.UserDialog = false;
     this.submitted = false;
@@ -203,7 +202,7 @@ export class ShowUsersComponent {
 
     if (this.userProfile.role == "Admin") {
       if (this.selectedRole != undefined) {
-        console.log(dataFiltered);
+        console.log(this.Users);
         dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userProfile.userId && user.role == this.selectedRole)
         this.Users = dataFiltered
       } else if (this.selectedRole == undefined) {
@@ -211,7 +210,9 @@ export class ShowUsersComponent {
       }
 
       if (this.selectedGroup != undefined) {
-        dataFiltered = dataFiltered.filter((users: any) => users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
+        console.log(this.selectedGroup)
+        console.log(this.Users);
+        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userProfile.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
         this.Users = dataFiltered
       } else if (this.selectedGroup == undefined) {
         this.Users = dataFiltered
@@ -219,17 +220,17 @@ export class ShowUsersComponent {
     } else {
       if (this.selectedGroup != undefined && checkRole) {
         let userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
-        dataFiltered = dataFiltered.filter((user: any) => userFound.role == user.role && user.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
+        dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userProfile.userId && userFound.role == user.role && user.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
         this.Users = dataFiltered
       } else if (this.selectedGroup == undefined && checkRole) {
         // this.Users = dataFiltered.filter((user: any) => user.role == this.selectedRole)
         let userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
-        this.Users = dataFiltered.filter((user: any) => userFound.role == user.role)
+        this.Users = dataFiltered.filter((user: any) => user.userId != this.userProfile.userId && userFound.role == user.role)
       } else if (!checkRole && this.selectedGroup != undefined) {
-        this.Users = dataFiltered.filter((users: any) => users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
+        this.Users = dataFiltered.filter((users: any) => users.userId != this.userProfile.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
       } else if (!checkRole && this.selectedGroup == undefined) {
         let userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
-        dataFiltered = dataFiltered.filter((users: any) => users.groups.find((group: any) => userFound.groups.includes(group)))
+        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userProfile.userId && users.groups.find((group: any) => userFound.groups.includes(group)))
         this.Users = dataFiltered
       }
     }

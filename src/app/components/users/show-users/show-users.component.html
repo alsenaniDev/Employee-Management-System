@@ -140,7 +140,7 @@
             <option *ngFor="let role of Roles" [ngValue]="role.name">{{role.name}}</option>
           </select>
           <label class="form-label">Groups</label>
-          <p-multiSelect formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="selectedGroup"
+          <p-multiSelect formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="GroupSelect"
             defaultLabel="Select a Groups" optionLabel="name" display="chip"></p-multiSelect>
           <!-- <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'role'"></app-alerts> -->
         </div>

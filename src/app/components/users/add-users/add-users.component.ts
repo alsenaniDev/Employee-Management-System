@@ -70,6 +70,7 @@ export class AddUsersComponent {
   }
 
   ngOnInit(): void {
+    this.usersInfo
   }
 
   onSubmit() {
@@ -120,7 +121,6 @@ export class AddUsersComponent {
         }]
         localStorage.setItem("usersInfoDB", JSON.stringify(newUser))
       }
-
       this.SignUpForm.reset()
       this.router.navigateByUrl("/dashboard/show")
     }
