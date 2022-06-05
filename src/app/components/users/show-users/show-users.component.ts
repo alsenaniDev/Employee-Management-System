@@ -39,7 +39,8 @@ export class ShowUsersComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private userServices: ShowUserServices,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+
   ) {
 
   }
@@ -136,6 +137,7 @@ export class ShowUsersComponent {
 
 
   deleteSelectedUsers() {
+
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected Users?',
       header: 'Confirm',

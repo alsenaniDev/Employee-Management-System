@@ -18,6 +18,7 @@ export class getUserModel {
   password: string;
   phoneNumber: number;
   userId: string;
+  CreatedBy : string;
 }
 
 
