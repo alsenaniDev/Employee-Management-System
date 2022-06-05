@@ -61,6 +61,13 @@ export class AddUsersComponent {
       groups: ['', Validators.required],
       role: ['', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
+    this.bindData();
+  }
+
+  bindData() {
     this.Users = this.usersServices.Users
     this.usersEmail = this.Users.map((user: any) => user.email)
     this.groups = this.usersServices.groups
@@ -69,18 +76,12 @@ export class AddUsersComponent {
     this.usersInfo = this.usersServices.usersInfo
   }
 
-  ngOnInit(): void {
-    this.usersInfo
-  }
-
   onSubmit() {
     if (this.SignUpForm.invalid) {
       this.SignUpForm.markAllAsTouched()
-    }
-    else if (this.usersEmail.includes(this.SignUpForm.value.email)) {
+    } else if (this.usersEmail.includes(this.SignUpForm.value.email)) {
       this.SignUpForm.invalid
-    }
-    else {
+    } else {
       let guid = Guid.create().toJSON();
       let userGuid = guid.value
       let dateObj = new Date();
@@ -101,7 +102,6 @@ export class AddUsersComponent {
       }
 
       this.Users.push(user)
-
       localStorage.setItem("UsersDB", JSON.stringify(this.Users))
 
       const userInfo = {

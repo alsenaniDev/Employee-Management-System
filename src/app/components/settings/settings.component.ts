@@ -8,30 +8,64 @@ import { SettingService } from './settings.service'
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  Groups: any = []
-  Roles: any = []
+  groupsNumber: number = 0;
+  rolesNumber: number = 0;
   dataName: string = "";
   showModal: any
 
-  constructor(private SettingService: SettingService) {
-    this.Groups = this.SettingService.Groups
-    this.Roles = this.SettingService.Roles
-  }
+  constructor(private SettingService: SettingService) { }
   @ViewChild(ShowModalComponent) modalShow: ShowModalComponent
 
   ngOnInit(): void {
+    this.getGroupsCount()
+    this.getRolesCount()
   }
 
-  ngAfterViewInit(): void {
-    this.showModal
+  getGroups() {
+    this.SettingService.getGroups().subscribe({
+      next: (res: any) => {
+        this.modalShow.dataName = "Groups"
+        this.modalShow.data = res
+        this.modalShow.data2 = res
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
   }
 
-  showModel(name: string) {
-    (<HTMLInputElement>document.getElementById("inputValue")).value = "";
-    document.getElementById("model-title")!.innerHTML = name + " Model"
-    document.getElementById("label-name")!.innerHTML = "Name of " + name
-    document.getElementById("label-table")!.innerHTML = name + " Table"
-    this.dataName = name;
-    this.modalShow.getData(name)
+  getGroupsCount() {
+    this.SettingService.getGroupsCount().subscribe({
+      next: (res: any) => {
+        this.groupsNumber = res;
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
+  }
+
+  getRoles() {
+    this.SettingService.getRoles().subscribe({
+      next: (res: any) => {
+        this.modalShow.dataName = "Roles"
+        this.modalShow.data = res
+        this.modalShow.data2 = res
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
+  }
+
+  getRolesCount() {
+    this.SettingService.getRolesCount().subscribe({
+      next: (res: any) => {
+        this.rolesNumber = res;
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
   }
 }

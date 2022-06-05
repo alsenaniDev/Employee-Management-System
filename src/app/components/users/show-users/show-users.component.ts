@@ -41,6 +41,14 @@ export class ShowUsersComponent {
     private userServices: ShowUserServices,
     private fb: FormBuilder
   ) {
+
+  }
+
+  ngOnInit() {
+    this.bindUsers()
+  }
+
+  bindUsers() {
     this.UsersData = this.userServices.UsersData
     this.Groups = this.userServices.Groups
     this.Roles = this.userServices.Roles
@@ -48,9 +56,6 @@ export class ShowUsersComponent {
     this.usersInfo = this.userServices.usersInfo
     this.Users = this.usersInfo
     this.userGroups = [...this.Groups]
-  }
-
-  ngOnInit() {
     this.Users = this.usersInfo.filter((user: User) => user.userId != this.userProfile.userId)
     if (this.userProfile.role != "Admin") {
       this.userGroups = this.Groups.filter((group: any) => this.userProfile.groups.includes(group.name))
@@ -59,7 +64,6 @@ export class ShowUsersComponent {
     }
     this.Init_UpdateUserInfoForm();
   }
-
 
   Init_UpdateUserInfoForm(userInfo?: getUserModel, userRole?: getRoleModel, userGroups?: getGroupModel) {
     this.EditForm = this.fb.group({
@@ -127,11 +131,10 @@ export class ShowUsersComponent {
         this.usersInfo[userInfoIndex] = Object.assign({}, this.usersInfo[userInfoIndex], { role: findUserRole.id, groups: findGroupsIds })
         localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
         this.UserDialog = false;
-
       }
     }
+    this.bindUsers()
   }
-
 
   deleteSelectedUsers() {
     this.confirmationService.confirm({
