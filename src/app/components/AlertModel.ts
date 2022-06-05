@@ -1,7 +1,7 @@
 export class AlertModel {
     header: string;
     message: string;
-    opertions: Function;
+    operations: Function;
     icon?: string;
     cancelLabel?: string;
     acceptLabel?: string;

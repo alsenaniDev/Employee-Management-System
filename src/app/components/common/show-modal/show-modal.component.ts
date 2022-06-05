@@ -2,8 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ShowModalService } from './show-modal.service';
 import { SettingsComponent } from '../../settings/settings.component';
 import { SettingsDto } from '../../settings/Settings.Dto';
-import { MessageService } from 'primeng/api';
-import { SettingService } from '../../settings/settings.service'
+import { AlertMessageServices } from '../../AlertMessage.Services'
+import { popupAlertMessage } from '../../popupAlert.services'
 
 @Component({
   selector: 'app-show-modal',
@@ -26,7 +26,8 @@ export class ShowModalComponent implements OnInit {
   constructor(
     private ShowModalService: ShowModalService,
     private SettingsComponent: SettingsComponent,
-    private messageService: MessageService,
+    private AlertMessageServices: AlertMessageServices,
+    private popupAlertMessage: popupAlertMessage,
   ) {
   }
 
@@ -58,15 +59,31 @@ export class ShowModalComponent implements OnInit {
   }
 
   deleteGroup(id: string) {
-    this.ShowModalService.deleteGroup(id);
-    this.SettingsComponent.getGroups();
-    this.SettingsComponent.getGroupsCount();
+    let deleteGroup = () => {
+      this.ShowModalService.deleteGroup(id);
+      this.SettingsComponent.getGroups();
+      this.SettingsComponent.getGroupsCount();
+    }
+
+    this.popupAlertMessage.servicesAlert({
+      header: "Delete Group",
+      message: "Are you sure you want to delete this group?",
+      operations: deleteGroup
+    })
   }
 
   deleteRole(id: string) {
-    this.ShowModalService.deleteRole(id);
-    this.SettingsComponent.getRoles();
-    this.SettingsComponent.getRolesCount();
+    let deleteRole = () => {
+      this.ShowModalService.deleteRole(id);
+      this.SettingsComponent.getRoles();
+      this.SettingsComponent.getRolesCount();
+    }
+
+    this.popupAlertMessage.servicesAlert({
+      header: "Delete Group",
+      message: "Are you sure you want to delete this role?",
+      operations: deleteRole
+    })
   }
 
   onRowEditInit(data: SettingsDto) {

@@ -1,13 +1,21 @@
 import { Injectable } from "@angular/core";
 import { DatePipe } from '@angular/common';
-import { MessageService } from 'primeng/api';
+import { AlertMessageServices } from '../../AlertMessage.Services'
+import { popupAlertMessage } from '../../popupAlert.services'
+import { Observable, of } from "rxjs";
+import { SettingsDto } from "../../settings/Settings.Dto";
+import { SettingsComponent } from '../../settings/settings.component';
 
 @Injectable({
     providedIn: 'root',
 })
 
 export class ShowModalService {
-    constructor(private datePipe: DatePipe, private messageService: MessageService) { }
+    constructor(
+        private datePipe: DatePipe,
+        private AlertMessageServices: AlertMessageServices,
+        private popupAlertMessage: popupAlertMessage,
+        private SettingsComponent: SettingsComponent,) { }
 
     addGroup(name: string) {
         let userFound = JSON.parse(localStorage.getItem("userInfo") || "[]");
@@ -34,7 +42,7 @@ export class ShowModalService {
                 groups.push(newItem);
                 localStorage.setItem("GroupsDB", JSON.stringify(groups));
             } else {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'This Group is already exists !!!' });
+                this.AlertMessageServices.error("This Group is already exists !!!");
             }
         }
     }
@@ -64,7 +72,7 @@ export class ShowModalService {
                 roles.push(newItem);
                 localStorage.setItem("RolesDB", JSON.stringify(roles));
             } else {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'This Role is already exists !!!' });
+                this.AlertMessageServices.error("This Role is already exists !!!");
             }
         }
     }
@@ -73,12 +81,14 @@ export class ShowModalService {
         let Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
         Groups = Groups.filter((x: any) => x.id != groupId)
         localStorage.setItem("GroupsDB", JSON.stringify(Groups));
+        this.AlertMessageServices.success("Group deleted successfully!");
     }
 
     deleteRole(roleId: any) {
         let Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
         Roles = Roles.filter((x: any) => x.id != roleId)
         localStorage.setItem("RolesDB", JSON.stringify(Roles));
+        this.AlertMessageServices.success("Role deleted successfully!");
     }
 
     editGroup(groupId: any, groupNewName: string) {
@@ -88,14 +98,18 @@ export class ShowModalService {
             group.name = groupNewName;
             localStorage.setItem("GroupsDB", JSON.stringify(Groups));
         } else {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'This Group is already exists !!!' });
+            this.AlertMessageServices.error("This Group is already exists !!!");
         }
     }
 
     editRole(roleId: any, roleNewName: string) {
         let Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]");
-        let group = Roles.find((x: any) => x.id == roleId);
-        group.name = roleNewName;
-        localStorage.setItem("RolesDB", JSON.stringify(Roles));
+        if (Roles.find((role: any) => role.name == roleNewName) == undefined) {
+            let role = Roles.find((x: any) => x.id == roleId);
+            role.name = roleNewName;
+            localStorage.setItem("RolesDB", JSON.stringify(Roles));
+        } else {
+            this.AlertMessageServices.error("This Role is already exists !!!");
+        }
     }
 }
