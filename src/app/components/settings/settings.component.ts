@@ -1,12 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { ShowModalComponent } from '../common/show-modal/show-modal.component';
 import { SettingService } from './settings.service'
+
+@Injectable({
+  providedIn: 'root'
+})
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
+
 export class SettingsComponent implements OnInit {
   groupsNumber: number = 0;
   rolesNumber: number = 0;

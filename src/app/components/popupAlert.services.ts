@@ -20,7 +20,7 @@ export class popupAlertMessage {
             rejectLabel: model.cancelLabel,
             // icon: "pi pi-exclamation-triangle",
             accept: () => {
-                model.opertions()
+                model.operations()
             }
         })
     }
