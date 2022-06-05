@@ -1,9 +1,9 @@
 <main id="main" class="main">
-
+    <p-toast></p-toast>
     <div class="pagetitle">
         <h1>Profile</h1>
 
-    </div><!-- End Page Title -->
+    </div>
 
     <section class="section profile">
         <div class="row">
@@ -15,9 +15,11 @@
                         <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" alt="Profile"
                             class="rounded-circle">
                         <ng-container *ngFor="let user of Users">
-                            <h2 *ngIf="user.userId == userProfile.userId">{{user.firstName}} {{user.lastName}}</h2>
+                            <h2 *ngIf="user.userId == userInfo.userId">
+                                {{user.firstName}} {{user.lastName}}
+                            </h2>
                         </ng-container>
-                        <h3>{{userProfile.role}}</h3>
+                        <h3>{{userInfo.role}}</h3>
 
                     </div>
                 </div>
@@ -53,18 +55,18 @@
 
                                 <h5 class="card-title">Profile Details</h5>
                                 <ng-container *ngFor="let user of Users">
-                                    <div *ngIf="user.userId == userProfile.userId" class="row">
+                                    <div *ngIf="user.userId == userInfo.userId" class="row">
                                         <div class="col-lg-3 col-md-4 label ">Full Name</div>
                                         <div class="col-lg-9 col-md-8">
                                             {{user.firstName}} {{user.lastName}}</div>
                                     </div>
-                                    <div *ngIf="user.userId == userProfile.userId" class="row">
+                                    <div *ngIf="user.userId == userInfo.userId" class="row">
                                         <div class="col-lg-3 col-md-4 label ">Email</div>
                                         <div class="col-lg-9 col-md-8">
                                             {{user.email}}</div>
                                     </div>
 
-                                    <div *ngIf="user.userId == userProfile.userId" class="row">
+                                    <div *ngIf="user.userId == userInfo.userId" class="row">
                                         <div class="col-lg-3 col-md-4 label">Phone</div>
                                         <div class="col-lg-9 col-md-8">
                                             {{user.phoneNumber}}</div>
@@ -72,12 +74,12 @@
                                 </ng-container>
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Role</div>
-                                    <div class="col-lg-9 col-md-8">{{userProfile.role}}</div>
+                                    <div class="col-lg-9 col-md-8">{{userInfo.role}}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Groups</div>
 
-                                    <div *ngFor="let group of userProfile.groups" class="groupName">
+                                    <div *ngFor="let group of userInfo.groups" class="groupName">
                                         <span>{{group}}</span><br>
                                     </div>
 
@@ -85,7 +87,7 @@
 
                             </div>
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-                                <form [formGroup]="editForm" (ngSubmit)="editProfile()">
+                                <form [formGroup]="editForm" (ngSubmit)="editProfile(userInfo.userId)">
                                     <app-form-edit [formName]="editForm" [type]="'text'" [label]="'First Name'"
                                         [ControlName]="'firstName'"></app-form-edit>
                                     <app-form-edit [formName]="editForm" [type]="'text'" [label]="'Last Name'"
@@ -96,7 +98,9 @@
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </div>
+                                    <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
                                 </form>
+
 
                             </div>
 
@@ -109,13 +113,14 @@
                                 </div>
 
                                 <form [formGroup]="editPass" (ngSubmit)="changePassword()">
-                                    <div *ngIf="editPass.controls['currentPassword'].value != userInfo.password && editPass.controls['currentPassword'].value != '' ">
+                                    <div
+                                        *ngIf="editPass.controls['currentPassword'].value != userInfo.password && editPass.controls['currentPassword'].value != ''">
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                             Current Password Failed
                                         </div>
                                     </div>
                                     <app-form-edit [label]="'Current Password'" [ControlName]="'currentPassword'"
-                                        [formName]="editPass" (input)="onEnterPassword()" [type]="'password'">
+                                        [formName]="editPass" [type]="'password'">
                                     </app-form-edit>
                                     <app-form-edit id="newPass" [label]="'New Password'" [ControlName]="'password'"
                                         [formName]="editPass" [type]="'password'"></app-form-edit>
@@ -136,7 +141,7 @@
                 </div>
 
             </div>
+
         </div>
     </section>
-
 </main>
