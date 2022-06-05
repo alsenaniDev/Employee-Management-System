@@ -8,12 +8,13 @@ import { NavbarServices } from './navbarSevices';
 })
 export class NavbarComponent implements OnInit {
   userProfile: any
-  
+
+
   constructor(private navbarServices: NavbarServices) {
-    this.userProfile = this.navbarServices.userProfile
   }
 
   ngOnInit(): void {
+    this.userProfile = this.navbarServices.userProfile
   }
 
   clearData() {

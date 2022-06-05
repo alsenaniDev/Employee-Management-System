@@ -122,7 +122,7 @@ export class AddUsersComponent {
         localStorage.setItem("usersInfoDB", JSON.stringify(newUser))
       }
       this.SignUpForm.reset()
-      this.router.navigateByUrl("/dashboard/show")
+      this.router.navigate(["/dashboard/show"])
     }
   }
 }

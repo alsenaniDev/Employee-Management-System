@@ -39,7 +39,8 @@ export class ShowUsersComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private userServices: ShowUserServices,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+
   ) {
 
   }
@@ -130,6 +131,7 @@ export class ShowUsersComponent {
         localStorage.setItem("UsersDB", JSON.stringify(this.UsersData))
         this.usersInfo[userInfoIndex] = Object.assign({}, this.usersInfo[userInfoIndex], { role: findUserRole.id, groups: findGroupsIds })
         localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
+        this.Users = this.usersInfo
         this.UserDialog = false;
       }
     }
@@ -137,6 +139,7 @@ export class ShowUsersComponent {
   }
 
   deleteSelectedUsers() {
+
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected Users?',
       header: 'Confirm',
