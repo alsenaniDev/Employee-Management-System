@@ -46,6 +46,10 @@ export class ShowUsersComponent {
   }
 
   ngOnInit() {
+    this.bindUsers()
+  }
+
+  bindUsers() {
     this.UsersData = this.userServices.UsersData
     this.Groups = this.userServices.Groups
     this.Roles = this.userServices.Roles
@@ -61,7 +65,6 @@ export class ShowUsersComponent {
     }
     this.Init_UpdateUserInfoForm();
   }
-
 
   Init_UpdateUserInfoForm(userInfo?: getUserModel, userRole?: getRoleModel, userGroups?: getGroupModel) {
     this.EditForm = this.fb.group({
@@ -130,11 +133,10 @@ export class ShowUsersComponent {
         localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
         this.Users = this.usersInfo
         this.UserDialog = false;
-
       }
     }
+    this.bindUsers()
   }
-
 
   deleteSelectedUsers() {
 
