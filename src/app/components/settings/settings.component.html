@@ -7,12 +7,10 @@
 
   <section class="section dashboard">
     <div class="row">
-
-
       <div class="col-lg-8">
         <div class="row">
 
-  
+
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
               <div class="card-body">
@@ -23,12 +21,12 @@
                     <i class="ri-group-2-line"></i>
                   </div>
                   <div class="ps-3">
-                    <h6 id="roles-count">{{Roles.length}}</h6>
+                    <h6 id="roles-count">{{rolesNumber}}</h6>
                   </div>
                 </div>
                 <div class="btn-card">
                   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#largeModal" (click)="showModel('Roles')">
+                    data-bs-target="#largeModal" (click)="getRoles()">
                     Show
                   </button>
                 </div>
@@ -36,7 +34,7 @@
             </div>
           </div>
 
-    
+
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
               <div class="card-body">
@@ -47,18 +45,20 @@
                     <i class=" ri-mini-program-line"></i>
                   </div>
                   <div class="ps-3">
-                    <h6 id="groups-count">{{Groups.length}}</h6>
+                    <h6 id="groups-count">{{groupsNumber}}</h6>
                   </div>
                 </div>
                 <div class="btn-card">
                   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#largeModal" (click)="showModel('Groups')">
+                    data-bs-target="#largeModal" (click)="getGroups()">
                     Show
                   </button>
                 </div>
               </div>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>

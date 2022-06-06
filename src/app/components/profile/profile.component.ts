@@ -93,8 +93,3 @@ export class ProfileComponent implements OnInit {
     this.profileService.EditUserPass(userId, this.editPass, this.userInfo)
   }
 }
-
-
-
-
-

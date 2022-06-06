@@ -88,6 +88,14 @@ body::-webkit-scrollbar {
   padding-top: 30px;
 }
 
+.p-datatable .p-datatable-tbody>tr>td {
+  text-align: center;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+  text-align: center;
+}
+
 @media only screen and (max-width: 600px) {
   .filter-toolbar {
     display: block;

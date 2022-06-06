@@ -1,59 +1,97 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
 <div class="modal fade" id="largeModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="model-title"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="model-title">{{dataName}} Modal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" #alert style="display: none;">
+          <i class="bi bi-exclamation-octagon me-1"></i>
+          Please Enter {{dataName}} Name
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert" style="display: none;">
-            <i class="bi bi-exclamation-octagon me-1"></i>
-            Please Enter {{dataName}} Name
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div style="display: flex;justify-content: space-between;">
+          <div class="col-md-4">
+            <label class="form-label" id="label-name">Enter {{dataName}} Name</label>
+            <input type="text" class="form-control" #inputValue>
           </div>
-          <div style="display: flex;justify-content: space-between;">
-            <div class="col-md-4">
-              <label class="form-label" id="label-name"></label>
-              <input type="text" class="form-control" id="inputValue">
-            </div>
-            <div style="margin-top: 32px;">
-              <button type="button" class="btn btn-outline-primary" (click)="AddData()">
-                Add
+          <div style="margin-top: 32px;">
+            <button type="button" *ngIf="dataName == 'Groups'; else role" class="btn btn-outline-primary"
+              (click)="addGroup()">
+              Add Group
+            </button>
+            <ng-template #role>
+              <button type="button" class="btn btn-outline-primary" (click)="addRole()">
+                Add Role
               </button>
-            </div>
+            </ng-template>
           </div>
-          <hr />
-          <label class="form-label" id="label-table"></label>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let element of data">
-                <th scope="row">{{element.id}}</th>
-                <td>{{element.name}}</td>
-                <td>
-                  <button type="button" class="btn btn-secondary" id="{{element.id}}" (click)="EditElement(element.id)">
-                    <i class="ri-edit-box-line"></i>
-                  </button>
-                </td>
-                <td>
-                  <button type="button" class="btn btn-danger" id="{{element.id}}" (click)="DeleteElement(element.id)">
+        </div>
+        <hr />
+        <label class="form-label" id="label-table"></label>
+
+        <p-table [value]="data2" dataKey="id" editMode="row">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="data">
+              <td>
+                {{data.id}}
+              </td>
+
+              <td>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" #editValue [(ngModel)]="data.name">
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{data.name}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td style="text-align:center">
+                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                  (click)="onRowEditInit(data)" class="p-element p-ripple p-button-help p-button p-component"></button>
+
+                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                  (click)="onRowEditSave(data, dataName)"
+                  class="p-element p-ripple p-button-success p-button p-component"></button>
+
+                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                  (click)="onRowEditCancel(data, ri)"
+                  class="p-element p-ripple p-button-danger p-button p-component"></button>
+              </td>
+
+              <td>
+                <button *ngIf="dataName == 'Groups'; else role" type="button" class="btn btn-danger" id="{{data.id}}"
+                  (click)="deleteGroup(data.id)">
+                  <i class="ri-delete-bin-6-line"></i>
+                </button>
+                <ng-template #role>
+                  <button #role type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteRole(data.id)">
                     <i class="ri-delete-bin-6-line"></i>
                   </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+                </ng-template>
+              </td>
+
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
