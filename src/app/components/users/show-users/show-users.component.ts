@@ -175,7 +175,7 @@ export class ShowUsersComponent {
     this.popupServices.servicesAlert({
       header: "Confirm",
       message: 'Are you sure you want to delete This Users ?',
-      opertions: deleteUser
+      operations: deleteUser
     })
   }
 
@@ -207,7 +207,7 @@ export class ShowUsersComponent {
     this.popupServices.servicesAlert({
       header: "Confirm",
       message: 'Are you sure you want to delete This User ?',
-      opertions: deleteUser
+      operations: deleteUser
     })
 
   }
@@ -279,7 +279,6 @@ export class ShowUsersComponent {
   }
 
   checkSuperRole(usersInfo: any, userInfoRole: string, superRole: string) {
-
     return ((usersInfo.role == userInfoRole || usersInfo.role == superRole) && this.userInfo?.role != 'Super-Admin')
   }
 

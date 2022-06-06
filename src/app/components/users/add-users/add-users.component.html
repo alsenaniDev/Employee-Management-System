@@ -10,7 +10,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">User Information</h5>
-            <div *ngIf="usersEmail.includes(SignUpForm.value.email)"
+            <div *ngIf="usersServices.usersEmail.includes(SignUpForm.value.email)"
               class="alert alert-danger alert-dismissible fade show" role="alert">
               User Found
             </div>
@@ -29,15 +29,15 @@
                 <label class="form-label">Role</label>
                 <select controlName="role" class="form-select" formControlName="role">
                   <option selected disabled value="">Choose...</option>
-                  <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
+                  <option *ngFor="let role of usersServices.roles" [value]="role.id">{{role.name}}</option>
                 </select>
                 <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'role'"></app-alerts>
               </div>
 
               <div class="col-md-4">
                 <label class="form-label">Groups</label>
-                <ng-select formControlName="groups" [maxSelectedItems]="3" [multiple]="true" [items]="groups"
-                  bindLabel="name" bindValue="id" placeholder="Select Groups">
+                <ng-select formControlName="groups" [maxSelectedItems]="3" [multiple]="true"
+                  [items]="usersServices.groups" bindLabel="name" bindValue="id" placeholder="Select Groups">
                 </ng-select>
                 <app-alerts [formName]="SignUpForm" [title]="'Groups'" [controlName]="'groups'"></app-alerts>
               </div>
