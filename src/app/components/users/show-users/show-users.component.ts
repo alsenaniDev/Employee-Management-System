@@ -25,16 +25,13 @@ export class ShowUsersComponent {
   selectedGroup: any
   UserDialog!: boolean;
   submitted!: boolean;
-  check!: any
   checkInput: boolean = false;
   GroupSelect: any
   usersDataInfo: getUserInfoModel[]
   userInfo: any
-
   userDetails: getUserInfoModel
   usersGroups: getGroupModel[]
 
-  @ViewChild("check") input: ElementRef
   constructor(
     private messageService: MessageService,
     private userServices: ShowUserServices,
@@ -63,9 +60,7 @@ export class ShowUsersComponent {
     console.log(this.userInfo);
   }
 
-  ngAfterViewInit() {
 
-  }
 
   getUserInfo() {
     this.userInformation()
@@ -220,11 +215,6 @@ export class ShowUsersComponent {
   filterTableData() {
     this.getUserInfo()
     let dataFiltered = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
-    let check = ((<HTMLInputElement>document.getElementById("checked")));
-    let checkRole
-    if (check != null) {
-      checkRole = check.checked
-    }
 
     if (this.userInfo?.role == "Admin") {
       if (this.selectedRole != undefined) {
@@ -280,7 +270,7 @@ export class ShowUsersComponent {
 
   checkSuperRole(usersInfo: any, userInfoRole: string, superRole: string) {
 
-    return ((usersInfo.role == userInfoRole || usersInfo.role == superRole) && this.userInfo?.role != 'Super-Admin')
+    return ((usersInfo.role == userInfoRole || usersInfo.role == superRole) && (this.userInfo?.role != 'Super-Admin' || usersInfo.role == superRole))
   }
 
 
@@ -296,7 +286,7 @@ export class ShowUsersComponent {
 
   checkSelectedUsers(selectedUsers: any) {
     let usersSelect = selectedUsers?.map((check: any) => check.role)
-    return usersSelect?.includes("Admin") || usersSelect?.includes("Super-Admin")
+    return usersSelect?.includes("Super-Admin") || (usersSelect?.includes("Admin") && this.userInfo.role != 'Super-Admin')
   }
 }
 
