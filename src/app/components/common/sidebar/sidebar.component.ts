@@ -17,8 +17,8 @@ export class SidebarComponent implements OnInit {
     this.userProfile = this.sidebarService.userProfile
   }
 
-  checkRole(name: string) {
-    return this.userProfile.role == name;
+  checkRole(userRole: string, superRole?: string) {
+    return this.userProfile.role == userRole || this.userProfile.role == superRole;
   }
 
 }

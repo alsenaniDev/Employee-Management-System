@@ -6,9 +6,10 @@
       <ng-template pTemplate="left">
         <div class="filter-toolbar">
           <div>
-            <div *ngIf="checkuserRole('Admin'), else userData" class="p-d-flex p-ai-center p-jc-between">
+            <div *ngIf="checkuserRole('Admin' , 'Super-Admin'), else userData"
+              class="p-d-flex p-ai-center p-jc-between">
               <h5 class="p-m-0">Filter By Role</h5>
-              <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="id"
+              <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="name"
                 [(ngModel)]="selectedRole" (ngModelChange)="filterTableData()">
               </p-dropdown>
               <br />
@@ -19,16 +20,17 @@
           <div class="userRole">
             <ng-template #userData class="p-d-flex  p-ai-center p-jc-between">
               <label class="form-label">Your Role</label>
-              <input type="checkbox" id="checked" style="margin: 0 10px;" (change)="filterTableData()">
+              <input [(ngModel)]="checkInput" type="checkbox" id="checked" style="margin: 0 10px;"
+                (change)="filterTableData()">
               <small>Check To Filter By Your Role</small>
-              <input disabled type="text" class="form-control" id="UserRole" value="{{userProfile.role}}">
+              <input disabled type="text" class="form-control" id="UserRole" value="{{userInfo?.role}}">
             </ng-template>
           </div>
 
           <div>
             <div class="p-d-flex p-ai-center p-jc-between ml-20">
               <h5 class="p-m-0">Filter By Groups</h5>
-              <p-dropdown placeholder="Select Group" [options]="userGroups" optionLabel="name" optionValue="id"
+              <p-dropdown placeholder="Select Group" [options]="Groups" optionLabel="name" optionValue="name"
                 [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData()">
               </p-dropdown>
               <br />
@@ -45,14 +47,14 @@
         <div class="container-button-header">
           <button pButton pRipple label="Message" icon="pi pi-send" class="p-button-info"
             [disabled]="!selectedUsers || !selectedUsers.length"></button>
-          <button *ngIf="checkuserRole('Admin')" pButton pRipple icon="pi pi-trash" [label]="'Delete'"
+          <button *ngIf="checkuserRole('Admin' , 'Super-Admin')" pButton pRipple icon="pi pi-trash" [label]="'Delete'"
             class="p-button-danger" (click)="deleteSelectedUsers()"
-            [disabled]="!selectedUsers || !selectedUsers.length"></button>
+            [disabled]="!selectedUsers || !selectedUsers.length || checkSelectedUsers(selectedUsers)"></button>
         </div>
       </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="Users" [rows]="10" [paginator]="true" [(selection)]="selectedUsers" [rowHover]="true"
+    <p-table #dt [value]="usersDataInfo" [rows]="10" [paginator]="true" [(selection)]="selectedUsers" [rowHover]="true"
       dataKey="userId" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [showCurrentPageReport]="true">
       <ng-template pTemplate="header">
@@ -72,48 +74,40 @@
           </th>
           <th>Groups
           </th>
-          <th *ngIf="checkuserRole('Admin')">Edit</th>
-          <th *ngIf="checkuserRole('Admin')">Delete</th>
+          <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Edit</th>
+          <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Delete</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-User let-rowIndex="rowIndex">
         <tr>
           <td>
-            <p-tableCheckbox [value]="User"></p-tableCheckbox>
+            <p-tableCheckbox [value]="User">
+            </p-tableCheckbox>
           </td>
           <td>{{rowIndex + 1}}</td>
-          <ng-container *ngFor="let user of UsersData ">
-            <td *ngIf="user.userId == User.userId ">{{user.firstName}} {{user.lastName}}</td>
-          </ng-container>
-          <ng-container *ngFor="let user of UsersData ">
-            <td *ngIf="user.userId == User.userId ">{{user.email}}</td>
-          </ng-container>
-          <ng-container *ngFor="let user of UsersData ">
-            <td *ngIf="user.userId == User.userId ">{{user.phoneNumber}}</td>
-          </ng-container>
-          <ng-container *ngFor="let role of Roles ">
-            <td *ngIf="User.role == role.id ">{{role.name}}</td>
-          </ng-container>
+          <td>{{User.firstName}} {{User.lastName}}</td>
+          <td>{{User.email}}</td>
+          <td>{{User.phoneNumber}}</td>
+          <td>{{User.role}}</td>
+
           <td>
-            <ng-container *ngFor="let group of Groups">
-              <ng-container *ngIf="User.groups.includes(group.id)">
-                <span>{{group.name}}</span> <br>
-              </ng-container>
+            <ng-container *ngFor="let group of User.groups">
+              <span>{{group}}</span> <br>
             </ng-container>
           </td>
-          <td *ngIf="checkuserRole('Admin')">
+          <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2"
-              (click)="editUser(User.userId)"></button>
+              (click)="editUser(User.userId)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
           </td>
-          <td *ngIf="checkuserRole('Admin')">
+          <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-              (click)="deleteUser(User.userId)"></button>
+              (click)="deleteUser(User.userId)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="p-d-flex p-ai-center p-jc-between">
-          In total there are {{Users ? Users.length : 0 }} Users.
+          In total there are {{usersDataInfo ? usersDataInfo.length : 0 }} Users.
         </div>
       </ng-template>
     </p-table>
@@ -137,7 +131,6 @@
           <label class="form-label">Groups</label>
           <p-multiSelect formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="GroupSelect"
             defaultLabel="Select a Groups" optionLabel="name" display="chip"></p-multiSelect>
-          <!-- <app-alerts [formName]="SignUpForm" [title]="'Role'" [controlName]="'role'"></app-alerts> -->
         </div>
       </ng-template>
 
@@ -147,7 +140,7 @@
       </ng-template>
 
     </p-dialog>
-    <!-- <app-edit-user [hideDialog]="hideDialog" [UserDialog]="UserDialog"></app-edit-user> -->
+
   </form>
   <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 </main>

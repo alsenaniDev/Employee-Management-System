@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { AlertMessageServices } from '../../AlertMessage.Services';
+import { popupAlertMessage } from '../../popupAlert.services';
+import { getUserInfoModel } from '../../profile/profile.dto';
 import { getGroupModel, getRoleModel, getUserModel } from './Show-users-Dto';
 import { ShowUserServices } from './show-users-services';
 import { User } from './UserDto';
@@ -15,69 +18,113 @@ import { User } from './UserDto';
 export class ShowUsersComponent {
   EditForm: FormGroup;
   UsersData: getUserModel[];
-  Groups: getGroupModel[
-
-  ]
+  Groups: getGroupModel[]
   Roles: getRoleModel[]
-  userProfile: any
-  usersInfo: any
-  Users: User[]
-  User: User;
-  userGroups: any[]
   selectedUsers: User[]
   selectedRole: any
   selectedGroup: any
   UserDialog!: boolean;
   submitted!: boolean;
   check!: any
-  findUser: getUserModel;
-  findRole: getRoleModel
-  findGroups: any
+  checkInput: boolean = false;
   GroupSelect: any
+  usersDataInfo: getUserInfoModel[]
+  userInfo: any
 
+  userDetails: getUserInfoModel
+  usersGroups: getGroupModel[]
+
+  @ViewChild("check") input: ElementRef
   constructor(
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private userServices: ShowUserServices,
     private fb: FormBuilder,
+    private popupServices: popupAlertMessage,
+    private alertMessage: AlertMessageServices
 
   ) {
 
   }
 
+
+
   ngOnInit() {
-    this.bindUsers()
-  }
 
-  bindUsers() {
-    this.UsersData = this.userServices.UsersData
-    this.Groups = this.userServices.Groups
-    this.Roles = this.userServices.Roles
-    this.userProfile = this.userServices.userProfile
-    this.usersInfo = this.userServices.usersInfo
-    this.Users = this.usersInfo
-    this.userGroups = [...this.Groups]
-    this.Users = this.usersInfo.filter((user: User) => user.userId != this.userProfile.userId)
-    if (this.userProfile.role != "Admin") {
-      this.userGroups = this.Groups.filter((group: any) => this.userProfile.groups.includes(group.name))
-    } else {
-      this.userGroups = this.Groups
-    }
     this.Init_UpdateUserInfoForm();
+    this.getUserInfo()
+    this.userInformation()
+    this.getGroups()
+    this.getRoles()
+
+    this.usersDataInfo = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
+    if (this.userInfo?.role !== "Admin" && this.userInfo?.role !== "Super-Admin") {
+      this.Groups = this.Groups.filter((group: getGroupModel) => this.userInfo.groups.includes(group.name))
+    }
+    console.log(this.userInfo);
   }
 
-  Init_UpdateUserInfoForm(userInfo?: getUserModel, userRole?: getRoleModel, userGroups?: getGroupModel) {
-    this.EditForm = this.fb.group({
+  ngAfterViewInit() {
 
-      fname: [userInfo?.firstName, [Validators.required, Validators.minLength(3)]],
-      lname: [userInfo?.lastName, [Validators.required, Validators.minLength(3)]],
-      email: [userInfo?.email, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
-      phoneNumber: [userInfo?.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
-      password: [userInfo?.password, [Validators.required, Validators.minLength(6)]],
-      role: [userRole?.name, Validators.required],
-      groups: [userGroups?.name, Validators.required],
+  }
+
+  getUserInfo() {
+    this.userInformation()
+    this.userServices.usersInfoData().subscribe({
+      next: (res: getUserInfoModel[]) => {
+        this.usersDataInfo = res
+      }, error: (err: any) => {
+        return err;
+      }
     })
-    console.log(userRole?.name);
+  }
+
+  userInformation() {
+    let userInfoData = JSON.parse(localStorage.getItem("userInfo") || "")
+    this.userServices.getUserInfoById(userInfoData.userId).subscribe({
+      next: (res: getUserInfoModel) => {
+        this.userInfo = res
+        console.log(res)
+      },
+      error: (err: any) => {
+        return err;
+
+      }
+    })
+  }
+  getRoles() {
+    this.userServices.getRoles().subscribe({
+      next: (res: getRoleModel[]) => {
+        this.Roles = res
+      },
+      error: (err: any) => {
+        return err;
+      }
+    })
+  }
+  getGroups() {
+    this.userServices.getGroups().subscribe({
+      next: (res: getGroupModel[]) => {
+        this.Groups = res
+      },
+      error: (err: any) => {
+        return err;
+      }
+    })
+  }
+
+
+
+  Init_UpdateUserInfoForm(userDetails?: getUserInfoModel) {
+    this.EditForm = this.fb.group({
+      fname: [userDetails?.firstName, [Validators.required, Validators.minLength(3)]],
+      lname: [userDetails?.lastName, [Validators.required, Validators.minLength(3)]],
+      email: [userDetails?.email, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
+      phoneNumber: [userDetails?.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
+      password: [userDetails?.password, [Validators.required, Validators.minLength(6)]],
+      role: [userDetails?.role, Validators.required],
+      groups: [userDetails?.groups, Validators.required],
+    })
+    console.log(userDetails?.groups);
     console.log(this.EditForm.value.role);
 
   }
@@ -113,82 +160,56 @@ export class ShowUsersComponent {
   ];
 
   onsubmit() {
-    if (this.EditForm.invalid) {
-      this.EditForm.markAllAsTouched()
-    } else {
-      let userIndex = this.UsersData.findIndex((user: getUserModel) => user.userId == this.findUser?.userId)
-      let userInfoIndex = this.usersInfo.findIndex((user: User) => user.userId == this.findUser?.userId)
-      let findUserRole = this.Roles.find((role: getRoleModel) => role.name == this.EditForm.value.role)
-      let findGroupsIds = this.EditForm.value.groups.map((ids: any) => ids.id)
-      if (this.userProfile.role == "Admin") {
-        this.UsersData[userIndex] = Object.assign({}, this.UsersData[userIndex], {
-          firstName: this.EditForm.value.fname,
-          lastName: this.EditForm.value.lname,
-          email: this.EditForm.value.email,
-          phoneNumber: this.EditForm.value.phoneNumber,
-          password: this.EditForm.value.password
-        })
-        localStorage.setItem("UsersDB", JSON.stringify(this.UsersData))
-        this.usersInfo[userInfoIndex] = Object.assign({}, this.usersInfo[userInfoIndex], { role: findUserRole.id, groups: findGroupsIds })
-        localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
-        this.Users = this.usersInfo
-        this.UserDialog = false;
-      }
-    }
-    this.bindUsers()
+    this.userServices.EditUser(this.userDetails, this.EditForm)
+    this.getUserInfo()
+    this.UserDialog = false;
   }
 
-  deleteSelectedUsers() {
 
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected Users?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.Users = this.Users.filter(val => !this.selectedUsers.includes(val));
-        localStorage.setItem("usersInfoDB", JSON.stringify(this.Users))
-        this.UsersData = this.UsersData.filter((cv: any) => {
-          return !this.selectedUsers.find(function (e) {
-            return e.userId == cv.userId;
-          });
-        });
-        localStorage.setItem("UsersDB", JSON.stringify(this.UsersData))
-        this.selectedUsers = [];
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
-      }
-    });
+  deleteSelectedUsers() {
+    var deleteUser = () => {
+      this.userServices.DeleteSelectUser(this.selectedUsers)
+      this.selectedUsers = [];
+      this.getUserInfo()
+    }
+    this.popupServices.servicesAlert({
+      header: "Confirm",
+      message: 'Are you sure you want to delete This Users ?',
+      opertions: deleteUser
+    })
   }
 
   editUser(userId: any) {
-    // this.User = { ...User };
     this.UserDialog = true;
-    this.findUser = this.UsersData.find((user: getUserModel) => user.userId == userId);
-    let userInformation = this.usersInfo.find((user: User) => user.userId == this.findUser.userId);
-    this.findRole = this.Roles.find((role: getRoleModel) => role.id == userInformation.role)
-    this.findGroups = this.Groups.filter((group: getGroupModel) => userInformation.groups.includes(group.id))
-    this.GroupSelect = this.findGroups
-    console.log(this.findRole);
+    var userGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
+    this.userServices.getUserInfoById(userId).subscribe({
+      next: (res: getUserInfoModel) => {
+        this.userDetails = res
+        this.GroupSelect = userGroups.filter((group: any) =>
+          res.groups.includes(group.name))
+        this.Init_UpdateUserInfoForm(this.userDetails)
+        console.log(this.GroupSelect)
+        console.log(res)
+      },
+      error: (err: any) => {
+        return err;
 
-    this.Init_UpdateUserInfoForm(this.findUser, this.findRole, this.GroupSelect)
-
+      }
+    })
+    this.userInformation()
   }
 
   deleteUser(userId: any) {
-    this.confirmationService.confirm({
+    var deleteUser = () => {
+      this.userServices.DeleteUser(userId);
+      this.getUserInfo()
+    }
+    this.popupServices.servicesAlert({
+      header: "Confirm",
       message: 'Are you sure you want to delete This User ?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        let userInfoIndex = this.usersInfo.findIndex((user: any) => user.userId == userId)
-        this.usersInfo.splice(userInfoIndex, 1)
-        localStorage.setItem("usersInfoDB", JSON.stringify(this.usersInfo))
-        let userIndex = this.UsersData.findIndex((user: any) => user.userId == userId)
-        this.UsersData.splice(userIndex, 1)
-        localStorage.setItem("UsersDB", JSON.stringify(this.UsersData))
-        this.Users = JSON.parse(localStorage.getItem("usersInfoDB") || "[]");
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
-      }
-    });
+      opertions: deleteUser
+    })
+
   }
 
   hideDialog() {
@@ -197,54 +218,71 @@ export class ShowUsersComponent {
   }
 
   filterTableData() {
-    this.Users = this.usersInfo
-    let dataFiltered = this.Users;
-
+    this.getUserInfo()
+    let dataFiltered = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
     let check = ((<HTMLInputElement>document.getElementById("checked")));
     let checkRole
     if (check != null) {
       checkRole = check.checked
     }
 
-    if (this.userProfile.role == "Admin") {
+    if (this.userInfo?.role == "Admin") {
       if (this.selectedRole != undefined) {
-        console.log(this.Users);
-        dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userProfile.userId && user.role == this.selectedRole)
-        this.Users = dataFiltered
-      } else if (this.selectedRole == undefined) {
-        this.Users = dataFiltered
+        dataFiltered = this.usersDataInfo
+        dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userInfo.userId && user.role == this.selectedRole)
+        this.usersDataInfo = dataFiltered
+
+      }
+      else if (this.selectedRole == undefined) {
+        this.usersDataInfo = dataFiltered
       }
 
       if (this.selectedGroup != undefined) {
         console.log(this.selectedGroup)
-        console.log(this.Users);
-        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userProfile.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
-        this.Users = dataFiltered
-      } else if (this.selectedGroup == undefined) {
-        this.Users = dataFiltered
+        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userInfo?.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
+        this.usersDataInfo = dataFiltered
       }
-    } else {
-      if (this.selectedGroup != undefined && checkRole) {
-        let userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
-        dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userProfile.userId && userFound.role == user.role && user.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
-        this.Users = dataFiltered
-      } else if (this.selectedGroup == undefined && checkRole) {
-        // this.Users = dataFiltered.filter((user: any) => user.role == this.selectedRole)
-        let userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
-        this.Users = dataFiltered.filter((user: any) => user.userId != this.userProfile.userId && userFound.role == user.role)
-      } else if (!checkRole && this.selectedGroup != undefined) {
-        this.Users = dataFiltered.filter((users: any) => users.userId != this.userProfile.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
-      } else if (!checkRole && this.selectedGroup == undefined) {
-        let userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
-        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userProfile.userId && users.groups.find((group: any) => userFound.groups.includes(group)))
-        this.Users = dataFiltered
+      else if (this.selectedGroup == undefined) {
+        this.usersDataInfo = dataFiltered
+      }
+    }
+    else {
+      if (this.selectedGroup != undefined && this.checkInput) {
+        let userFound = this.usersDataInfo.find((user: any) => user.userId == this.userInfo.userId)
+        dataFiltered = dataFiltered.filter((user: any) =>
+          user.userId != this.userInfo.userId && userFound.role == user.role &&
+          user.groups.find((usersGroup: any) =>
+            usersGroup == this.selectedGroup))
+        this.usersDataInfo = dataFiltered
+
+      }
+
+      else if (this.selectedGroup == undefined && this.checkInput) {
+        let userFound = this.usersDataInfo.find((user: any) => user.userId == this.userInfo?.userId)
+        this.usersDataInfo = dataFiltered.filter((user: any) => user.userId != this.userInfo?.userId && userFound.role == user.role)
+      }
+
+      else if (!this.checkInput && this.selectedGroup != undefined) {
+        this.usersDataInfo = dataFiltered.filter((users: any) => users.userId != this.userInfo?.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
+      }
+
+      else if (!this.checkInput && this.selectedGroup == undefined) {
+        let userFound = this.usersDataInfo.find((user: any) => user.userId == this.userInfo?.userId)
+        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userInfo?.userId && users.groups.find((group: any) => userFound.groups.includes(group)))
+        this.usersDataInfo = dataFiltered
       }
     }
   }
 
-  checkuserRole(name: string) {
-    return this.userProfile.role == name;
+  checkuserRole(userRole: any, superRole?: string) {
+    return this.userInfo.role == userRole || this.userInfo.role == superRole;
   }
+
+  checkSuperRole(usersInfo: any, userInfoRole: string, superRole: string) {
+
+    return ((usersInfo.role == userInfoRole || usersInfo.role == superRole) && this.userInfo?.role != 'Super-Admin')
+  }
+
 
   clearGroup() {
     this.selectedGroup = undefined;
@@ -255,5 +293,9 @@ export class ShowUsersComponent {
     this.selectedRole = undefined;
     this.filterTableData()
   }
-}
 
+  checkSelectedUsers(selectedUsers: any) {
+    let usersSelect = selectedUsers?.map((check: any) => check.role)
+    return usersSelect?.includes("Admin") || usersSelect?.includes("Super-Admin")
+  }
+}
