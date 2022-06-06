@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit {
     this.popupAlert.servicesAlert({
       header: "Edit Profile",
       message: "Are sure to edit User",
-      opertions: editUserProfile,
+      operations: editUserProfile,
     })
   }
 
