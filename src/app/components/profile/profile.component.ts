@@ -33,7 +33,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.usersDataFun()
     this.userInformation()
-    console.log(this.userInformation());
     this.Init_UpdateUserInfoForm(this.userInfo)
     this.Init_UpdateUserPasswordForm()
 
@@ -85,15 +84,22 @@ export class ProfileComponent implements OnInit {
     }
 
     else {
-      let userIndex = this.Users.findIndex((user: any) => user.userId == userId)
-      this.Users[userIndex] = Object.assign({}, this.Users[userIndex],
-        {
-          firstName: this.editForm.value.firstName,
-          lastName: this.editForm.value.lastName,
-          phoneNumber: this.editForm.value.phoneNumber
-        })
-      localStorage.setItem("UsersDB", JSON.stringify(this.Users));
-      this.messageAlert.success("The Profile Is Edit")
+      var editUserProfile = () => {
+        let userIndex = this.Users.findIndex((user: any) => user.userId == userId)
+        this.Users[userIndex] = Object.assign({}, this.Users[userIndex],
+          {
+            firstName: this.editForm.value.firstName,
+            lastName: this.editForm.value.lastName,
+            phoneNumber: this.editForm.value.phoneNumber
+          })
+        localStorage.setItem("UsersDB", JSON.stringify(this.Users));
+        this.messageAlert.success("The Profile Is Edit")
+      }
+      this.popupAlert.servicesAlert({
+        header: "Edit Profile",
+        message: "Are sure to edit User",
+        opertions: editUserProfile,
+      })
     }
   }
 

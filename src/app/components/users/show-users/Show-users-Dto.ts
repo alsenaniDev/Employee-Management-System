@@ -18,16 +18,16 @@ export class getUserModel {
   password: string;
   phoneNumber: number;
   userId: string;
-  CreatedBy : string;
+  CreatedBy: string;
 }
 
 
 export class getRoleModel {
-  id: string;
+  id: number;
   name: string;
 }
 
 export class getGroupModel {
-  id: string;
+  id: number;
   name: string
 }

@@ -6,7 +6,6 @@ import { ShowUserServices } from './users/show-users/show-users-services';
 export class popupAlertMessage {
     constructor(
         private confirmationService: ConfirmationService,
-        private userServices: ShowUserServices,
     ) {
 
     }
