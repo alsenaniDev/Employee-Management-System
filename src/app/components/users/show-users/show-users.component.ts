@@ -299,4 +299,3 @@ export class ShowUsersComponent {
     return usersSelect?.includes("Admin") || usersSelect?.includes("Super-Admin")
   }
 }
-
