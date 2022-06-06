@@ -21,9 +21,7 @@ export class ProfileComponent implements OnInit {
   editPass: FormGroup
 
   constructor(private fb: FormBuilder,
-    private router: Router,
     private profileService: ProfileService,
-    private messageAlert: AlertMessageServices,
     private popupAlert: popupAlertMessage
   ) {
 
@@ -79,54 +77,19 @@ export class ProfileComponent implements OnInit {
   }
 
   editProfile(userId: string) {
-    if (this.editForm.invalid) {
-      this.editForm.markAllAsTouched()
-    }
 
-    else {
-      var editUserProfile = () => {
-        let userIndex = this.Users.findIndex((user: any) => user.userId == userId)
-        this.Users[userIndex] = Object.assign({}, this.Users[userIndex],
-          {
-            firstName: this.editForm.value.firstName,
-            lastName: this.editForm.value.lastName,
-            phoneNumber: this.editForm.value.phoneNumber
-          })
-        localStorage.setItem("UsersDB", JSON.stringify(this.Users));
-        this.messageAlert.success("The Profile Is Edit")
-      }
-      this.popupAlert.servicesAlert({
-        header: "Edit Profile",
-        message: "Are sure to edit User",
-        operations: editUserProfile,
-      })
+    var editUserProfile = () => {
+      this.profileService.EditUserInfo(userId, this.editForm)
+      this.usersDataFun()
     }
+    this.popupAlert.servicesAlert({
+      header: "Edit Profile",
+      message: "Are sure to edit User",
+      opertions: editUserProfile,
+    })
   }
 
-  changePassword() {
-    if (this.editPass.invalid) {
-      console.log(this.editPass.value.currentPassword)
-      this.editPass.markAllAsTouched()
-    }
-
-    else if (this.editPass.value.currentPassword != this.userInfo.password) {
-      this.editPass.invalid
-    }
-
-    else if (this.editPass.value.password != this.editPass.value.confirmPassword) {
-      this.editPass.invalid
-    }
-
-    else {
-      let userIndex = this.Users.findIndex((user: any) => user.userId == this.userInfo.userId)
-      this.Users[userIndex] = Object.assign({}, this.Users[userIndex], { password: this.editPass.value.password })
-      localStorage.setItem("UsersDB", JSON.stringify(this.Users))
-      this.router.navigateByUrl("/login")
-    }
+  changePassword(userId: string) {
+    this.profileService.EditUserPass(userId, this.editPass, this.userInfo)
   }
 }
-
-
-
-
-

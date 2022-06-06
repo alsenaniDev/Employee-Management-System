@@ -112,7 +112,7 @@
                                     </div>
                                 </div>
 
-                                <form [formGroup]="editPass" (ngSubmit)="changePassword()">
+                                <form [formGroup]="editPass" (ngSubmit)="changePassword(userInfo.userId)">
                                     <div
                                         *ngIf="editPass.controls['currentPassword'].value != userInfo.password && editPass.controls['currentPassword'].value != ''">
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">

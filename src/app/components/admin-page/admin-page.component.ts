@@ -24,7 +24,7 @@ export class AdminPageComponent implements OnInit {
     this.userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
   }
 
-  checkRole(name: string) {
-    return this.userProfile.role == name;
+  checkRole(userRole: string , superRole? : string) {
+    return this.userProfile.role == userRole || this.userProfile.role == superRole ;
   }
 }
