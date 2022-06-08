@@ -9,10 +9,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" #alert style="display: none;">
+        <div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert" #alert
+          style="display: none;">
           <i class="bi bi-exclamation-octagon me-1"></i>
           Please Enter {{dataName}} Name
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
         </div>
         <div style="display: flex;justify-content: space-between;">
           <div class="col-md-4">
@@ -46,7 +47,7 @@
           <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
             <tr [pEditableRow]="data">
               <td>
-                {{data.id}}
+                {{ri + 1}}
               </td>
 
               <td>

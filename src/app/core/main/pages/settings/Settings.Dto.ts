@@ -1,4 +1,4 @@
 export interface SettingsDto {
-    id: string,
+    id: number,
     name: string
 }

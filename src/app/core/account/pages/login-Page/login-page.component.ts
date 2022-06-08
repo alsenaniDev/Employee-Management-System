@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LogInService } from './login-page.service'
@@ -11,54 +11,40 @@ import { LogInService } from './login-page.service'
 
 export class LoginPageComponent implements OnInit {
   loginForm: FormGroup
-  userToken: any = []
-  usersInfo: any = []
-  Roles: any = []
-  Groups: any = []
-  groupsId: any = []
-  user: any
-  userFound: any
-  roleFound: any
-  groupFound: any
+  show: boolean = false
+  email: string;
+  password: string;
 
-  constructor(private fb: FormBuilder, private router: Router, private LogInService: LogInService) {
+  constructor(private fb: FormBuilder,
+    private router: Router,
+    private LogInService: LogInService) {
 
+  }
+
+  ngOnInit(): void {
+    this.LogInService.bindData();
+    this.loginFormFunction();
+  }
+
+  loginFormFunction() {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
       password: ["", Validators.required]
     })
   }
 
-  ngOnInit(): void {
-    this.userToken = this.LogInService.userToken
-    this.usersInfo = this.LogInService.usersInfo
-    this.Roles = this.LogInService.Roles
-    this.Groups = this.LogInService.Groups
-    this.groupsId = this.LogInService.groupsId
-  }
-
   logIn() {
-    let email = (<HTMLInputElement>document.getElementById("email")).value;
-    let password = (<HTMLInputElement>document.getElementById("password")).value;
-    let users = JSON.parse(localStorage.getItem("UsersDB") || "");
-    this.user = users.find((u: any) => u.email == email && u.password == password)
-
-    if (this.user) {
-      document.getElementById("alert")!.style.display = "none";
-      this.userFound = this.usersInfo.find((u: any) => u.userId == this.user.userId)
-      this.roleFound = this.Roles.find((r: any) => r.id == this.userFound.role)
-      this.groupFound = this.Groups.filter((group: any) => this.userFound.groups.includes(group.id))
-      let myGroupsName = this.groupFound.map((group: any) => group.name)
-      let userInformation = {
-        userId: this.user.userId,
-        name: this.user.firstName + " " + this.user.lastName,
-        role: this.roleFound.name,
-        groups: myGroupsName
+    this.LogInService.logIn(this.email, this.password).subscribe({
+      next: (res: boolean) => {
+        if (res) {
+          window.location.href = "main/home"
+        } else {
+          this.show = true
+        }
+      },
+      error: (err: any) => {
+        console.log(err);
       }
-      localStorage.setItem("userInfo", JSON.stringify(userInformation))
-      window.location.href = '/main/home'
-    } else {
-      document.getElementById("alert")!.style.display = "";
-    }
+    })
   }
 }

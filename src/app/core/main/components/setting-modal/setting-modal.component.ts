@@ -35,32 +35,62 @@ export class SettingModalComponent implements OnInit {
   }
 
   addGroup() {
-    if (this.inputValue.nativeElement.value != "") {
-      this.SettingModalService.addGroup(this.inputValue.nativeElement.value);
-      this.SettingsComponent.getGroups();
-      this.SettingsComponent.getGroupsCount();
-      this.inputValue.nativeElement.value = ""
-      this.message.nativeElement.style.display = 'none'
+    let inputValue = this.inputValue.nativeElement.value
+    if (inputValue != "") {
+      this.SettingModalService.addGroup(inputValue).subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.AlertMessageServices.success("Group added successfully");
+            this.SettingsComponent.getGroups();
+            this.SettingsComponent.getGroupsCount();
+            this.inputValue.nativeElement.value = ""
+            this.message.nativeElement.style.display = 'none'
+          } else {
+            this.AlertMessageServices.Warning("This Group is already exists !!!");
+          }
+        }
+      });
     } else {
       this.message.nativeElement.style.display = ''
     }
   }
 
   addRole() {
-    if (this.inputValue.nativeElement.value != "") {
-      this.SettingModalService.addRole(this.inputValue.nativeElement.value);
-      this.SettingsComponent.getRoles();
-      this.SettingsComponent.getRolesCount();
-      this.inputValue.nativeElement.value = ""
-      this.message.nativeElement.style.display = 'none'
+    let inputValue = this.inputValue.nativeElement.value
+    if (inputValue != "") {
+      this.SettingModalService.addRole(inputValue).subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.AlertMessageServices.success("Role added successfully");
+            this.SettingsComponent.getRoles();
+            this.SettingsComponent.getRolesCount();
+            this.inputValue.nativeElement.value = ""
+            this.message.nativeElement.style.display = 'none'
+          } else {
+            this.AlertMessageServices.Warning("This Role is already exists !!!");
+          }
+        }
+      });
     } else {
       this.message.nativeElement.style.display = ''
     }
   }
 
-  deleteGroup(id: string) {
+  deleteGroup(id: number) {
     let deleteGroup = () => {
-      this.SettingModalService.deleteGroup(id);
+      this.SettingModalService.deleteGroup(id).subscribe({
+        next: (res: boolean) => {
+          if (res) {
+            this.AlertMessageServices.success("Group deleted successfully!");
+          }
+          else {
+            this.AlertMessageServices.Warning("Group did't deleted successfully!");
+          }
+        },
+        error: (err: any) => {
+          this.AlertMessageServices.error(err.message);
+        }
+      });
       this.SettingsComponent.getGroups();
       this.SettingsComponent.getGroupsCount();
     }
@@ -72,9 +102,17 @@ export class SettingModalComponent implements OnInit {
     })
   }
 
-  deleteRole(id: string) {
+  deleteRole(id: number) {
     let deleteRole = () => {
-      this.SettingModalService.deleteRole(id);
+      this.SettingModalService.deleteRole(id).subscribe({
+        next: (res: boolean) => {
+          if (res) {
+            this.AlertMessageServices.success("Role deleted successfully!");
+          } else {
+            this.AlertMessageServices.Warning("Role did't deleted successfully!");
+          }
+        }
+      });
       this.SettingsComponent.getRoles();
       this.SettingsComponent.getRolesCount();
     }
@@ -93,9 +131,31 @@ export class SettingModalComponent implements OnInit {
   onRowEditSave(data: SettingsDto, dataName: string) {
     delete this.clonedGroups[data.id];
     if (dataName == "Groups") {
-      this.SettingModalService.editGroup(data.id, this.editValue.nativeElement.value);
+      this.SettingModalService.editGroup(data.id, this.editValue.nativeElement.value).subscribe({
+        next: (res: boolean) => {
+          if (res) {
+            this.AlertMessageServices.success("Group is edited successfully");
+          } else {
+            this.AlertMessageServices.error("This Group is already exists !!!");
+          }
+        },
+        error: (err: any) => {
+          this.AlertMessageServices.error("This Group is already exists !!!");
+        }
+      });
     } else {
-      this.SettingModalService.editRole(data.id, this.editValue.nativeElement.value);
+      this.SettingModalService.editRole(data.id, this.editValue.nativeElement.value).subscribe({
+        next: (res: boolean) => {
+          if (res) {
+            this.AlertMessageServices.success("Role is edited successfully");
+          } else {
+            this.AlertMessageServices.error("This Role is already exists !!!");
+          }
+        },
+        error: (err: any) => {
+          this.AlertMessageServices.error("This Role is already exists !!!");
+        }
+      });
     }
   }
 

@@ -48,7 +48,6 @@ export class AddUsersComponent {
     public formBuilder: FormBuilder,
     private router: Router,
     public usersServices: AddUserServices) {
-
   }
 
   ngOnInit(): void {
@@ -70,6 +69,6 @@ export class AddUsersComponent {
 
   onSubmit() {
     this.usersServices.addUser(this.SignUpForm);
-    this.router.navigate(["/main/show"])
+    this.router.navigate(["/main/show-users"])
   }
 }
