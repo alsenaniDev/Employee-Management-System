@@ -5,13 +5,13 @@
   </div>
 </div>
 
-<div *ngIf="formName.controls[controlName].errors?.['minlength']">
+<div *ngIf="formName.controls[controlName].errors?.['minlength'] && formName.controls[controlName].touched">
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{title}} Should at least {{formName.controls[controlName].errors.minlength.requiredLength}}
   </div>
 </div>
 
-<div *ngIf="formName.controls[controlName].errors?.['pattern']">
+<div *ngIf="formName.controls[controlName].errors?.['pattern']  && formName.controls[controlName].touched ">
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{title}} Should Correct
   </div>
