@@ -1,0 +1,68 @@
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Settings</h1>
+    <hr />
+  </div>
+
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="row">
+
+
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Roles <span>| User Roles</span></h5>
+                <hr class="hr-card" />
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="ri-group-2-line"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6 id="roles-count">{{rolesNumber}}</h6>
+                  </div>
+                </div>
+                <div class="btn-card">
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#largeModal" (click)="getRoles()">
+                    Show
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Groups <span>| Users Groups</span></h5>
+                <hr class="hr-card" />
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class=" ri-mini-program-line"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6 id="groups-count">{{groupsNumber}}</h6>
+                  </div>
+                </div>
+                <div class="btn-card">
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#largeModal" (click)="getGroups()">
+                    Show
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-Setting-modal></app-Setting-modal>
+
+</main>
