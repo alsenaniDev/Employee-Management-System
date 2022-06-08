@@ -1,49 +1,34 @@
 import { Injectable } from "@angular/core";
 import { DatePipe } from '@angular/common';
-import { AlertMessageServices } from '../../utility/services/AlertMessage.Services'
-import { popupAlertMessage } from '../../utility/services/popupAlert.services'
 import { Observable, of } from "rxjs";
-import { SettingsDto } from "../../pages/settings/Settings.Dto";
-import { SettingsComponent } from '../../pages/settings/settings.component';
+import { Guid } from "guid-typescript";
 
 @Injectable({
     providedIn: 'root',
 })
 
 export class SettingModalService {
-    constructor(
-        private datePipe: DatePipe,
-        private AlertMessageServices: AlertMessageServices,
-        private popupAlertMessage: popupAlertMessage,
-        private SettingsComponent: SettingsComponent,) { }
+    constructor(private datePipe: DatePipe) { }
 
-    addGroup(name: string) {
+    addGroup(name: string): Observable<boolean> {
         let userFound = JSON.parse(localStorage.getItem("userInfo") || "[]");
-        let groups = JSON.parse(localStorage.getItem("GroupsDB") || 'null');
+        let groups = JSON.parse(localStorage.getItem("GroupsDB") || '[]');
 
-        if (groups == null || groups.length <= 0) {
-            let newGroups = [{
-                id: 1,
+        if (groups?.find((group: any) => group.name == name) == undefined) {
+            let guid = Guid.create().toJSON();
+            let groupGuid = guid.value
+
+            let newItem = {
+                id: groupGuid,
                 name: name,
                 createBy: userFound.userId,
                 createAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
-            }];
-            localStorage.setItem("GroupsDB", JSON.stringify(newGroups));
+            };
+            groups.push(newItem);
+            localStorage.setItem("GroupsDB", JSON.stringify(groups));
+            return of(true)
         } else {
-            if (groups.find((group: any) => group.name == name) == undefined) {
-                let groups = JSON.parse(localStorage.getItem("GroupsDB") || '');
-                let lastItem = groups[groups.length - 1];
-                let newItem = {
-                    id: lastItem.id + 1,
-                    name: name,
-                    createBy: userFound.userId,
-                    createAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
-                };
-                groups.push(newItem);
-                localStorage.setItem("GroupsDB", JSON.stringify(groups));
-            } else {
-                this.AlertMessageServices.error("This Group is already exists !!!");
-            }
+            return of(false)
         }
     }
 
@@ -51,65 +36,73 @@ export class SettingModalService {
         let userFound = JSON.parse(localStorage.getItem("userInfo") || "[]");
         let roles = JSON.parse(localStorage.getItem("RolesDB") || 'null');
 
-        if (roles == null || roles.length <= 0) {
-            let newRoles = [{
-                id: 1,
+        if (roles?.find((role: any) => role.name == name) == undefined) {
+            let guid = Guid.create().toJSON();
+            let roleGuid = guid.value
+
+            let newItem = {
+                id: roleGuid,
                 name: name,
                 createBy: userFound.userId,
                 createAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
-            }];
-            localStorage.setItem("RolesDB", JSON.stringify(newRoles));
+            };
+            roles.push(newItem);
+            localStorage.setItem("RolesDB", JSON.stringify(roles));
+            return of(true)
         } else {
-            if (roles.find((role: any) => role.name == name) == undefined) {
-                let roles = JSON.parse(localStorage.getItem("RolesDB") || '');
-                let lastItem = roles[roles.length - 1];
-                let newItem = {
-                    id: lastItem.id + 1,
-                    name: name,
-                    createBy: userFound.userId,
-                    createAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
-                };
-                roles.push(newItem);
-                localStorage.setItem("RolesDB", JSON.stringify(roles));
-            } else {
-                this.AlertMessageServices.error("This Role is already exists !!!");
-            }
+            return of(false)
         }
     }
 
-    deleteGroup(groupId: any) {
-        let Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-        Groups = Groups.filter((x: any) => x.id != groupId)
-        localStorage.setItem("GroupsDB", JSON.stringify(Groups));
-        this.AlertMessageServices.success("Group deleted successfully!");
-    }
-
-    deleteRole(roleId: any) {
-        let Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-        Roles = Roles.filter((x: any) => x.id != roleId)
-        localStorage.setItem("RolesDB", JSON.stringify(Roles));
-        this.AlertMessageServices.success("Role deleted successfully!");
-    }
-
-    editGroup(groupId: any, groupNewName: string) {
+    deleteGroup(groupId: number): Observable<boolean> {
         let Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]");
+
+        const deletedGroupIndex = Groups.findIndex((i: any) => {
+            return i.id == groupId;
+        });
+
+        Groups.splice(deletedGroupIndex, 1);
+
+        localStorage.setItem("GroupsDB", JSON.stringify(Groups));
+        return of(!Groups.find((element: any) => element.id == groupId))
+    }
+
+    deleteRole(roleId: number): Observable<boolean> {
+        let Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]");
+
+        const deletedRoleIndex = Roles.findIndex((i: any) => {
+            return i.id == roleId;
+        });
+
+        Roles.splice(deletedRoleIndex, 1);
+
+        localStorage.setItem("RolesDB", JSON.stringify(Roles));
+        return of(!Roles.find((element: any) => element.id == roleId))
+    }
+
+    editGroup(groupId: number, groupNewName: string): Observable<boolean> {
+        let Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]");
+
         if (Groups.find((group: any) => group.name == groupNewName) == undefined) {
             let group = Groups.find((x: any) => x.id == groupId);
             group.name = groupNewName;
             localStorage.setItem("GroupsDB", JSON.stringify(Groups));
+            return of(true)
         } else {
-            this.AlertMessageServices.error("This Group is already exists !!!");
+            return of(false)
         }
     }
 
-    editRole(roleId: any, roleNewName: string) {
+    editRole(roleId: any, roleNewName: string): Observable<boolean> {
         let Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]");
+
         if (Roles.find((role: any) => role.name == roleNewName) == undefined) {
-            let role = Roles.find((x: any) => x.id == roleId);
-            role.name = roleNewName;
+            let group = Roles.find((x: any) => x.id == roleId);
+            group.name = roleNewName;
             localStorage.setItem("RolesDB", JSON.stringify(Roles));
+            return of(true)
         } else {
-            this.AlertMessageServices.error("This Role is already exists !!!");
+            return of(false)
         }
     }
 }

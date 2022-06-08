@@ -7,34 +7,23 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
 
-const HomeSupRouting: Routes = [
-  {
-    path: 'home', component: HomeComponent
-  }, {
-    path: 'add', component: AddUsersComponent
-  }, {
-    path: 'show', component: ShowUsersComponent
-  }, {
-    path: 'settings', component: SettingsComponent
-  },
-  {
-    path: 'profile', component: ProfileComponent
-  }
-]
-
-
 const routes: Routes = [
   {
     path: 'home', component: HomeComponent
   }, {
-    path: 'add', component: AddUsersComponent
+    path: 'add-users', component: AddUsersComponent
   }, {
-    path: 'show', component: ShowUsersComponent
+    path: 'show-users', component: ShowUsersComponent
   }, {
     path: 'settings', component: SettingsComponent
   },
   {
     path: 'profile', component: ProfileComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full',
   }
 ];
 

@@ -32,6 +32,7 @@ export class SettingsComponent implements OnInit {
         this.modalShow.dataName = "Groups"
         this.modalShow.data = res
         this.modalShow.data2 = res
+        this.modalShow.message.nativeElement.style.display = 'none'
       },
       error: (err: any) => {
         console.log(err);
@@ -56,6 +57,7 @@ export class SettingsComponent implements OnInit {
         this.modalShow.dataName = "Roles"
         this.modalShow.data = res
         this.modalShow.data2 = res
+        this.modalShow.message.nativeElement.style.display = 'none'
       },
       error: (err: any) => {
         console.log(err);
