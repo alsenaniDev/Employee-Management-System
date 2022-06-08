@@ -7,6 +7,7 @@ import { getGroupModel, getRoleModel } from "../user-Pages/show-users/Show-users
 import { User } from "../../pages/user-Pages/show-users/UserDto";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
 import { getUserModel } from "../../utility/Models/get-user-model.dto";
+import { UpdateUserInfoDto, UpdateUserPasswordDto } from "./profile.dto";
 
 @Injectable({
     providedIn: "root",
@@ -14,13 +15,14 @@ import { getUserModel } from "../../utility/Models/get-user-model.dto";
 
 export class ProfileService {
 
-    constructor(private messageAlert: AlertMessageServices, private router: Router) {
+    constructor(private router: Router) {
 
     }
 
-    usersData(): Observable<getUserModel[]> {
+    getUsersData(): Observable<getUserModel[]> {
         return of(JSON.parse(localStorage.getItem("UsersDB") || "[]"));
     }
+
     getUserInfoById(userId: string): Observable<getUserInfoModel> {
         // method chaining 
         var userInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
@@ -51,44 +53,32 @@ export class ProfileService {
         return of(response);
     }
 
-    EditUserInfo(userId: string, formName: FormGroup) {
-        if (formName.invalid) {
-            formName.markAllAsTouched()
+    UpdateUserInformation(dto: UpdateUserInfoDto): Observable<boolean> {
+        let users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+        let userIndex = users.findIndex((user: any) => user.userId == dto.userId)
+        let userInfoBeforeUpdate = JSON.stringify(users[userIndex])
+        users[userIndex] = Object.assign({}, users[userIndex],
+            {
+                firstName: dto.firstName,
+                lastName: dto.lastName,
+                phoneNumber: dto.phoneNumber
+            })
+        let isEdit = userInfoBeforeUpdate != JSON.stringify(users[userIndex])
+        if (isEdit) {
+            localStorage.setItem("UsersDB", JSON.stringify(users))
         }
-        else {
-            let users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-            let userIndex = users.findIndex((user: any) => user.userId == userId)
-            users[userIndex] = Object.assign({}, users[userIndex],
-                {
-                    firstName: formName.value.firstName,
-                    lastName: formName.value.lastName,
-                    phoneNumber: formName.value.phoneNumber
-                })
-            localStorage.setItem("UsersDB", JSON.stringify(users));
-            this.messageAlert.success("The Profile Is Edit")
-        }
+        return of(isEdit)
     }
 
-    EditUserPass(userId: string, formName: FormGroup, userInfo: getUserInfoModel) {
-        if (formName.invalid) {
-            console.log(formName.value.currentPassword)
-            formName.markAllAsTouched()
-        }
-
-        else if (formName.value.currentPassword != userInfo.password) {
-            formName.invalid
-        }
-
-        else if (formName.value.password != formName.value.confirmPassword) {
-            formName.invalid
-        }
-
-        else {
-            let users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-            let userIndex = users.findIndex((user: any) => user.userId == userId)
-            users[userIndex] = Object.assign({}, users[userIndex], { password: formName.value.password })
+    UpdateUserPassword(dto: UpdateUserPasswordDto): Observable<boolean> {
+        let users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+        let userIndex = users.findIndex((user: any) => user.userId == dto.userId)
+        let userInfoBeforeUpdate = JSON.stringify(users[userIndex])
+        users[userIndex] = Object.assign({}, users[userIndex], { password: dto.password })
+        let isEdit = userInfoBeforeUpdate != JSON.stringify(users[userIndex])
+        if (isEdit) {
             localStorage.setItem("UsersDB", JSON.stringify(users))
-            this.router.navigateByUrl("/login")
         }
+        return of(isEdit)
     }
 }

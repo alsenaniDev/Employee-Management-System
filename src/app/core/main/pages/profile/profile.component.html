@@ -87,13 +87,13 @@
 
                             </div>
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-                                <form [formGroup]="editForm" (ngSubmit)="editProfile(userInfo.userId)">
-                                    <app-form-edit [formName]="editForm" [type]="'text'" [label]="'First Name'"
-                                        [ControlName]="'firstName'"></app-form-edit>
-                                    <app-form-edit [formName]="editForm" [type]="'text'" [label]="'Last Name'"
+                                <form [formGroup]="UpdateUserInfoForm" (ngSubmit)="UpdateUserInfo(userInfo?.userId)">
+                                    <app-form-edit [formName]="UpdateUserInfoForm" [type]="'text'"
+                                        [label]="'First Name'" [ControlName]="'firstName'"></app-form-edit>
+                                    <app-form-edit [formName]="UpdateUserInfoForm" [type]="'text'" [label]="'Last Name'"
                                         [ControlName]="'lastName'"></app-form-edit>
-                                    <app-form-edit [formName]="editForm" [type]="'text'" [label]="'Phone Number'"
-                                        [ControlName]="'phoneNumber'"></app-form-edit>
+                                    <app-form-edit [formName]="UpdateUserInfoForm" [type]="'text'"
+                                        [label]="'Phone Number'" [ControlName]="'phoneNumber'"></app-form-edit>
 
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -106,27 +106,27 @@
 
                             <div class="tab-pane fade pt-3" id="profile-change-password">
                                 <div
-                                    *ngIf="editPass.controls['confirmPassword'].value != editPass.controls['password'].value  ">
+                                    *ngIf="UpdateUserPasswordForm.controls['confirmPassword'].value != UpdateUserPasswordForm.controls['password'].value  ">
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         Password Must Match
                                     </div>
                                 </div>
 
-                                <form [formGroup]="editPass" (ngSubmit)="changePassword(userInfo.userId)">
+                                <form [formGroup]="UpdateUserPasswordForm" (ngSubmit)="UpdateUserPassword(userInfo.userId)">
                                     <div
-                                        *ngIf="editPass.controls['currentPassword'].value != userInfo.password && editPass.controls['currentPassword'].value != ''">
+                                        *ngIf="UpdateUserPasswordForm.controls['currentPassword'].value != userInfo.password && UpdateUserPasswordForm.controls['currentPassword'].value != ''">
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                             Current Password Failed
                                         </div>
                                     </div>
                                     <app-form-edit [label]="'Current Password'" [ControlName]="'currentPassword'"
-                                        [formName]="editPass" [type]="'password'">
+                                        [formName]="UpdateUserPasswordForm" [type]="'password'">
                                     </app-form-edit>
                                     <app-form-edit id="newPass" [label]="'New Password'" [ControlName]="'password'"
-                                        [formName]="editPass" [type]="'password'"></app-form-edit>
+                                        [formName]="UpdateUserPasswordForm" [type]="'password'"></app-form-edit>
                                     <app-form-edit id="reEnterPass" [label]="'Re-enter New
                                     Password'" [type]="'password'" [ControlName]="'confirmPassword'"
-                                        [formName]="editPass">
+                                        [formName]="UpdateUserPasswordForm">
                                     </app-form-edit>
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Change Password</button>
