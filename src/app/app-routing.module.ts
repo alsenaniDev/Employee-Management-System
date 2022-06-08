@@ -1,38 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
-import { LoginLayoutComponent } from './layouts/login-layout/login-layout.component';
+import { AccountLayoutComponent } from './core/layouts/account/account-layout.component';
+import { MainLayoutComponent } from './core/layouts/main/main-layout.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardLayoutComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: '/dashboard/admin',
-        pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
-      }
-    ]
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   {
-    path: '',
-    component: LoginLayoutComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: '/login',
-        pathMatch: 'full'
-      },
-      {
-        path: 'login',
-        loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
-      }
-    ]
+    path: 'main',
+    component: MainLayoutComponent,
+    loadChildren: () => import('./core/main/main.module').then(m => m.MainModule)
+  },
+  {
+    path: 'login',
+    component: AccountLayoutComponent,
+    loadChildren: () => import('./core/account/account.module').then(m => m.AccountModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
+    pathMatch: 'full'
   }
 ];
 
