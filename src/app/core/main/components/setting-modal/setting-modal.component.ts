@@ -77,50 +77,46 @@ export class SettingModalComponent implements OnInit {
   }
 
   deleteGroup(id: number) {
-    let deleteGroup = () => {
-      this.SettingModalService.deleteGroup(id).subscribe({
-        next: (res: boolean) => {
-          if (res) {
-            this.AlertMessageServices.success("Group deleted successfully!");
-          }
-          else {
-            this.AlertMessageServices.Warning("Group did't deleted successfully!");
-          }
-        },
-        error: (err: any) => {
-          this.AlertMessageServices.error(err.message);
-        }
-      });
-      this.SettingsComponent.getGroups();
-      this.SettingsComponent.getGroupsCount();
-    }
-
     this.popupAlertMessage.servicesAlert({
       header: "Delete Group",
       message: "Are you sure you want to delete this group?",
-      operations: deleteGroup
+      operations: () => {
+        this.SettingModalService.deleteGroup(id).subscribe({
+          next: (res: boolean) => {
+            if (res) {
+              this.AlertMessageServices.success("Group deleted successfully!");
+            }
+            else {
+              this.AlertMessageServices.Warning("Group did't deleted successfully!");
+            }
+          },
+          error: (err: any) => {
+            this.AlertMessageServices.error(err.message);
+          }
+        });
+        this.SettingsComponent.getGroups();
+        this.SettingsComponent.getGroupsCount();
+      }
     })
   }
 
   deleteRole(id: number) {
-    let deleteRole = () => {
-      this.SettingModalService.deleteRole(id).subscribe({
-        next: (res: boolean) => {
-          if (res) {
-            this.AlertMessageServices.success("Role deleted successfully!");
-          } else {
-            this.AlertMessageServices.Warning("Role did't deleted successfully!");
-          }
-        }
-      });
-      this.SettingsComponent.getRoles();
-      this.SettingsComponent.getRolesCount();
-    }
-
     this.popupAlertMessage.servicesAlert({
       header: "Delete Group",
       message: "Are you sure you want to delete this role?",
-      operations: deleteRole
+      operations: () => {
+        this.SettingModalService.deleteRole(id).subscribe({
+          next: (res: boolean) => {
+            if (res) {
+              this.AlertMessageServices.success("Role deleted successfully!");
+            } else {
+              this.AlertMessageServices.Warning("Role did't deleted successfully!");
+            }
+          }
+        });
+        this.SettingsComponent.getRoles();
+        this.SettingsComponent.getRolesCount();
+      }
     })
   }
 
