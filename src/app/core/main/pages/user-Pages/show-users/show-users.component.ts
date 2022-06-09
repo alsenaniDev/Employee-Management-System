@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { AlertMessageServices } from '../../../utility/services/AlertMessage.Services';
 import { popupAlertMessage } from '../../../utility/services/popupAlert.services';
 import { getUserInfoModel } from '../../../utility/Models/get-user-model.dto';
 import { getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { getGroupModel, getRoleModel } from './Show-users-Dto';
 import { ShowUserServices } from './show-users.service';
-import { User } from './UserDto';
+import { UpdateUserInfoDto } from './UserDto';
+
 
 @Component({
   selector: 'app-show-users',
@@ -16,24 +16,23 @@ import { User } from './UserDto';
 })
 
 export class ShowUsersComponent {
-  EditForm: FormGroup;
+  EditUserInfoForm: FormGroup;
   UsersData: getUserModel[];
   Groups: getGroupModel[]
   Roles: getRoleModel[]
-  selectedUsers: User[]
+  selectedUsers: getUserInfoModel[]
   selectedRole: any
   selectedGroup: any
   UserDialog!: boolean;
   submitted!: boolean;
   checkInput: boolean = false;
-  GroupSelect: any
+  userGroupsSelect: any[]
   usersDataInfo: getUserInfoModel[]
   userInfo: any
   userDetails: getUserInfoModel
   usersGroups: getGroupModel[]
 
   constructor(
-    private messageService: MessageService,
     private userServices: ShowUserServices,
     private fb: FormBuilder,
     private popupServices: popupAlertMessage,
@@ -43,28 +42,54 @@ export class ShowUsersComponent {
 
   }
 
-
-
   ngOnInit() {
 
     this.Init_UpdateUserInfoForm();
     this.getUserInfo()
-    this.userInformation()
+    this.getuserInfoById()
     this.getGroups()
     this.getRoles()
-
     this.usersDataInfo = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
     if (this.userInfo?.role !== "Admin" && this.userInfo?.role !== "Super-Admin") {
       this.Groups = this.Groups.filter((group: getGroupModel) => this.userInfo.groups.includes(group.name))
     }
-    console.log(this.userInfo);
   }
 
 
+  controls = [
+    {
+      title: 'First Name',
+      controlName: 'fname',
+      type: "text"
+    },
+    {
+      title: 'Last Name',
+      controlName: 'lname',
+      type: "text"
+    },
+
+    {
+      title: 'Email',
+      controlName: 'email',
+      type: "text"
+    },
+    {
+      title: 'Phone Number',
+      controlName: 'phoneNumber',
+      type: "text"
+    },
+    {
+      title: 'Password',
+      controlName: 'password',
+      type: "password"
+    }
+
+  ];
+
 
   getUserInfo() {
-    this.userInformation()
-    this.userServices.usersInfoData().subscribe({
+    this.getuserInfoById()
+    this.userServices.getUsersInfoData().subscribe({
       next: (res: getUserInfoModel[]) => {
         this.usersDataInfo = res
       }, error: (err: any) => {
@@ -73,12 +98,11 @@ export class ShowUsersComponent {
     })
   }
 
-  userInformation() {
+  getuserInfoById() {
     let userInfoData = JSON.parse(localStorage.getItem("userInfo") || "")
     this.userServices.getUserInfoById(userInfoData.userId).subscribe({
       next: (res: getUserInfoModel) => {
         this.userInfo = res
-        console.log(res)
       },
       error: (err: any) => {
         return err;
@@ -110,101 +134,108 @@ export class ShowUsersComponent {
 
 
   Init_UpdateUserInfoForm(userDetails?: getUserInfoModel) {
-    this.EditForm = this.fb.group({
+
+    this.EditUserInfoForm = this.fb.group({
+      userId: [userDetails?.userId],
       fname: [userDetails?.firstName, [Validators.required, Validators.minLength(3)]],
       lname: [userDetails?.lastName, [Validators.required, Validators.minLength(3)]],
       email: [userDetails?.email, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
       phoneNumber: [userDetails?.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
       password: [userDetails?.password, [Validators.required, Validators.minLength(6)]],
       role: [userDetails?.role, Validators.required],
-      groups: [userDetails?.groups, Validators.required],
+      groups: [this.userGroupsSelect, Validators.required],
     })
-    console.log(userDetails?.groups);
-    console.log(this.EditForm.value.role);
+    console.log(this.EditUserInfoForm.value.groups)
+
 
   }
 
-  controls = [
-    {
-      title: 'First Name',
-      controlName: 'fname',
-      type: "text"
-    },
-    {
-      title: 'Last Name',
-      controlName: 'lname',
-      type: "text"
-    },
-
-    {
-      title: 'Email',
-      controlName: 'email',
-      type: "text"
-    },
-    {
-      title: 'Phone Number',
-      controlName: 'phoneNumber',
-      type: "text"
-    },
-    {
-      title: 'Password',
-      controlName: 'password',
-      type: "password"
-    },
-
-  ];
-
-  onsubmit() {
-    this.userServices.EditUser(this.userDetails, this.EditForm)
-    this.getUserInfo()
-    this.UserDialog = false;
-  }
-
-
-  deleteSelectedUsers() {
-    var deleteUser = () => {
-      this.userServices.DeleteSelectUser(this.selectedUsers)
-      this.selectedUsers = [];
-      this.getUserInfo()
+  UpdateUserInfo() { // updateb-> call backend
+    if (this.EditUserInfoForm.invalid) {
+      this.EditUserInfoForm.markAllAsTouched()
     }
-    this.popupServices.servicesAlert({
-      header: "Confirm",
-      message: 'Are you sure you want to delete This Users ?',
-      operations: deleteUser
-    })
+    else {
+      const userDto: UpdateUserInfoDto = {
+        userId: this.EditUserInfoForm.value.userId,
+        firstName: this.EditUserInfoForm.value.fname,
+        lastName: this.EditUserInfoForm.value.lname,
+        email: this.EditUserInfoForm.value.email,
+        phoneNumber: this.EditUserInfoForm.value.phoneNumber,
+        password: this.EditUserInfoForm.value.password,
+        role: this.EditUserInfoForm.value.role,
+        groups: this.EditUserInfoForm.value.groups,
+      }
+      this.userServices.UpdateUserInfo(userDto).subscribe({
+        next: (res: boolean) => {
+          if (res) {
+            this.alertMessage.success("The User is updated")
+            this.getUserInfo()
+          } else {
+            this.alertMessage.Warning("The User Was Not Update")
+          }
+          this.UserDialog = false;
+        }, error: (err: any) => {
+          this.UserDialog = false;
+          return err
+        }
+      })
+    }
+
   }
 
-  editUser(userId: any) {
-    this.UserDialog = true;
-    var userGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-    this.userServices.getUserInfoById(userId).subscribe({
-      next: (res: getUserInfoModel) => {
-        this.userDetails = res
-        this.GroupSelect = userGroups.filter((group: any) =>
-          res.groups.includes(group.name))
-        this.Init_UpdateUserInfoForm(this.userDetails)
-        console.log(this.GroupSelect)
-        console.log(res)
-      },
-      error: (err: any) => {
-        return err;
 
-      }
-    })
-    this.userInformation()
+
+  ToggleUpdateUserInfo(userFormDto: getUserInfoModel) { // popup
+    this.UserDialog = !this.UserDialog;
+
+    if (this.UserDialog) {
+      this.Init_UpdateUserInfoForm(userFormDto)
+      this.userGroupsSelect = this.Groups.filter((group: any) =>
+        userFormDto.groups.includes(group.name))
+    }
   }
 
   deleteUser(userId: any) {
-    var deleteUser = () => {
-      this.userServices.DeleteUser(userId);
-      this.getUserInfo()
-    }
+
     this.popupServices.servicesAlert({
       header: "Confirm",
       message: 'Are you sure you want to delete This User ?',
-      operations: deleteUser
+      operations: () => {
+        this.userServices.DeleteUser(userId).subscribe({
+          next: (res: boolean) => {
+            if (res) {
+              this.alertMessage.success("The User is Delete")
+            } else {
+              this.alertMessage.Warning("The User Was Not Delete")
+            }
+          }, error: (err: any) => {
+            return err
+          }
+        });
+        this.getUserInfo()
+      }
     })
 
+  }
+
+  deleteSelectedUsers() {
+    this.popupServices.servicesAlert({
+      header: "Confirm",
+      message: 'Are you sure you want to delete This Users ?',
+      operations: () => {
+        this.userServices.DeleteSelectUser(this.selectedUsers).subscribe({
+          next: (res: boolean) => {
+            if (res) {
+              this.alertMessage.success("The Users is Delete")
+              this.selectedUsers = []
+            }
+          }, error: (err: any) => {
+            this.alertMessage.error("Action Valid")
+          }
+        })
+        this.getUserInfo()
+      }
+    })
   }
 
   hideDialog() {
@@ -216,7 +247,7 @@ export class ShowUsersComponent {
     this.getUserInfo()
     let dataFiltered = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
 
-    if (this.userInfo?.role == "Admin") {
+    if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
       if (this.selectedRole != undefined) {
         dataFiltered = this.usersDataInfo
         dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userInfo.userId && user.role == this.selectedRole)
@@ -270,7 +301,7 @@ export class ShowUsersComponent {
 
   checkSuperRole(usersInfo: any, userInfoRole: string, superRole: string) {
 
-    return ((usersInfo.role == userInfoRole || usersInfo.role == superRole) && (this.userInfo?.role != 'Super-Admin' || usersInfo.role == superRole))
+    return ((usersInfo.role == userInfoRole || usersInfo.role == superRole) && (this.userInfo?.role != superRole || usersInfo.role == superRole))
   }
 
 

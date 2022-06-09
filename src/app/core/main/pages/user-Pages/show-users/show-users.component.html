@@ -97,7 +97,7 @@
           </td>
           <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2"
-              (click)="editUser(User.userId)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
+              (click)="ToggleUpdateUserInfo(User)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
           </td>
           <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
@@ -112,7 +112,7 @@
       </ng-template>
     </p-table>
   </div>
-  <form [formGroup]="EditForm" (ngSubmit)="onsubmit()">
+  <form [formGroup]="EditUserInfoForm" (ngSubmit)="UpdateUserInfo()">
     <p-dialog [(visible)]="UserDialog" [style]="{width: '450px'}" header="User Details" [modal]="true"
       styleClass="p-fluid" [draggable]="false">
 
@@ -129,8 +129,9 @@
             <option *ngFor="let role of Roles" [ngValue]="role.name">{{role.name}}</option>
           </select>
           <label class="form-label">Groups</label>
-          <p-multiSelect formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="GroupSelect"
-            defaultLabel="Select a Groups" optionLabel="name" display="chip"></p-multiSelect>
+          <p-multiSelect formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="userGroupsSelect"
+            defaultLabel="Select a Groups" optionLabel="name" display="chip">
+          </p-multiSelect>
         </div>
       </ng-template>
 
