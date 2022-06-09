@@ -1,7 +1,13 @@
 import { Component, Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { getUserModel } from '../../../utility/Models/get-user-model.dto';
+import { AlertMessageServices } from '../../../utility/services/AlertMessage.Services';
+import { getGroupModel, getRoleModel } from '../show-users/Show-users-Dto';
+import { ShowUserServices } from '../show-users/show-users.service';
 import { AddUserServices } from './add-users.service';
+
+import { AddUserDto } from './AddUserDto';
 
 declare var $: any;
 @Component({
@@ -13,8 +19,20 @@ declare var $: any;
 @Injectable({ providedIn: "root" })
 
 export class AddUsersComponent {
-  SignUpForm: FormGroup;
+  AddUserForm: FormGroup;
+  UsersEmail = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+    .map((e: getUserModel) => e.email)
+  Roles: getRoleModel[];
+  Groups: getGroupModel[];
 
+  constructor(
+    public formBuilder: FormBuilder,
+    private router: Router,
+    public usersServices: AddUserServices,
+    private alrtMessage: AlertMessageServices,
+    private userServices: ShowUserServices
+  ) {
+  }
   controls = [
     {
       title: 'First Name',
@@ -44,19 +62,15 @@ export class AddUsersComponent {
     },
   ];
 
-  constructor(
-    public formBuilder: FormBuilder,
-    private router: Router,
-    public usersServices: AddUserServices) {
-  }
-
   ngOnInit(): void {
-    this.usersServices.bindData();
-    this.signUpFormFunction();
+    this.Init_AddUserForm();
+    this.getGroups();
+    this.getRoles()
+    this.AddUserForm.value.email = ""
   }
 
-  signUpFormFunction() {
-    this.SignUpForm = this.formBuilder.group({
+  Init_AddUserForm() {
+    this.AddUserForm = this.formBuilder.group({
       fname: ['', [Validators.required, Validators.minLength(3)]],
       lname: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
@@ -67,8 +81,58 @@ export class AddUsersComponent {
     });
   }
 
-  onSubmit() {
-    this.usersServices.addUser(this.SignUpForm);
-    this.router.navigate(["/main/show-users"])
+
+
+  AddUser() {
+    if (this.AddUserForm.invalid) {
+      this.AddUserForm.markAllAsTouched()
+    }
+    else if (this.UsersEmail.includes(this.AddUserForm.value.email)) {
+      this.AddUserForm.invalid
+    } else {
+      let dto: AddUserDto = {
+        email: this.AddUserForm.value.email,
+        firstName: this.AddUserForm.value.fname,
+        lastName: this.AddUserForm.value.lname,
+        password: this.AddUserForm.value.password,
+        phoneNumber: this.AddUserForm.value.phoneNumber,
+        role: this.AddUserForm.value.role,
+        groups: this.AddUserForm.value.groups
+      }
+      this.usersServices.addUser(dto).subscribe({
+        next: (res: boolean) => {
+          if (res) {
+            this.alrtMessage.success("The User is Added")
+            this.router.navigateByUrl("/main/show-users")
+          }
+        }, error: (err: any) => {
+          return err
+        }
+      })
+    }
+
   }
+  getRoles() {
+    this.userServices.getRoles().subscribe({
+      next: (res: getRoleModel[]) => {
+        this.Roles = res
+      },
+      error: (err: any) => {
+        return err;
+      }
+    })
+  }
+  getGroups() {
+    this.userServices.getGroups().subscribe({
+      next: (res: getGroupModel[]) => {
+        this.Groups = res
+      },
+      error: (err: any) => {
+        return err;
+      }
+    })
+  }
+
+
+
 }
