@@ -6,19 +6,15 @@ import { AlertMessageServices } from "../../../utility/services/AlertMessage.Ser
 import { popupAlertMessage } from "../../../utility/services/popupAlert.services";
 import { getUserInfoModel } from "../../../utility/Models/get-user-model.dto";
 import { getGroupModel, getRoleModel } from "./Show-users-Dto";
-import { User } from "./UserDto";
+import { UpdateUserInfoDto, User } from "./UserDto";
+
 
 @Injectable({ providedIn: "root" })
 export class ShowUserServices {
-    UsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-    Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-    Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-    userProfile = JSON.parse(localStorage.getItem("userInfo") || "null")
-    usersInfo = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
 
-    constructor(private popupServices: popupAlertMessage, private alertMessage: AlertMessageServices) { }
+    constructor(private alertMessage: AlertMessageServices) { }
 
-    usersInfoData(): Observable<getUserInfoModel[]> {
+    getUsersInfoData(): Observable<getUserInfoModel[]> {
         let UserIdsData: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]");
         var response: getUserInfoModel[] = UserIdsData.map((userIds: User) => {
             let userInfo = JSON.parse(localStorage.getItem("UsersDB" || "[]"))
@@ -84,60 +80,86 @@ export class ShowUserServices {
         return of(response)
     }
 
-    DeleteUser(userId: string) {
+    DeleteUser(userId: string): Observable<boolean> {
 
-        let userInfo: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]");
-        let userInfoIndex = userInfo.findIndex((user: any) => user.userId == userId)
-        userInfo.splice(userInfoIndex, 1)
-        localStorage.setItem("usersInfoDB", JSON.stringify(userInfo))
-        let UsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        let userIndex = UsersData.findIndex((user: any) => user.userId == userId)
-        this.UsersData.splice(userIndex, 1)
-        localStorage.setItem("UsersDB", JSON.stringify(this.UsersData))
-        this.alertMessage.success("The User is Delete")
-    }
+        let userInfoIds: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]");
+        let userInfoIdsIndex = userInfoIds.findIndex((user: any) => user.userId == userId)
+        userInfoIds.splice(userInfoIdsIndex, 1)
+        localStorage.setItem("usersInfoDB", JSON.stringify(userInfoIds))
 
-    DeleteSelectUser(usersSelect: any[]) {
-        let userInfo: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-            .filter((user: any) =>
-                !usersSelect.find((userr: any) => userr.userId == user.userId))
-        localStorage.setItem("usersInfoDB", JSON.stringify(userInfo))
-
-        let UsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]").filter((user: getUserModel) =>
-            !usersSelect?.find((id: any) => id.userId == user.userId))
+        let UsersData: getUserModel[] = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+        let userDataIndex = UsersData.findIndex((user: any) => user.userId == userId)
+        UsersData.splice(userDataIndex, 1)
         localStorage.setItem("UsersDB", JSON.stringify(UsersData))
 
-        this.alertMessage.success("The Users is Deleted")
+        let findUserInTableInfoIds = userInfoIds.find((user: User) => user.userId == userId)
+        let findUserInTableUsers = UsersData.find((user: getUserModel) => user.userId == userId)
+
+        return of(!findUserInTableInfoIds && !findUserInTableUsers)
     }
 
-    EditUser(userInfo: getUserInfoModel, formName: FormGroup) {
-        if (formName.invalid) {
-            formName.markAllAsTouched()
-        } else {
-            let userData: getUserModel[] = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-            let userDataIndex = userData.findIndex((user: getUserModel) => user.userId == userInfo?.userId)
+    DeleteSelectUser(usersSelect: getUserInfoModel[]): Observable<boolean> {
+        let usersSelectedIds = usersSelect.map((id: getUserInfoModel) => id.userId)
 
-            let userInformation: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-            let userInfoIndex = userInformation.findIndex((user: User) => user.userId == userInfo?.userId)
+        let getUserInfoIds: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
 
-            let findUserRole: getRoleModel = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-                .find((role: getRoleModel) => role.name == formName.value.role)
+        let getUsersData: getUserModel[] = JSON.parse(localStorage.getItem("UsersDB") || "[]")
 
-            let findGroups: getGroupModel[] = formName.value.groups.map((groupId: getGroupModel) => groupId.id)
+        for (let selectIds of usersSelect) {
 
-            userData[userDataIndex] = Object.assign({}, userData[userDataIndex], {
-                firstName: formName.value.fname,
-                lastName: formName.value.lname,
-                email: formName.value.email,
-                phoneNumber: formName.value.phoneNumber,
-                password: formName.value.password
-            })
-            localStorage.setItem("UsersDB", JSON.stringify(userData))
-            userInformation[userInfoIndex] = Object.assign({}, userInformation[userInfoIndex], { role: findUserRole.id, groups: findGroups })
-            localStorage.setItem("usersInfoDB", JSON.stringify(userInformation))
+            let UsersSelectInTableUsersIds = getUserInfoIds.find((user: User) => user.userId == selectIds.userId)
+            getUserInfoIds.splice(getUserInfoIds.indexOf(UsersSelectInTableUsersIds), 1)
 
-
+            let UsersSelectInTableUsersInfo = getUsersData.find((user: getUserModel) => user.userId == selectIds.userId)
+            getUsersData.splice(getUsersData.indexOf(UsersSelectInTableUsersInfo), 1)
         }
+
+        localStorage.setItem("usersInfoDB", JSON.stringify(getUserInfoIds))
+
+        localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
+
+        let checkUserFoundInTableInfoIds = getUserInfoIds.find((user: User) => usersSelectedIds.includes(user.userId))
+
+        let checkUserFoundInTableUsersData = getUsersData.find((user: getUserModel) => usersSelectedIds.includes(user.userId))
+
+        return of(!checkUserFoundInTableInfoIds && !checkUserFoundInTableUsersData)
+    }
+
+    UpdateUserInfo(dto: UpdateUserInfoDto): Observable<boolean> {
+
+
+        let getUsersData: getUserModel[] = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+        let FinduserDataIndex = getUsersData.findIndex((user: getUserModel) => user.userId == dto?.userId)
+
+        let userDataBeforeUpdate = getUsersData[FinduserDataIndex]
+
+        let getUserInfoIds: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
+        let FinduserInfoIdsIndex = getUserInfoIds.findIndex((user: User) => user.userId == dto?.userId)
+
+        let userInfoIdbeforeUpdate = getUserInfoIds[FinduserInfoIdsIndex]
+
+        let findUserRole: any = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+            .find((role: any) => role.name == dto?.role)
+
+        let findUserGroups: number[] = dto.groups.map((groupId: getGroupModel) => groupId.id)
+
+        getUsersData[FinduserDataIndex] = Object.assign({}, getUsersData[FinduserDataIndex], {
+            firstName: dto.firstName,
+            lastName: dto.lastName,
+            email: dto.email,
+            phoneNumber: dto.phoneNumber,
+            password: dto.password
+        })
+
+        getUserInfoIds[FinduserInfoIdsIndex] = Object.assign({}, getUserInfoIds[FinduserInfoIdsIndex], { role: findUserRole.id, groups: findUserGroups })
+
+        localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
+
+        localStorage.setItem("usersInfoDB", JSON.stringify(getUserInfoIds))
+
+        return of((JSON.stringify(userDataBeforeUpdate) != JSON.stringify(getUsersData[FinduserDataIndex]))
+            || (JSON.stringify(userInfoIdbeforeUpdate) != JSON.stringify(getUserInfoIds[FinduserInfoIdsIndex])))
+
     }
 
 }

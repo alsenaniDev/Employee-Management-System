@@ -63,11 +63,8 @@ export class ProfileService {
                 lastName: dto.lastName,
                 phoneNumber: dto.phoneNumber
             })
-        let isEdit = userInfoBeforeUpdate != JSON.stringify(users[userIndex])
-        if (isEdit) {
-            localStorage.setItem("UsersDB", JSON.stringify(users))
-        }
-        return of(isEdit)
+        localStorage.setItem("UsersDB", JSON.stringify(users))
+        return of(userInfoBeforeUpdate != JSON.stringify(users[userIndex]))
     }
 
     UpdateUserPassword(dto: UpdateUserPasswordDto): Observable<boolean> {
@@ -75,10 +72,7 @@ export class ProfileService {
         let userIndex = users.findIndex((user: any) => user.userId == dto.userId)
         let userInfoBeforeUpdate = JSON.stringify(users[userIndex])
         users[userIndex] = Object.assign({}, users[userIndex], { password: dto.password })
-        let isEdit = userInfoBeforeUpdate != JSON.stringify(users[userIndex])
-        if (isEdit) {
-            localStorage.setItem("UsersDB", JSON.stringify(users))
-        }
-        return of(isEdit)
+        localStorage.setItem("UsersDB", JSON.stringify(users))
+        return of(userInfoBeforeUpdate != JSON.stringify(users[userIndex]))
     }
 }
