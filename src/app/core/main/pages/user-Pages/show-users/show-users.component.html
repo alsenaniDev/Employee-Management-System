@@ -10,29 +10,38 @@
               class="p-d-flex p-ai-center p-jc-between">
               <h5 class="p-m-0">Filter By Role</h5>
               <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="name"
-                [(ngModel)]="selectedRole" (ngModelChange)="filterTableData()">
+                [(ngModel)]="selectedRole" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
               </p-dropdown>
               <br />
               <button pButton pRipple label="All Roles" icon="pi pi-align-justify" class="p-button-info"
                 (click)="clearRole()"></button>
             </div>
+
           </div>
           <div class="userRole">
             <ng-template #userData class="p-d-flex  p-ai-center p-jc-between">
-              <label class="form-label">Your Role</label>
-              <input [(ngModel)]="checkInput" type="checkbox" id="checked" style="margin: 0 10px;"
-                (change)="filterTableData()">
-              <small>Check To Filter By Your Role</small>
-              <input disabled type="text" class="form-control" id="UserRole" value="{{userInfo?.role}}">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Filter By Role</h5>
+                <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="name"
+                  [(ngModel)]="selectedRole" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
+                </p-dropdown>
+                <br />
+                <button pButton pRipple label="All Roles" icon="pi pi-align-justify" class="p-button-info"
+                  (click)="clearRole()"></button>
+              </div>
             </ng-template>
           </div>
 
           <div>
             <div class="p-d-flex p-ai-center p-jc-between ml-20">
               <h5 class="p-m-0">Filter By Groups</h5>
-              <p-dropdown placeholder="Select Group" [options]="Groups" optionLabel="name" optionValue="name"
-                [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData()">
-              </p-dropdown>
+              <!-- <p-dropdown placeholder="Select Group" [options]="Groups" optionLabel="name" optionValue="name"
+                [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
+              </p-dropdown> -->
+              <p-multiSelect placeholder="Select Groups" [options]="Groups" optionLabel="name" optionValue="name"
+                [virtualScroll]="true" [style]="{'width':'240px'}" [panelStyle]="{'width':'200px'}" display="chip"
+                [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
+              </p-multiSelect>
               <br />
               <button pButton pRipple label="All Groups" icon="pi pi-align-justify" class="p-button-info"
                 (click)="clearGroup()"></button>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertMessageServices } from '../../../utility/services/AlertMessage.Services';
 import { popupAlertMessage } from '../../../utility/services/popupAlert.services';
@@ -16,6 +16,7 @@ import { UpdateUserInfoDto } from './UserDto';
 })
 
 export class ShowUsersComponent {
+  @ViewChild("check") check: ElementRef["nativeElement"]
   EditUserInfoForm: FormGroup;
   UsersData: getUserModel[];
   Groups: getGroupModel[]
@@ -25,12 +26,13 @@ export class ShowUsersComponent {
   selectedGroup: any
   UserDialog!: boolean;
   submitted!: boolean;
-  checkInput: boolean = false;
+  checkInput!: any
   userGroupsSelect: any[]
   usersDataInfo: getUserInfoModel[]
   userInfo: any
   userDetails: getUserInfoModel
   usersGroups: getGroupModel[]
+  UserRole: boolean
 
   constructor(
     private userServices: ShowUserServices,
@@ -49,11 +51,15 @@ export class ShowUsersComponent {
     this.getuserInfoById()
     this.getGroups()
     this.getRoles()
+
     this.usersDataInfo = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
     if (this.userInfo?.role !== "Admin" && this.userInfo?.role !== "Super-Admin") {
       this.Groups = this.Groups.filter((group: getGroupModel) => this.userInfo.groups.includes(group.name))
+      this.Roles = this.Roles.filter((role: getRoleModel) => role.name == this.userInfo?.role)
     }
   }
+
+
 
 
   controls = [
@@ -243,56 +249,25 @@ export class ShowUsersComponent {
     this.submitted = false;
   }
 
-  filterTableData() {
+  filterTableData(role: any, group: any) {
     this.getUserInfo()
-    let dataFiltered = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
 
-    if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
-      if (this.selectedRole != undefined) {
-        dataFiltered = this.usersDataInfo
-        dataFiltered = dataFiltered.filter((user: any) => user.userId != this.userInfo.userId && user.role == this.selectedRole)
-        this.usersDataInfo = dataFiltered
-
-      }
-      else if (this.selectedRole == undefined) {
-        this.usersDataInfo = dataFiltered
-      }
-
-      if (this.selectedGroup != undefined) {
-        console.log(this.selectedGroup)
-        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userInfo?.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
-        this.usersDataInfo = dataFiltered
-      }
-      else if (this.selectedGroup == undefined) {
-        this.usersDataInfo = dataFiltered
-      }
+    let dataFiltered = this.usersDataInfo.filter((user: getUserInfoModel) =>
+      user.userId != this.userInfo?.userId)
+    if ((role) && (group && group?.length != 0)) {
+      dataFiltered = dataFiltered.filter((user: any) => (user.userId != this.userInfo.userId)
+        && (user.role == role
+          && user.groups.find((g: getGroupModel) => group?.includes(g)))
+      )
     }
-    else {
-      if (this.selectedGroup != undefined && this.checkInput) {
-        let userFound = this.usersDataInfo.find((user: any) => user.userId == this.userInfo.userId)
-        dataFiltered = dataFiltered.filter((user: any) =>
-          user.userId != this.userInfo.userId && userFound.role == user.role &&
-          user.groups.find((usersGroup: any) =>
-            usersGroup == this.selectedGroup))
-        this.usersDataInfo = dataFiltered
-
-      }
-
-      else if (this.selectedGroup == undefined && this.checkInput) {
-        let userFound = this.usersDataInfo.find((user: any) => user.userId == this.userInfo?.userId)
-        this.usersDataInfo = dataFiltered.filter((user: any) => user.userId != this.userInfo?.userId && userFound.role == user.role)
-      }
-
-      else if (!this.checkInput && this.selectedGroup != undefined) {
-        this.usersDataInfo = dataFiltered.filter((users: any) => users.userId != this.userInfo?.userId && users.groups.find((usersGroup: any) => usersGroup == this.selectedGroup))
-      }
-
-      else if (!this.checkInput && this.selectedGroup == undefined) {
-        let userFound = this.usersDataInfo.find((user: any) => user.userId == this.userInfo?.userId)
-        dataFiltered = dataFiltered.filter((users: any) => users.userId != this.userInfo?.userId && users.groups.find((group: any) => userFound.groups.includes(group)))
-        this.usersDataInfo = dataFiltered
-      }
+    if (role || group && group?.length != 0) {
+      dataFiltered = dataFiltered.filter((user: any) => (user.userId != this.userInfo.userId)
+        && (user.role == role
+          || user.groups?.find((g: getGroupModel) => group?.includes(g)))
+      )
     }
+
+    this.usersDataInfo = dataFiltered
   }
 
   checkuserRole(userRole: any, superRole?: string) {
@@ -307,16 +282,21 @@ export class ShowUsersComponent {
 
   clearGroup() {
     this.selectedGroup = undefined;
-    this.filterTableData()
+    this.filterTableData(this.selectedRole, this.selectedGroup)
+    // this.filterTableData(role, group)
   }
 
   clearRole() {
     this.selectedRole = undefined;
-    this.filterTableData()
+    this.filterTableData(this.selectedRole, this.selectedGroup)
   }
 
   checkSelectedUsers(selectedUsers: any) {
     let usersSelect = selectedUsers?.map((check: any) => check.role)
     return usersSelect?.includes("Super-Admin") || (usersSelect?.includes("Admin") && this.userInfo.role != 'Super-Admin')
+  }
+  getRoleCheck() {
+
+    this.usersDataInfo = this.usersDataInfo.filter((u: any) => u.role == this.userInfo?.role)
   }
 }
