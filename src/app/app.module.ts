@@ -21,7 +21,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProfileComponent } from './core/main/pages/profile/profile.component';
 import { FormEditComponent } from './core/main/utility/common/form-edit/form-edit.component';
-import { SettingModalComponent } from './core/main/components/setting-modal/setting-modal.component';
+import { GroupSettingModalComponent } from './core/main/components/group-setting-modal/group-setting-modal.component';
+import { RoleSettingModalComponent } from './core/main/components/role-setting-modal/role-setting-modal.component';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
@@ -62,7 +63,8 @@ import { StatsCardComponent } from './core/main/components/stats-card/stats-card
     ProfileComponent,
     SettingsComponent,
     FormEditComponent,
-    SettingModalComponent,
+    GroupSettingModalComponent,
+    RoleSettingModalComponent,
     HomeComponent,
     LoginPageComponent,
     StatsCardComponent,

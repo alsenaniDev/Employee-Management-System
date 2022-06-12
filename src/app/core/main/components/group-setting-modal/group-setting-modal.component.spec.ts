@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShowModalComponent } from './setting-modal.component';
+import { ShowModalComponent } from './group-setting-modal.component';
 
 describe('ShowModalComponent', () => {
   let component: ShowModalComponent;

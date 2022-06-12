@@ -1,35 +1,28 @@
 <p-toast></p-toast>
-<p-confirmDialog></p-confirmDialog>
 
-<div class="modal fade" id="largeModal" tabindex="-1">
+<div class="modal fade" id="GroupModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="model-title">{{dataName}} Modal</h5>
+        <h5 class="modal-title" id="model-title">Groups Modal</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert" #alert
-          style="display: none;">
+        <div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert"
+          [ngStyle]="{'display': alertShow ? 'block' : 'none'}">
           <i class="bi bi-exclamation-octagon me-1"></i>
-          Please Enter {{dataName}} Name
+          Please Enter Group Name
           <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
         </div>
         <div style="display: flex;justify-content: space-between;">
           <div class="col-md-4">
-            <label class="form-label" id="label-name">Enter {{dataName}} Name</label>
-            <input type="text" class="form-control" #inputValue>
+            <label class="form-label" id="label-name">Enter Group Name</label>
+            <input type="text" class="form-control" [(ngModel)]="inputValue">
           </div>
           <div style="margin-top: 32px;">
-            <button type="button" *ngIf="dataName == 'Groups'; else role" class="btn btn-outline-primary"
-              (click)="addGroup()">
+            <button type="button" class="btn btn-outline-primary" (click)="addGroup()">
               Add Group
             </button>
-            <ng-template #role>
-              <button type="button" class="btn btn-outline-primary" (click)="addRole()">
-                Add Role
-              </button>
-            </ng-template>
           </div>
         </div>
         <hr />
@@ -46,6 +39,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
             <tr [pEditableRow]="data">
+
               <td>
                 {{ri + 1}}
               </td>
@@ -53,7 +47,7 @@
               <td>
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <input pInputText type="text" #editValue [(ngModel)]="data.name">
+                    <input pInputText type="text" [(ngModel)]="data.name">
                   </ng-template>
                   <ng-template pTemplate="output">
                     {{data.name}}
@@ -66,7 +60,7 @@
                   (click)="onRowEditInit(data)" class="p-element p-ripple p-button-help p-button p-component"></button>
 
                 <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                  (click)="onRowEditSave(data, dataName)"
+                  (click)="onRowEditSave(data)"
                   class="p-element p-ripple p-button-success p-button p-component"></button>
 
                 <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
@@ -75,15 +69,9 @@
               </td>
 
               <td>
-                <button *ngIf="dataName == 'Groups'; else role" type="button" class="btn btn-danger" id="{{data.id}}"
-                  (click)="deleteGroup(data.id)">
+                <button type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteGroup(data.id)">
                   <i class="ri-delete-bin-6-line"></i>
                 </button>
-                <ng-template #role>
-                  <button #role type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteRole(data.id)">
-                    <i class="ri-delete-bin-6-line"></i>
-                  </button>
-                </ng-template>
               </td>
 
             </tr>
