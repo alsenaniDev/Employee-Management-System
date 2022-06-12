@@ -20,7 +20,7 @@ export class AddUserServices {
     usersEmail: any;
 
 
-    
+
 
     addUser(dto: AddUserDto): Observable<boolean> {
         let getUsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
@@ -32,7 +32,7 @@ export class AddUserServices {
         let userGuid = guid.value
 
 
-        let user = {
+        let userData = {
             userId: userGuid,
             firstName: dto.firstName,
             lastName: dto.lastName,
@@ -43,7 +43,7 @@ export class AddUserServices {
             CreatedAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
         }
 
-        getUsersData.push(user)
+        getUsersData.push(userData)
         localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
 
         const userInfo = {
@@ -54,9 +54,8 @@ export class AddUserServices {
         getUesrsInfoIds.push(userInfo)
         localStorage.setItem("usersInfoDB", JSON.stringify(getUesrsInfoIds))
 
-        let FindUserInfoIds = getUesrsInfoIds.find((user: getUserModel) => user.userId == userGuid)
-        let findUserData = getUesrsInfoIds.find((user: User) => user.userId == userGuid)
-
+        let FindUserInfoIds = getUesrsInfoIds?.find((user: getUserModel) => user.userId == userData.userId)
+        let findUserData = getUesrsInfoIds?.find((user: User) => user.userId == userInfo.userId)
         return of(FindUserInfoIds && findUserData)
     }
 

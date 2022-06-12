@@ -102,7 +102,6 @@ export class AddUsersComponent {
       this.usersServices.addUser(dto).subscribe({
         next: (res: boolean) => {
           if (res) {
-            this.alrtMessage.success("The User is Added")
             this.router.navigateByUrl("/main/show-users")
           }
         }, error: (err: any) => {
