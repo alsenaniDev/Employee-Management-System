@@ -35,9 +35,6 @@
           <div>
             <div class="p-d-flex p-ai-center p-jc-between ml-20">
               <h5 class="p-m-0">Filter By Groups</h5>
-              <!-- <p-dropdown placeholder="Select Group" [options]="Groups" optionLabel="name" optionValue="name"
-                [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
-              </p-dropdown> -->
               <p-multiSelect placeholder="Select Groups" [options]="Groups" optionLabel="name" optionValue="name"
                 [virtualScroll]="true" [style]="{'width':'240px'}" [panelStyle]="{'width':'200px'}" display="chip"
                 [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
@@ -96,7 +93,7 @@
           <td>{{rowIndex + 1}}</td>
           <td>{{User.firstName}} {{User.lastName}}</td>
           <td>{{User.email}}</td>
-          <td>{{User.phoneNumber}}</td>
+          <td>{{User.phoneNumber | phoneFormat}}</td>
           <td>{{User.role}}</td>
 
           <td>
@@ -129,7 +126,8 @@
 
         <div class="p-field" *ngFor="let control of controls">
           <label for="name">{{control.title}}</label>
-          <input formControlName="{{control.controlName}}" type={{control.type}} pInputText id="name" autofocus />
+          <input formControlName="{{control.controlName}}" type={{control.type}} pInputText id="name"
+            [attr.maxLength]="control.controlName == 'phoneNumber' ? 10 : ''" autofocus />
         </div>
         <div class="col-md-12 mt-3">
           <label class="form-label">Role</label>

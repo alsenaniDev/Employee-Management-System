@@ -82,7 +82,7 @@ export class ShowUsersComponent {
     {
       title: 'Phone Number',
       controlName: 'phoneNumber',
-      type: "text"
+      type: "text",
     },
     {
       title: 'Password',
