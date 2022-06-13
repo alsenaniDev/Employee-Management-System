@@ -10,3 +10,9 @@
 form {
   margin-top: 20px;
 }
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ddd;
+  outline: 0;
+}

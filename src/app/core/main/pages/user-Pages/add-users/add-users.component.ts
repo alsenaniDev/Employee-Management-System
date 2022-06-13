@@ -48,7 +48,7 @@ export class AddUsersComponent {
     {
       title: 'Email',
       controlName: 'email',
-      type: "text"
+      type: "email"
     },
     {
       title: 'Password',
@@ -131,7 +131,5 @@ export class AddUsersComponent {
       }
     })
   }
-
-
 
 }

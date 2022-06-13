@@ -126,8 +126,13 @@
 
         <div class="p-field" *ngFor="let control of controls">
           <label for="name">{{control.title}}</label>
-          <input formControlName="{{control.controlName}}" type={{control.type}} pInputText id="name"
-            [attr.maxLength]="control.controlName == 'phoneNumber' ? 10 : ''" autofocus />
+          <input *ngIf="control.controlName != 'phoneNumber' , else PhoneInput" [InputWarring]="control.type"
+            formControlName="{{control.controlName}}" type={{control.type}} class="form-control" pInputText id="name"
+            [attr.maxLength]="control.controlName == 'phoneNumber' ? 10 : ''" />
+          <ng-template #PhoneInput>
+            <input phoneValidation [attr.maxLength]="control.controlName == 'phoneNumber' ? '10' : ''"
+              type={{control.type}} class="form-control" formControlName={{control.controlName}}>
+          </ng-template>
         </div>
         <div class="col-md-12 mt-3">
           <label class="form-label">Role</label>
@@ -143,7 +148,8 @@
       </ng-template>
 
       <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" type="button"
+          (click)="hideDialog()"></button>
         <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" type="submit"></button>
       </ng-template>
 

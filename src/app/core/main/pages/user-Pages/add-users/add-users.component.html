@@ -19,8 +19,12 @@
 
               <div class="col-md-4 mb-3" *ngFor="let control of controls">
                 <label class="form-label">{{control.title}}</label>
-                <input type={{control.type}} class="form-control" formControlName={{control.controlName}}
-                  [attr.maxLength]="control.controlName == 'phoneNumber' ? '10' : ''">
+                <input *ngIf="control.controlName != 'phoneNumber' , else PhoneInput" [InputWarring]="control.type"
+                  type={{control.type}} class="form-control" formControlName={{control.controlName}}>
+                <ng-template #PhoneInput>
+                  <input phoneValidation [attr.maxLength]="control.controlName == 'phoneNumber' ? '10' : ''"
+                    type={{control.type}} class="form-control" formControlName={{control.controlName}}>
+                </ng-template>
                 <app-alerts [formName]="AddUserForm" [title]="control.title" [controlName]="control.controlName">
                 </app-alerts>
               </div>
@@ -54,4 +58,4 @@
     </div>
   </section>
 
-</main><!-- End #main -->
+</main>
