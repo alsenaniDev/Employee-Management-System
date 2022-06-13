@@ -1,6 +1,13 @@
-.form-control{
+.form-control {
     height: 43px;
 }
-.userRole{
+
+.userRole {
     margin-right: 40px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ddd;
+    outline: 0;
 }

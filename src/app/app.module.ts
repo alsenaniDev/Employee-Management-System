@@ -47,6 +47,8 @@ import { MainLayoutComponent } from './core/layouts/main/main-layout.component';
 import { HomeComponent } from './core/main/pages/home-Page/home.component';
 import { LoginPageComponent } from './core/account/pages/login-Page/login-page.component';
 import { StatsCardComponent } from './core/main/components/stats-card/stats-card.component';
+import { InputWarring } from './core/main/utility/directives/InputWarring';
+import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumberValidation';
 
 
 
@@ -70,6 +72,8 @@ import { StatsCardComponent } from './core/main/components/stats-card/stats-card
     LoginPageComponent,
     StatsCardComponent,
     PhoneFormat,
+    InputWarring,
+    PhoneNumberValidation,
     RoleBorderDirective
   ],
   imports: [

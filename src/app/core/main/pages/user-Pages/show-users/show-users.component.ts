@@ -25,7 +25,6 @@ export class ShowUsersComponent {
   selectedRole: any
   selectedGroup: any
   UserDialog!: boolean;
-  submitted!: boolean;
   checkInput!: any
   userGroupsSelect: any[]
   usersDataInfo: getUserInfoModel[]
@@ -33,12 +32,13 @@ export class ShowUsersComponent {
   userDetails: getUserInfoModel
   usersGroups: getGroupModel[]
   UserRole: boolean
+  validation: boolean
 
   constructor(
     private userServices: ShowUserServices,
     private fb: FormBuilder,
     private popupServices: popupAlertMessage,
-    private alertMessage: AlertMessageServices
+    private alertMessage: AlertMessageServices,
 
   ) {
 
@@ -51,8 +51,7 @@ export class ShowUsersComponent {
     this.getuserInfoById()
     this.getGroups()
     this.getRoles()
-
-    this.usersDataInfo = this.usersDataInfo.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
+    // this.validation = this.ValidationPhone.numberOnly(event)
     if (this.userInfo?.role !== "Admin" && this.userInfo?.role !== "Super-Admin") {
       this.Groups = this.Groups.filter((group: getGroupModel) => this.userInfo.groups.includes(group.name))
       this.Roles = this.Roles.filter((role: getRoleModel) => role.name == this.userInfo?.role)
@@ -77,7 +76,7 @@ export class ShowUsersComponent {
     {
       title: 'Email',
       controlName: 'email',
-      type: "text"
+      type: "email"
     },
     {
       title: 'Phone Number',
@@ -97,7 +96,7 @@ export class ShowUsersComponent {
     this.getuserInfoById()
     this.userServices.getUsersInfoData().subscribe({
       next: (res: getUserInfoModel[]) => {
-        this.usersDataInfo = res
+        this.usersDataInfo = res.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
       }, error: (err: any) => {
         return err;
       }
@@ -193,7 +192,6 @@ export class ShowUsersComponent {
 
   ToggleUpdateUserInfo(userFormDto: getUserInfoModel) { // popup
     this.UserDialog = !this.UserDialog;
-
     if (this.UserDialog) {
       this.Init_UpdateUserInfoForm(userFormDto)
       this.userGroupsSelect = this.Groups.filter((group: any) =>
@@ -245,8 +243,7 @@ export class ShowUsersComponent {
   }
 
   hideDialog() {
-    this.UserDialog = false;
-    this.submitted = false;
+    this.UserDialog = false;;
   }
 
   filterTableData(role: any, group: any) {
@@ -283,7 +280,6 @@ export class ShowUsersComponent {
   clearGroup() {
     this.selectedGroup = undefined;
     this.filterTableData(this.selectedRole, this.selectedGroup)
-    // this.filterTableData(role, group)
   }
 
   clearRole() {
