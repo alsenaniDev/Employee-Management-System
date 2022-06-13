@@ -94,7 +94,9 @@
           <td>{{User.firstName}} {{User.lastName}}</td>
           <td>{{User.email}}</td>
           <td>{{User.phoneNumber | phoneFormat}}</td>
-          <td>{{User.role}}</td>
+          <td>
+            <span roleBorder #role>{{User.role}}</span>
+          </td>
 
           <td>
             <ng-container *ngFor="let group of User.groups">

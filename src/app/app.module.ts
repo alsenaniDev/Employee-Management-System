@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PhoneFormat } from '../app/core/main/utility/pips/phoneFormat.pipe'
+import { RoleBorderDirective } from './core/main/utility/directives/roleBorder.directive';
 
 import { NavbarComponent } from '../app/core/main/utility/common/navbar/navbar.component';
 import { SidebarComponent } from '../app/core/main/utility/common/sidebar/sidebar.component';
@@ -21,7 +22,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ProfileComponent } from './core/main/pages/profile/profile.component';
 import { FormEditComponent } from './core/main/utility/common/form-edit/form-edit.component';
-import { SettingModalComponent } from './core/main/components/setting-modal/setting-modal.component';
+import { GroupSettingModalComponent } from './core/main/components/group-setting-modal/group-setting-modal.component';
+import { RoleSettingModalComponent } from './core/main/components/role-setting-modal/role-setting-modal.component';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
@@ -64,13 +66,15 @@ import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumbe
     ProfileComponent,
     SettingsComponent,
     FormEditComponent,
-    SettingModalComponent,
+    GroupSettingModalComponent,
+    RoleSettingModalComponent,
     HomeComponent,
     LoginPageComponent,
     StatsCardComponent,
     PhoneFormat,
     InputWarring,
-    PhoneNumberValidation
+    PhoneNumberValidation,
+    RoleBorderDirective
   ],
   imports: [
     BrowserModule,

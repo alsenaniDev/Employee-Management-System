@@ -1,5 +1,6 @@
 import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
-import { SettingModalComponent } from '../../components/setting-modal/setting-modal.component';
+import { GroupSettingModalComponent } from '../../components/group-setting-modal/group-setting-modal.component';
+import { RoleSettingModalComponent } from '../../components/role-setting-modal/role-setting-modal.component';
 import { SettingService } from './settings.service'
 
 @Injectable({
@@ -19,7 +20,8 @@ export class SettingsComponent implements OnInit {
   showModal: any
 
   constructor(private SettingService: SettingService) { }
-  @ViewChild(SettingModalComponent) modalShow: SettingModalComponent
+  @ViewChild(GroupSettingModalComponent) groupModal: GroupSettingModalComponent
+  @ViewChild(RoleSettingModalComponent) roleModal: RoleSettingModalComponent
 
   ngOnInit(): void {
     this.getGroupsCount()
@@ -29,10 +31,9 @@ export class SettingsComponent implements OnInit {
   getGroups() {
     this.SettingService.getGroups().subscribe({
       next: (res: any) => {
-        this.modalShow.dataName = "Groups"
-        this.modalShow.data = res
-        this.modalShow.data2 = res
-        this.modalShow.message.nativeElement.style.display = 'none'
+        this.groupModal.data = res
+        this.groupModal.data2 = res
+        this.groupModal.alertShow = false
       },
       error: (err: any) => {
         console.log(err);
@@ -54,10 +55,9 @@ export class SettingsComponent implements OnInit {
   getRoles() {
     this.SettingService.getRoles().subscribe({
       next: (res: any) => {
-        this.modalShow.dataName = "Roles"
-        this.modalShow.data = res
-        this.modalShow.data2 = res
-        this.modalShow.message.nativeElement.style.display = 'none'
+        this.roleModal.data = res
+        this.roleModal.data2 = res
+        this.roleModal.alertShow = false
       },
       error: (err: any) => {
         console.log(err);

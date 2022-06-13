@@ -1,0 +1,87 @@
+<p-toast></p-toast>
+
+
+<div class="modal fade" id="RoleModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="model-title">Roles Modal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert"
+          [ngStyle]="{'display': alertShow ? 'block' : 'none'}" style="display: none;">
+          <i class="bi bi-exclamation-octagon me-1"></i>
+          Please Enter Role Name
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+        </div>
+        <div style="display: flex;justify-content: space-between;">
+          <div class="col-md-4">
+            <label class="form-label" id="label-name">Enter Role Name</label>
+            <input type="text" class="form-control" [(ngModel)]="inputValue">
+          </div>
+          <div style="margin-top: 32px;">
+            <button type="button" class="btn btn-outline-primary" (click)="addRole()">
+              Add Role
+            </button>
+          </div>
+        </div>
+        <hr />
+        <label class="form-label" id="label-table"></label>
+
+        <p-table [value]="data2" dataKey="id" editMode="row">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="data">
+
+              <td>
+                {{ri + 1}}
+              </td>
+
+              <td>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="data.name">
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{data.name}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+
+              <td style="text-align:center">
+                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                  (click)="onRowEditInit(data)" class="p-element p-ripple p-button-help p-button p-component"></button>
+
+                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                  (click)="onRowEditSave(data)"
+                  class="p-element p-ripple p-button-success p-button p-component"></button>
+
+                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                  (click)="onRowEditCancel(data, ri)"
+                  class="p-element p-ripple p-button-danger p-button p-component"></button>
+              </td>
+
+              <td>
+                <button type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteRole(data.id)">
+                  <i class="ri-delete-bin-6-line"></i>
+                </button>
+              </td>
+
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

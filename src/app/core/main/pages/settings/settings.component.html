@@ -1,3 +1,4 @@
+<p-confirmDialog></p-confirmDialog>
 <main id="main" class="main">
 
   <div class="pagetitle">
@@ -26,14 +27,13 @@
                 </div>
                 <div class="btn-card">
                   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#largeModal" (click)="getRoles()">
+                    data-bs-target="#RoleModal" (click)="getRoles()">
                     Show
                   </button>
                 </div>
               </div>
             </div>
           </div>
-
 
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
@@ -50,19 +50,19 @@
                 </div>
                 <div class="btn-card">
                   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#largeModal" id="getModal" (click)="getGroups()">
+                    data-bs-target="#GroupModal" (click)="getGroups()">
                     Show
                   </button>
                 </div>
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
   </section>
-  <app-Setting-modal></app-Setting-modal>
+
+  <app-Group-Setting-modal></app-Group-Setting-modal>
+  <app-Role-Setting-modal></app-Role-Setting-modal>
 
 </main>
