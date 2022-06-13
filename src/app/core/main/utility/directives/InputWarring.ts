@@ -16,9 +16,5 @@ export class InputWarring {
         } else {
             this.el.nativeElement.style.border = '1px solid #ced4da'
         }
-
     }
-
-
-
 }
