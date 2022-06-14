@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
 import { SettingsDto } from "./Settings.Dto"
 import { HttpClient } from '@angular/common/http';
+import { SettingsProxy } from './settings.proxy'
 
 @Injectable({
     providedIn: "root",
@@ -10,21 +10,19 @@ import { HttpClient } from '@angular/common/http';
 export class SettingService {
     constructor(private http: HttpClient) { }
 
-    rootURL = '/api';
-
     getGroups() {
-        return this.http.get(this.rootURL + "/groups/show");
+        return this.http.get<SettingsDto[]>(SettingsProxy.GET_GROUPS);
     }
 
-    getGroupsCount(): Observable<SettingsDto[]> {
-        return of(JSON.parse(localStorage.getItem("GroupsDB") || "[]").length);
+    getGroupsCount() {
+        return this.http.get<SettingsDto[]>(SettingsProxy.GET_GROUPS_COUNT);
     }
 
-    getRoles(): Observable<SettingsDto[]> {
-        return of(JSON.parse(localStorage.getItem("RolesDB") || "[]"));
+    getRoles() {
+        return this.http.get<SettingsDto[]>(SettingsProxy.GET_ROLES);
     }
 
-    getRolesCount(): Observable<SettingsDto[]> {
-        return of(JSON.parse(localStorage.getItem("RolesDB") || "[]").length);
+    getRolesCount() {
+        return this.http.get<SettingsDto[]>(SettingsProxy.GET_ROLES_COUNT);
     }
 }
