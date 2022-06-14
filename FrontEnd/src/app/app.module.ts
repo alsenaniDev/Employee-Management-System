@@ -49,6 +49,7 @@ import { LoginPageComponent } from './core/account/pages/login-Page/login-page.c
 import { StatsCardComponent } from './core/main/components/stats-card/stats-card.component';
 import { InputWarring } from './core/main/utility/directives/InputWarring';
 import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumberValidation';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -74,7 +75,7 @@ import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumbe
     PhoneFormat,
     InputWarring,
     PhoneNumberValidation,
-    RoleBorderDirective
+    RoleBorderDirective,
   ],
   imports: [
     BrowserModule,
@@ -104,6 +105,7 @@ import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumbe
     FileUploadModule,
     RadioButtonModule,
     InputNumberModule,
+    HttpClientModule
   ],
   providers: [MessageService, ConfirmationService, DatePipe],
   bootstrap: [AppComponent]

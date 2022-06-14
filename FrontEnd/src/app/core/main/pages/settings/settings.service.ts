@@ -1,16 +1,19 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { SettingsDto } from "./Settings.Dto"
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: "root",
 })
 
 export class SettingService {
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
-    getGroups(): Observable<SettingsDto[]> {
-        return of(JSON.parse(localStorage.getItem("GroupsDB") || "[]"));
+    rootURL = '/api';
+
+    getGroups() {
+        return this.http.get(this.rootURL + "/groups/show");
     }
 
     getGroupsCount(): Observable<SettingsDto[]> {
