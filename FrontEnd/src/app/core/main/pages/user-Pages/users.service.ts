@@ -1,45 +1,28 @@
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Observable, of } from "rxjs";
-import { getUserModel } from "../../../utility/Models/get-user-model.dto";
-import { AlertMessageServices } from "../../../utility/services/AlertMessage.Services";
-import { popupAlertMessage } from "../../../utility/services/popupAlert.services";
-import { getUserInfoModel } from "../../../utility/Models/get-user-model.dto";
-import { getGroupModel, getRoleModel } from "./Show-users-Dto";
-import { UpdateUserInfoDto, User } from "./UserDto";
+import { getUserModel } from "../../utility/Models/get-user-model.dto";
+import { AlertMessageServices } from "../../utility/services/AlertMessage.Services";
+import { popupAlertMessage } from "../../utility/services/popupAlert.services";
+import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
+import { getGroupModel, getRoleModel } from "./show-users/Show-users-Dto";
+import { UpdateUserInfoDto, User } from "./show-users/UserDto";
+import { HttpClient } from "@angular/common/http";
+import { ShowUesrsProxy } from "./users.proxy";
+import { AddUserDto } from "./add-user/AddUserDto";
+import { Guid } from "guid-typescript";
 
 
 @Injectable({ providedIn: "root" })
-export class ShowUserServices {
+export class UsersServices {
+    datePipe: any;
 
-    constructor(private alertMessage: AlertMessageServices) { }
+    constructor(private http: HttpClient) { }
 
-    getUsersInfoData(): Observable<getUserInfoModel[]> {
-        let UserIdsData: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]");
-        var response: getUserInfoModel[] = UserIdsData.map((userIds: User) => {
-            let userInfo = JSON.parse(localStorage.getItem("UsersDB" || "[]"))
-                .find((user: getUserModel) => user.userId == userIds.userId)
-            let userGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-                .filter((group: getGroupModel) => userIds.groups.includes(group.id))
-                .map((item: getGroupModel) => { return item.name; });
-            let userRoles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-                .find((role: getRoleModel) => role.id == userIds.role)?.name;
-
-            return {
-                userId: userInfo.userId,
-                CreatedAt: userInfo.CreatedAt,
-                email: userInfo.email,
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                phoneNumber: userInfo.phoneNumber,
-                CreatedBy: userInfo.CreatedBy,
-                password: userInfo.password,
-                groups: userGroups,
-                role: userRoles
-            }
-        });
-        return of(response)
+    getUsersInfoData() {
+        return this.http.get<getUserInfoModel[]>(ShowUesrsProxy.SHOW_USERS_PROXY)
     }
+
     getUserInfoById(userId: string): Observable<getUserInfoModel> {
         // method chaining 
         var userInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
@@ -160,6 +143,44 @@ export class ShowUserServices {
         return of((JSON.stringify(userDataBeforeUpdate) != JSON.stringify(getUsersData[FinduserDataIndex]))
             || (JSON.stringify(userInfoIdbeforeUpdate) != JSON.stringify(getUserInfoIds[FinduserInfoIdsIndex])))
 
+    }
+
+
+    addUser(dto: AddUserDto): Observable<boolean> {
+        let getUsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+        let getUesrsInfoIds = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
+        let userFound = JSON.parse(localStorage.getItem("userInfo") || "null")
+
+
+        let guid = Guid.create().toJSON();
+        let userGuid = guid.value
+
+
+        let userData = {
+            userId: userGuid,
+            firstName: dto.firstName,
+            lastName: dto.lastName,
+            email: dto.email,
+            password: dto.password,
+            phoneNumber: dto.phoneNumber,
+            CreatedBy: userFound.userId,
+            CreatedAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
+        }
+
+        getUsersData.push(userData)
+        localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
+
+        const userInfo = {
+            userId: userGuid,
+            role: dto.role,
+            groups: dto.groups
+        }
+        getUesrsInfoIds.push(userInfo)
+        localStorage.setItem("usersInfoDB", JSON.stringify(getUesrsInfoIds))
+
+        let FindUserInfoIds = getUesrsInfoIds?.find((user: getUserModel) => user.userId == userData.userId)
+        let findUserData = getUesrsInfoIds?.find((user: User) => user.userId == userInfo.userId)
+        return of(FindUserInfoIds && findUserData)
     }
 
 }

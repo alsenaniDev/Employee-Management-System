@@ -6,11 +6,13 @@ app.use(cors())
 port = 3080;
 
 const groupsRouter = require("./routers/groupRouters")
-const rolesRouter = require("./routers/roleRouters")
+const rolesRouter = require("./routers/roleRouters");
+const userInfoRouter = require('./routers/usersInfoRoutes');
 
 
 app.use('/api/groups', groupsRouter);
 app.use('/api/roles', rolesRouter);
+app.use('/api/usersInfoData', userInfoRouter);
 
 
 app.get('/', (req, res) => {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddUsersComponent } from './pages/user-Pages/add-users/add-users.component';
+import { AddUsersComponent } from './pages/user-Pages/add-user/add-users.component';
 import { ShowUsersComponent } from './pages/user-Pages/show-users/show-users.component';
 import { HomeComponent } from './pages/home-Page/home.component';
 import { SettingsComponent } from './pages/settings/settings.component';

@@ -5,7 +5,7 @@ import { popupAlertMessage } from '../../../utility/services/popupAlert.services
 import { getUserInfoModel } from '../../../utility/Models/get-user-model.dto';
 import { getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { getGroupModel, getRoleModel } from './Show-users-Dto';
-import { ShowUserServices } from './show-users.service';
+import { UsersServices } from '../users.service';
 import { UpdateUserInfoDto } from './UserDto';
 
 
@@ -35,7 +35,7 @@ export class ShowUsersComponent {
   validation: boolean
 
   constructor(
-    private userServices: ShowUserServices,
+    private userServices: UsersServices,
     private fb: FormBuilder,
     private popupServices: popupAlertMessage,
     private alertMessage: AlertMessageServices,

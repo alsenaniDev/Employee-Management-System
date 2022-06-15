@@ -73,6 +73,7 @@ export class ProfileService {
         let userInfoBeforeUpdate = JSON.stringify(users[userIndex])
         users[userIndex] = Object.assign({}, users[userIndex], { password: dto.password })
         localStorage.setItem("UsersDB", JSON.stringify(users))
-        return of(userInfoBeforeUpdate != JSON.stringify(users[userIndex]))
+        return of(userInfoBeforeUpdate != JSON.stringify(users[userIndex])
+        )
     }
 }
