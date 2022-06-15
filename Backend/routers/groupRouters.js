@@ -5,7 +5,8 @@ const {
     getGroupsCount,
     addGroups,
     deleteGroups,
-    updateGroups
+    updateGroups,
+    getGroupById
 } = require("../controllers/groupControllers")
 const {
     Authorization
@@ -13,9 +14,13 @@ const {
 const AuthorizationsRole = require("../middleware/AuthorizationsRole")
 
 groupsRouter.post("/add", AuthorizationsRole, addGroups)
+
 groupsRouter.get("/show", showGroups)
-groupsRouter.delete("/delete/:id", AuthorizationsRole, deleteGroups)
-groupsRouter.put("/update/:id", AuthorizationsRole, updateGroups)
+groupsRouter.get("/show/:id", getGroupById)
 groupsRouter.get("/getCount", getGroupsCount)
+
+groupsRouter.delete("/delete/:id", AuthorizationsRole, deleteGroups)
+
+groupsRouter.put("/update/:id", AuthorizationsRole, updateGroups)
 
 module.exports = groupsRouter

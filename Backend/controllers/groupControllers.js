@@ -24,6 +24,19 @@ const getGroupsCount = (req, res) => {
   res.json(Groups.length)
 }
 
+const getGroupById = (req, res) => {
+  Groups.findOne({
+    _id: req.params.id
+  }, (err, group) => {
+    res.json({
+      result: group
+    });
+  }).populate({
+    path: "createBy",
+    select: "_id firstName lastName email phoneNumber"
+  });
+}
+
 const deleteGroups = (req, res) => {
   Groups.deleteOne({
     _id: req.params.id
@@ -54,5 +67,6 @@ module.exports = {
   getGroupsCount,
   addGroups,
   deleteGroups,
-  updateGroups
+  updateGroups,
+  getGroupById
 }
