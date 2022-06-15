@@ -40,6 +40,19 @@ const updateRoles = (req, res) => {
   );
 }
 
+const getRoleById = (req, res) => {
+  Roles.findOne({
+    _id: req.params.id
+  }, (err, role) => {
+    res.json({
+      result: role
+    });
+  }).populate({
+    path: "createBy",
+    select: "_id firstName lastName email phoneNumber"
+  });
+}
+
 const showRoles = (req, res) => {
   res.json(Roles)
 }
@@ -53,5 +66,6 @@ module.exports = {
   getCount,
   addRoles,
   deleteRoles,
-  updateRoles
+  updateRoles,
+  getRoleById
 }
