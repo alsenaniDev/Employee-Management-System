@@ -16,6 +16,30 @@ const addRoles = (req, res) => {
     .catch(err => console.log(err))
 }
 
+const deleteRoles = (req, res) => {
+  Roles.deleteOne({
+    _id: req.params.id
+  }, (err, role) => {
+    res.json({
+      result: "Delete Role successfully"
+    });
+  });
+}
+
+const updateRoles = (req, res) => {
+  Roles.findByIdAndUpdate({
+      _id: req.params.id
+    }, {
+      name: req.body.name,
+    },
+    (err, role) => {
+      res.json({
+        result: role,
+      });
+    }
+  );
+}
+
 const showRoles = (req, res) => {
   res.json(Roles)
 }
@@ -28,4 +52,6 @@ module.exports = {
   showRoles,
   getCount,
   addRoles,
+  deleteRoles,
+  updateRoles
 }
