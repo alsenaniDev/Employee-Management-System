@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { AlertMessageServices } from '../../../utility/services/AlertMessage.Services';
 import { getGroupModel, getRoleModel } from '../show-users/Show-users-Dto';
-import { ShowUserServices } from '../show-users/show-users.service';
-import { AddUserServices } from './add-users.service';
+import { UsersServices } from '../users.service';
 
 import { AddUserDto } from './AddUserDto';
 
@@ -28,9 +27,9 @@ export class AddUsersComponent {
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
-    public usersServices: AddUserServices,
+    public usersServices: UsersServices,
     private alrtMessage: AlertMessageServices,
-    private userServices: ShowUserServices
+    private userServices: UsersServices
   ) {
   }
   controls = [

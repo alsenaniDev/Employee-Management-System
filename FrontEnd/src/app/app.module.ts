@@ -8,7 +8,7 @@ import { RoleBorderDirective } from './core/main/utility/directives/roleBorder.d
 
 import { NavbarComponent } from '../app/core/main/utility/common/navbar/navbar.component';
 import { SidebarComponent } from '../app/core/main/utility/common/sidebar/sidebar.component';
-import { AddUsersComponent } from './core/main/pages/user-Pages/add-users/add-users.component';
+import { AddUsersComponent } from './core/main/pages/user-Pages/add-user/add-users.component';
 import { ShowUsersComponent } from './core/main/pages/user-Pages/show-users/show-users.component';
 import { AlertsComponent } from './core/main/utility/common/alerts/alerts.component';
 import { SettingsComponent } from './core/main/pages/settings/settings.component';
