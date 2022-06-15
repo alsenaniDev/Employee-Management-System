@@ -24,8 +24,35 @@ const getGroupsCount = (req, res) => {
   res.json(Groups.length)
 }
 
+const deleteGroups = (req, res) => {
+  Groups.deleteOne({
+    _id: req.params.id
+  }, (err, group) => {
+    res.json({
+      result: "Delete Group successfully"
+    });
+  });
+}
+
+const updateGroups = (req, res) => {
+  Groups.findByIdAndUpdate({
+      _id: req.params.id
+    }, {
+      name: req.body.name,
+    },
+    (err, group) => {
+      res.json({
+        result: group,
+      });
+    }
+  );
+};
+
+
 module.exports = {
   showGroups,
   getGroupsCount,
   addGroups,
+  deleteGroups,
+  updateGroups
 }
