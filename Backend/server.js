@@ -14,7 +14,7 @@ const loginRouters = require("./routers/loginRouters")
 
 app.use("/api/groups", groupsRouter)
 app.use("/api/roles", rolesRouter)
-app.use("/api/usersInfoData", userInfoRouter)
+app.use("/api/users", userInfoRouter)
 app.use("/api/login", loginRouters)
 
 app.get("/", (req, res) => {

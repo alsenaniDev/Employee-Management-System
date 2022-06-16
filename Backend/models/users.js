@@ -6,7 +6,7 @@ const usersSchema = new schema({
   lastName: String,
   email: String,
   password: String,
-  phoneNumber: Number,
+  phoneNumber: String,
   CreatedAt: {
     type: Date,
     default: Date.now,
