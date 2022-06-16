@@ -6,16 +6,16 @@ const usersInfoSchema = new schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-  groupId: {
+  groupsId: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "groups",
-  },
+  }],
   roleId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "roles",
   },
 })
 
-const usersInfo = mongoose.model("usersInfo" , usersInfoSchema)
+const usersInfo = mongoose.model("usersInfo", usersInfoSchema)
 
 module.exports = usersInfo
