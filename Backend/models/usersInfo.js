@@ -3,17 +3,19 @@ const schema = mongoose.Schema
 
 const usersInfoSchema = new schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: "users",
   },
-  groupsId: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "groups",
-  }],
   roleId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: "roles",
   },
+  groupsId: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "groups",
+    },
+  ],
 })
 
 const usersInfo = mongoose.model("usersInfo", usersInfoSchema)
