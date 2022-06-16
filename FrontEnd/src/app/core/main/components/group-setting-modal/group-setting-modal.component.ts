@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SettingModalService } from './group-setting-modal.service';
 import { SettingsComponent } from '../../pages/settings/settings.component';
 import { SettingsDto } from '../../pages/settings/Settings.Dto';
-import { AlertMessageServices } from '../../utility/services/AlertMessage.Services'
-import { popupAlertMessage } from '../../utility/services/popupAlert.services'
+import { AlertMessageServices } from '../../utility/services/alert/AlertMessage.Services'
+import { popupAlertMessage } from '../../utility/services/alert/popupAlert.services'
 
 @Component({
   selector: 'app-Group-Setting-modal',
@@ -52,7 +52,7 @@ export class GroupSettingModalComponent implements OnInit {
 
   deleteGroup(id: number) {
     console.log(id);
-    
+
     this.popupAlertMessage.servicesAlert({
       header: "Delete Group",
       message: "Are you sure you want to delete this group?",

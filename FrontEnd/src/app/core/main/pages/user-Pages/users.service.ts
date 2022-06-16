@@ -1,14 +1,11 @@
 import { Injectable } from "@angular/core";
-import { FormGroup } from "@angular/forms";
 import { Observable, of } from "rxjs";
 import { getUserModel } from "../../utility/Models/get-user-model.dto";
-import { AlertMessageServices } from "../../utility/services/AlertMessage.Services";
-import { popupAlertMessage } from "../../utility/services/popupAlert.services";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
 import { getGroupModel, getRoleModel } from "./show-users/Show-users-Dto";
 import { UpdateUserInfoDto, User } from "./show-users/UserDto";
 import { HttpClient } from "@angular/common/http";
-import { ShowUesrsProxy } from "./users.proxy";
+import { ShowUsersProxy } from "./users.proxy";
 import { AddUserDto } from "./add-user/AddUserDto";
 import { Guid } from "guid-typescript";
 
@@ -20,7 +17,7 @@ export class UsersServices {
     constructor(private http: HttpClient) { }
 
     getUsersInfoData() {
-        return this.http.get<getUserInfoModel[]>(ShowUesrsProxy.SHOW_USERS_PROXY)
+        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY)
     }
 
     getUserInfoById(userId: string): Observable<getUserInfoModel> {
@@ -112,21 +109,21 @@ export class UsersServices {
 
 
         let getUsersData: getUserModel[] = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        let FinduserDataIndex = getUsersData.findIndex((user: getUserModel) => user.userId == dto?.userId)
+        let FindUserDataIndex = getUsersData.findIndex((user: getUserModel) => user.userId == dto?.userId)
 
-        let userDataBeforeUpdate = getUsersData[FinduserDataIndex]
+        let userDataBeforeUpdate = getUsersData[FindUserDataIndex]
 
         let getUserInfoIds: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-        let FinduserInfoIdsIndex = getUserInfoIds.findIndex((user: User) => user.userId == dto?.userId)
+        let FindUserInfoIdsIndex = getUserInfoIds.findIndex((user: User) => user.userId == dto?.userId)
 
-        let userInfoIdbeforeUpdate = getUserInfoIds[FinduserInfoIdsIndex]
+        let userInfoIdBeforeUpdate = getUserInfoIds[FindUserInfoIdsIndex]
 
         let findUserRole: any = JSON.parse(localStorage.getItem("RolesDB") || "[]")
             .find((role: any) => role.name == dto?.role)
 
         let findUserGroups: number[] = dto.groups.map((groupId: getGroupModel) => groupId.id)
 
-        getUsersData[FinduserDataIndex] = Object.assign({}, getUsersData[FinduserDataIndex], {
+        getUsersData[FindUserDataIndex] = Object.assign({}, getUsersData[FindUserDataIndex], {
             firstName: dto.firstName,
             lastName: dto.lastName,
             email: dto.email,
@@ -134,21 +131,21 @@ export class UsersServices {
             password: dto.password
         })
 
-        getUserInfoIds[FinduserInfoIdsIndex] = Object.assign({}, getUserInfoIds[FinduserInfoIdsIndex], { role: findUserRole.id, groups: findUserGroups })
+        getUserInfoIds[FindUserInfoIdsIndex] = Object.assign({}, getUserInfoIds[FindUserInfoIdsIndex], { role: findUserRole.id, groups: findUserGroups })
 
         localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
 
         localStorage.setItem("usersInfoDB", JSON.stringify(getUserInfoIds))
 
-        return of((JSON.stringify(userDataBeforeUpdate) != JSON.stringify(getUsersData[FinduserDataIndex]))
-            || (JSON.stringify(userInfoIdbeforeUpdate) != JSON.stringify(getUserInfoIds[FinduserInfoIdsIndex])))
+        return of((JSON.stringify(userDataBeforeUpdate) != JSON.stringify(getUsersData[FindUserDataIndex]))
+            || (JSON.stringify(userInfoIdBeforeUpdate) != JSON.stringify(getUserInfoIds[FindUserInfoIdsIndex])))
 
     }
 
 
     addUser(dto: AddUserDto): Observable<boolean> {
         let getUsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        let getUesrsInfoIds = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
+        let getUsersInfoIds = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
         let userFound = JSON.parse(localStorage.getItem("userInfo") || "null")
 
 
@@ -175,11 +172,11 @@ export class UsersServices {
             role: dto.role,
             groups: dto.groups
         }
-        getUesrsInfoIds.push(userInfo)
-        localStorage.setItem("usersInfoDB", JSON.stringify(getUesrsInfoIds))
+        getUsersInfoIds.push(userInfo)
+        localStorage.setItem("usersInfoDB", JSON.stringify(getUsersInfoIds))
 
-        let FindUserInfoIds = getUesrsInfoIds?.find((user: getUserModel) => user.userId == userData.userId)
-        let findUserData = getUesrsInfoIds?.find((user: User) => user.userId == userInfo.userId)
+        let FindUserInfoIds = getUsersInfoIds?.find((user: getUserModel) => user.userId == userData.userId)
+        let findUserData = getUsersInfoIds?.find((user: User) => user.userId == userInfo.userId)
         return of(FindUserInfoIds && findUserData)
     }
 
