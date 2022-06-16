@@ -17,11 +17,22 @@ const addGroups = (req, res) => {
 }
 
 const showGroups = (req, res) => {
-  res.json(Groups)
+  Groups.find({}, (err, group) => {
+    res.json({
+      data: group
+    });
+  }).populate({
+    path: "createBy",
+    select: "_id firstName lastName email phoneNumber"
+  });
 }
 
 const getGroupsCount = (req, res) => {
-  res.json(Groups.length)
+  Groups.find({}, (err, group) => {
+    res.json({
+      data: group.length
+    });
+  });
 }
 
 const getGroupById = (req, res) => {
