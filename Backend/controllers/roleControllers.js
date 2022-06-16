@@ -1,5 +1,24 @@
 const Roles = require("../models/roles")
 
+const showRoles = (req, res) => {
+  Roles.find({}, (err, role) => {
+    res.json({
+      data: role
+    })
+  }).populate({
+    path: "createBy",
+    select: "_id firstName lastName email phoneNumber"
+  })
+}
+
+const getCount = (req, res) => {
+  Roles.find({}, (err, role) => {
+    res.json({
+      data: role.length
+    })
+  })
+}
+
 const addRoles = (req, res) => {
   const newRole = new Roles({
     name: req.body.name,
@@ -53,13 +72,6 @@ const getRoleById = (req, res) => {
   });
 }
 
-const showRoles = (req, res) => {
-  res.json(Roles)
-}
-
-const getCount = (req, res) => {
-  res.json(Roles.length)
-}
 
 module.exports = {
   showRoles,
