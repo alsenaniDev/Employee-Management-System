@@ -17,15 +17,67 @@ const addGroups = (req, res) => {
 }
 
 const showGroups = (req, res) => {
-  res.json(Groups)
+  Groups.find({}, (err, group) => {
+    res.json({
+      data: group
+    });
+  }).populate({
+    path: "createBy",
+    select: "_id firstName lastName email phoneNumber"
+  });
 }
 
 const getGroupsCount = (req, res) => {
-  res.json(Groups.length)
+  Groups.find({}, (err, group) => {
+    res.json({
+      data: group.length
+    });
+  });
 }
+
+const getGroupById = (req, res) => {
+  Groups.findOne({
+    _id: req.params.id
+  }, (err, group) => {
+    res.json({
+      result: group
+    });
+  }).populate({
+    path: "createBy",
+    select: "_id firstName lastName email phoneNumber"
+  });
+}
+
+const deleteGroups = (req, res) => {
+  Groups.deleteOne({
+    _id: req.params.id
+  }, (err, group) => {
+    res.json({
+      result: "Delete Group successfully"
+    });
+  });
+}
+
+const updateGroups = (req, res) => {
+  Groups.findByIdAndUpdate({
+      _id: req.params.id
+    }, {
+      name: req.body.name,
+    },
+    (err, group) => {
+      res.json({
+        result: group,
+      });
+    }
+  );
+};
+
 
 module.exports = {
   showGroups,
   getGroupsCount,
   addGroups,
+  deleteGroups,
+  updateGroups,
+  getGroupById
 }
