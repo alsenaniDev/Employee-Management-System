@@ -1,4 +1,4 @@
-export class ShowUesrsProxy {
+export class ShowUsersProxy {
 
     static rootURL: string = '/api';
 

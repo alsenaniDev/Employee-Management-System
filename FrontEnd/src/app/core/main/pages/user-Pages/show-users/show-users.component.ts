@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertMessageServices } from '../../../utility/services/AlertMessage.Services';
-import { popupAlertMessage } from '../../../utility/services/popupAlert.services';
+import { AlertMessageServices } from '../../../utility/services/alert/AlertMessage.Services';
+import { popupAlertMessage } from '../../../utility/services/alert/popupAlert.services';
 import { getUserInfoModel } from '../../../utility/Models/get-user-model.dto';
 import { getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { getGroupModel, getRoleModel } from './Show-users-Dto';
@@ -48,7 +48,7 @@ export class ShowUsersComponent {
 
     this.Init_UpdateUserInfoForm();
     this.getUserInfo()
-    this.getuserInfoById()
+    this.getUserInfoById()
     this.getGroups()
     this.getRoles()
     // this.validation = this.ValidationPhone.numberOnly(event)
@@ -93,7 +93,7 @@ export class ShowUsersComponent {
 
 
   getUserInfo() {
-    this.getuserInfoById()
+    this.getUserInfoById()
     this.userServices.getUsersInfoData().subscribe({
       next: (res: getUserInfoModel[]) => {
         this.usersDataInfo = res.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
@@ -103,7 +103,7 @@ export class ShowUsersComponent {
     })
   }
 
-  getuserInfoById() {
+  getUserInfoById() {
     let userInfoData = JSON.parse(localStorage.getItem("userInfo") || "")
     this.userServices.getUserInfoById(userInfoData.userId).subscribe({
       next: (res: getUserInfoModel) => {

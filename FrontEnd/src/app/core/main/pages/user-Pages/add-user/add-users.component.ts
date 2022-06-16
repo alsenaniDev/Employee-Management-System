@@ -2,7 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getUserModel } from '../../../utility/Models/get-user-model.dto';
-import { AlertMessageServices } from '../../../utility/services/AlertMessage.Services';
+import { AlertMessageServices } from '../../../utility/services/alert/AlertMessage.Services';
 import { getGroupModel, getRoleModel } from '../show-users/Show-users-Dto';
 import { UsersServices } from '../users.service';
 

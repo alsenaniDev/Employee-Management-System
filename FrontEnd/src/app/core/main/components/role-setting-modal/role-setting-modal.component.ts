@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SettingModalService } from './role-setting-modal.service';
 import { SettingsComponent } from '../../pages/settings/settings.component';
 import { SettingsDto } from '../../pages/settings/Settings.Dto';
-import { AlertMessageServices } from '../../utility/services/AlertMessage.Services'
-import { popupAlertMessage } from '../../utility/services/popupAlert.services'
+import { AlertMessageServices } from '../../utility/services/alert/AlertMessage.Services'
+import { popupAlertMessage } from '../../utility/services/alert/popupAlert.services'
 
 @Component({
   selector: 'app-Role-Setting-modal',

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SettingsDto } from "./Settings.Dto"
+import { SettingsDto } from "../../../pages/settings/Settings.Dto"
 import { HttpClient } from '@angular/common/http';
 import { SettingsProxy } from './settings.proxy'
 
@@ -7,7 +7,7 @@ import { SettingsProxy } from './settings.proxy'
     providedIn: "root",
 })
 
-export class SettingService {
+export class CommonService {
     constructor(private http: HttpClient) { }
 
     getGroups() {

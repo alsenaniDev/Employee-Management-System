@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { popupAlertMessage } from '../../utility/services/popupAlert.services';
 import { getUserModel } from '../../utility/Models/get-user-model.dto';
 import { getUserInfoModel } from '../../utility/Models/get-user-model.dto';
 import { ProfileService } from './profile.service';
 import { UpdateUserInfoDto, UpdateUserPasswordDto } from './profile.dto';
-import { AlertMessageServices } from '../../utility/services/AlertMessage.Services';
+import { AlertMessageServices } from '../../utility/services/alert/AlertMessage.Services';
 import { Router } from '@angular/router';
 
 @Component({
@@ -38,7 +37,7 @@ export class ProfileComponent implements OnInit {
 
   Init_UpdateUserInfoForm(userInfo: any) {
     this.UpdateUserInfoForm = this.fb.group({
-      firstName: [userInfo.firstName, [Validators.required, Validators.minLength(3)] ],
+      firstName: [userInfo.firstName, [Validators.required, Validators.minLength(3)]],
       lastName: [userInfo.lastName, [Validators.required, Validators.minLength(3)]],
       phoneNumber: [userInfo.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]]
     })

@@ -1,7 +1,7 @@
 import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { GroupSettingModalComponent } from '../../components/group-setting-modal/group-setting-modal.component';
 import { RoleSettingModalComponent } from '../../components/role-setting-modal/role-setting-modal.component';
-import { SettingService } from './settings.service'
+import { CommonService } from '../../utility/services/common/settings.service'
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class SettingsComponent implements OnInit {
   dataName: string = "";
   showModal: any
 
-  constructor(private SettingService: SettingService) { }
+  constructor(private CommonService: CommonService) { }
   @ViewChild(GroupSettingModalComponent) groupModal: GroupSettingModalComponent
   @ViewChild(RoleSettingModalComponent) roleModal: RoleSettingModalComponent
 
@@ -29,10 +29,10 @@ export class SettingsComponent implements OnInit {
   }
 
   getGroups() {
-    this.SettingService.getGroups().subscribe({
+    this.CommonService.getGroups().subscribe({
       next: (res: any) => {
-        this.groupModal.data = res
-        this.groupModal.data2 = res
+        this.groupModal.data = res.data
+        this.groupModal.data2 = res.data
         this.groupModal.alertShow = false
       },
       error: (err: any) => {
@@ -42,9 +42,9 @@ export class SettingsComponent implements OnInit {
   }
 
   getGroupsCount() {
-    this.SettingService.getGroupsCount().subscribe({
+    this.CommonService.getGroupsCount().subscribe({
       next: (res: any) => {
-        this.groupsNumber = res;
+        this.groupsNumber = res.data;
       },
       error: (err: any) => {
         console.log(err);
@@ -53,10 +53,10 @@ export class SettingsComponent implements OnInit {
   }
 
   getRoles() {
-    this.SettingService.getRoles().subscribe({
+    this.CommonService.getRoles().subscribe({
       next: (res: any) => {
-        this.roleModal.data = res
-        this.roleModal.data2 = res
+        this.roleModal.data = res.data
+        this.roleModal.data2 = res.data
         this.roleModal.alertShow = false
       },
       error: (err: any) => {
@@ -66,9 +66,9 @@ export class SettingsComponent implements OnInit {
   }
 
   getRolesCount() {
-    this.SettingService.getRolesCount().subscribe({
+    this.CommonService.getRolesCount().subscribe({
       next: (res: any) => {
-        this.rolesNumber = res;
+        this.rolesNumber = res.data;
       },
       error: (err: any) => {
         console.log(err);
