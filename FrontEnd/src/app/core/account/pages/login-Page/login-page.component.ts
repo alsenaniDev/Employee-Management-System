@@ -35,9 +35,10 @@ export class LoginPageComponent implements OnInit {
 
   logIn() {
     this.LogInService.logIn(this.email, this.password).subscribe({
-      next: (res: boolean) => {
+      next: (res: any) => {
         if (res) {
           window.location.href = "main/home"
+          localStorage.setItem("userInfo", JSON.stringify(res))
         } else {
           this.show = true
         }

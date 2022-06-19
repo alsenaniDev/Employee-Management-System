@@ -7,6 +7,7 @@ import { getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { getGroupModel, getRoleModel } from './Show-users-Dto';
 import { UsersServices } from '../users.service';
 import { UpdateUserInfoDto } from './UserDto';
+import { CommonService } from '../../../utility/services/common/settings.service';
 
 
 @Component({
@@ -36,12 +37,12 @@ export class ShowUsersComponent {
 
   constructor(
     private userServices: UsersServices,
+    private commonService: CommonService,
     private fb: FormBuilder,
     private popupServices: popupAlertMessage,
     private alertMessage: AlertMessageServices,
 
   ) {
-
   }
 
   ngOnInit() {
@@ -52,10 +53,10 @@ export class ShowUsersComponent {
     this.getGroups()
     this.getRoles()
     // this.validation = this.ValidationPhone.numberOnly(event)
-    if (this.userInfo?.role !== "Admin" && this.userInfo?.role !== "Super-Admin") {
-      this.Groups = this.Groups.filter((group: getGroupModel) => this.userInfo.groups.includes(group.name))
-      this.Roles = this.Roles.filter((role: getRoleModel) => role.name == this.userInfo?.role)
-    }
+    // if (this.userInfo?.role !== "Admin" && this.userInfo?.role !== "Super-Admin") {
+    //   this.Groups = this.Groups.filter((group: getGroupModel) => this.userInfo.groups.includes(group.name))
+    //   this.Roles = this.Roles.filter((role: getRoleModel) => role.name == this.userInfo?.role)
+    // }
   }
 
 
@@ -104,8 +105,7 @@ export class ShowUsersComponent {
   }
 
   getUserInfoById() {
-    let userInfoData = JSON.parse(localStorage.getItem("userInfo") || "")
-    this.userServices.getUserInfoById(userInfoData.userId).subscribe({
+    this.userServices.getUserInfoById().subscribe({
       next: (res: getUserInfoModel) => {
         this.userInfo = res
       },
@@ -116,7 +116,7 @@ export class ShowUsersComponent {
     })
   }
   getRoles() {
-    this.userServices.getRoles().subscribe({
+    this.commonService.getRoles().subscribe({
       next: (res: getRoleModel[]) => {
         this.Roles = res
       },
@@ -126,7 +126,7 @@ export class ShowUsersComponent {
     })
   }
   getGroups() {
-    this.userServices.getGroups().subscribe({
+    this.commonService.getGroups().subscribe({
       next: (res: getGroupModel[]) => {
         this.Groups = res
       },
@@ -249,7 +249,7 @@ export class ShowUsersComponent {
   filterTableData(role: any, group: any) {
     this.getUserInfo()
 
-    let dataFiltered = this.usersDataInfo.filter((user: getUserInfoModel) =>
+    let dataFiltered = this.usersDataInfo?.filter((user: getUserInfoModel) =>
       user.userId != this.userInfo?.userId)
     if ((role) && (group && group?.length != 0)) {
       dataFiltered = dataFiltered.filter((user: any) => (user.userId != this.userInfo.userId)
@@ -268,12 +268,12 @@ export class ShowUsersComponent {
   }
 
   checkuserRole(userRole: any, superRole?: string) {
-    return this.userInfo.role == userRole || this.userInfo.role == superRole;
+    return this.userInfo?.role.name == userRole || this.userInfo?.role.name == superRole;
   }
 
   checkSuperRole(usersInfo: any, userInfoRole: string, superRole: string) {
 
-    return ((usersInfo.role == userInfoRole || usersInfo.role == superRole) && (this.userInfo?.role != superRole || usersInfo.role == superRole))
+    return ((usersInfo?.role.name == userInfoRole || usersInfo?.role.name == superRole) && (this.userInfo?.role.name != superRole || usersInfo?.role.name == superRole))
   }
 
 
@@ -289,10 +289,10 @@ export class ShowUsersComponent {
 
   checkSelectedUsers(selectedUsers: any) {
     let usersSelect = selectedUsers?.map((check: any) => check.role)
-    return usersSelect?.includes("Super-Admin") || (usersSelect?.includes("Admin") && this.userInfo.role != 'Super-Admin')
+    return usersSelect?.includes("Super-Admin") || (usersSelect?.includes("Admin") && this.userInfo?.role != 'Super-Admin')
   }
   getRoleCheck() {
 
-    this.usersDataInfo = this.usersDataInfo.filter((u: any) => u.role == this.userInfo?.role)
+    this.usersDataInfo = this.usersDataInfo?.filter((u: any) => u.role == this.userInfo?.role.name)
   }
 }
