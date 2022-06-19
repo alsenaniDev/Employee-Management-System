@@ -16,7 +16,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     let data = JSON.parse(localStorage.getItem("userInfo") || "null")
     this.userProfile = data.data
-    console.log(this.userProfile);
   }
 
   clearData() {

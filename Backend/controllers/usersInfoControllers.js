@@ -59,7 +59,6 @@ const getUserById = async (req, res) => {
     }
     res.json(response)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -93,7 +92,6 @@ const addUser = async (req, res) => {
     await userIds.save()
     res.json(newUser)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -111,7 +109,6 @@ const deleteUser = async (req, res) => {
     })
     res.json("The User is Delete")
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -136,7 +133,6 @@ const deleteSelectedUsers = async (req, res) => {
     })
     res.json("the users is deleted")
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -181,7 +177,6 @@ const updateUser = async (req, res) => {
     if (!userData || !userIds) return res.status(404).json("User not found")
     res.json(userIds)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -198,7 +193,6 @@ const getGroupsByUserId = async (req, res) => {
     }
     res.json(response)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -215,7 +209,6 @@ const getRoleByUserId = async (req, res) => {
     }
     res.json(response)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
