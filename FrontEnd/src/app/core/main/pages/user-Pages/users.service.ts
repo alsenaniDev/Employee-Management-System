@@ -22,45 +22,8 @@ export class UsersServices {
 
     getUserInfoById() {
         let userId = JSON.parse(localStorage.getItem("userInfo") || "")
-        return this.http.get<getUserInfoModel>(ShowUsersProxy.SHOW_USER_BY_ID_PROXY + "/" + userId.data.userId)
-        // // method chaining 
-        // var userInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-        //     .find((user: User) => user.userId == userId);
-
-        // var user = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        //     .find((user: getUserModel) => user.userId == userInfo?.userId ?? userId);
-
-        // var userRoles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-        //     .find((role: getRoleModel) => role.id == userInfo.role).name;
-
-        // var userGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-        //     .filter((group: getGroupModel) => userInfo.groups.includes(group.id))
-        //     .map((item: getGroupModel) => { return item.name; });
-
-        // var response: getUserInfoModel = {
-        //     userId: user.userId,
-        //     CreatedAt: user.CreatedAt,
-        //     email: user.email,
-        //     firstName: user.firstName,
-        //     lastName: user.lastName,
-        //     phoneNumber: user.phoneNumber,
-        //     CreatedBy: user.CreatedBy,
-        //     password: user.password,
-        //     groups: userGroups,
-        //     role: userRoles
-        // }
-        // return of(response);
+        return this.http.get<getUserInfoModel>(ShowUsersProxy.SHOW_USER_BY_ID_PROXY + userId.data.userId)
     }
-
-    // getRoles(): Observable<getRoleModel[]> {
-    //     let response = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-    //     return of(response)
-    // }
-
-    // getGroups(): Observable<getGroupModel[]> {
-    //     let response = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-    //     return of(response)
-    // }
 
     DeleteUser(userId: string): Observable<boolean> {
 
@@ -107,40 +70,39 @@ export class UsersServices {
         return of(!checkUserFoundInTableInfoIds && !checkUserFoundInTableUsersData)
     }
 
-    UpdateUserInfo(dto: UpdateUserInfoDto): Observable<boolean> {
+    UpdateUserInfo(dto: UpdateUserInfoDto) {
+        // return this.http.put<UpdateUserInfoDto>(ShowUsersProxy.UPDATE_USERS_PROXY + dto.userId)
+        // let getUsersData: getUserModel[] = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+        // let FindUserDataIndex = getUsersData.findIndex((user: getUserModel) => user.userId == dto?.userId)
 
+        // let userDataBeforeUpdate = getUsersData[FindUserDataIndex]
 
-        let getUsersData: getUserModel[] = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        let FindUserDataIndex = getUsersData.findIndex((user: getUserModel) => user.userId == dto?.userId)
+        // let getUserInfoIds: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
+        // let FindUserInfoIdsIndex = getUserInfoIds.findIndex((user: User) => user.userId == dto?.userId)
 
-        let userDataBeforeUpdate = getUsersData[FindUserDataIndex]
+        // let userInfoIdBeforeUpdate = getUserInfoIds[FindUserInfoIdsIndex]
 
-        let getUserInfoIds: User[] = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-        let FindUserInfoIdsIndex = getUserInfoIds.findIndex((user: User) => user.userId == dto?.userId)
+        // let findUserRole: any = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+        //     .find((role: any) => role.name == dto?.role)
 
-        let userInfoIdBeforeUpdate = getUserInfoIds[FindUserInfoIdsIndex]
+        // let findUserGroups: number[] = dto.groups.map((groupId: getGroupModel) => groupId.id)
 
-        let findUserRole: any = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-            .find((role: any) => role.name == dto?.role)
+        // getUsersData[FindUserDataIndex] = Object.assign({}, getUsersData[FindUserDataIndex], {
+        //     firstName: dto.firstName,
+        //     lastName: dto.lastName,
+        //     email: dto.email,
+        //     phoneNumber: dto.phoneNumber,
+        //     password: dto.password
+        // })
 
-        let findUserGroups: number[] = dto.groups.map((groupId: getGroupModel) => groupId.id)
+        // getUserInfoIds[FindUserInfoIdsIndex] = Object.assign({}, getUserInfoIds[FindUserInfoIdsIndex], { role: findUserRole.id, groups: findUserGroups })
 
-        getUsersData[FindUserDataIndex] = Object.assign({}, getUsersData[FindUserDataIndex], {
-            firstName: dto.firstName,
-            lastName: dto.lastName,
-            email: dto.email,
-            phoneNumber: dto.phoneNumber,
-            password: dto.password
-        })
+        // localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
 
-        getUserInfoIds[FindUserInfoIdsIndex] = Object.assign({}, getUserInfoIds[FindUserInfoIdsIndex], { role: findUserRole.id, groups: findUserGroups })
+        // localStorage.setItem("usersInfoDB", JSON.stringify(getUserInfoIds))
 
-        localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
-
-        localStorage.setItem("usersInfoDB", JSON.stringify(getUserInfoIds))
-
-        return of((JSON.stringify(userDataBeforeUpdate) != JSON.stringify(getUsersData[FindUserDataIndex]))
-            || (JSON.stringify(userInfoIdBeforeUpdate) != JSON.stringify(getUserInfoIds[FindUserInfoIdsIndex])))
+        // return of((JSON.stringify(userDataBeforeUpdate) != JSON.stringify(getUsersData[FindUserDataIndex]))
+        //     || (JSON.stringify(userInfoIdBeforeUpdate) != JSON.stringify(getUserInfoIds[FindUserInfoIdsIndex])))
 
     }
 

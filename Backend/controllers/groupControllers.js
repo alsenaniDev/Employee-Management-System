@@ -5,7 +5,6 @@ const addGroups = (req, res) => {
     name: req.body.name,
     createBy: req.userId,
   })
-
   newGroup
     .save()
     .then(result =>
@@ -21,55 +20,62 @@ const showGroups = (req, res) => {
     res.json(group);
   }).populate({
     path: "createBy",
-    select: "_id firstName lastName email phoneNumber"
-  });
+    select: "_id firstName lastName email phoneNumber",
+  })
 }
 
 const getGroupsCount = (req, res) => {
   Groups.find({}, (err, group) => {
     res.json({
-      data: group.length
-    });
-  });
+      data: group.length,
+    })
+  })
 }
 
 const getGroupById = (req, res) => {
-  Groups.findOne({
-    _id: req.params.id
-  }, (err, group) => {
-    res.json({
-      result: group
-    });
-  }).populate({
+  Groups.findOne(
+    {
+      _id: req.params.id,
+    },
+    (err, group) => {
+      res.json({
+        result: group,
+      })
+    }
+  ).populate({
     path: "createBy",
-    select: "_id firstName lastName email phoneNumber"
-  });
+    select: "_id firstName lastName email phoneNumber",
+  })
 }
 
 const deleteGroups = (req, res) => {
-  Groups.deleteOne({
-    _id: req.params.id
-  }, (err, group) => {
-    res.json({
-      result: "Delete Group successfully"
-    });
-  });
+  Groups.deleteOne(
+    {
+      _id: req.params.id,
+    },
+    (err, group) => {
+      res.json({
+        result: "Delete Group successfully",
+      })
+    }
+  )
 }
 
 const updateGroups = (req, res) => {
-  Groups.findByIdAndUpdate({
-      _id: req.params.id
-    }, {
+  Groups.findByIdAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    {
       name: req.body.name,
     },
     (err, group) => {
       res.json({
         result: group,
-      });
+      })
     }
-  );
-};
-
+  )
+}
 
 module.exports = {
   showGroups,
@@ -77,5 +83,5 @@ module.exports = {
   addGroups,
   deleteGroups,
   updateGroups,
-  getGroupById
+  getGroupById,
 }
