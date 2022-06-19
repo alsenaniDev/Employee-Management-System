@@ -10,14 +10,14 @@ const {
 } = require("../controllers/roleControllers");
 const AuthorizationsRole = require("../middleware/AuthorizationsRole")
 
-rolesRouter.post("/add", AuthorizationsRole, addRoles);
+rolesRouter.post("/add", addRoles);
 
 rolesRouter.get("/show", showRoles);
 rolesRouter.get("/show/:id", getRoleById);
 rolesRouter.get("/getCount", getCount);
 
-rolesRouter.delete("/delete/:id", AuthorizationsRole, deleteRoles);
+rolesRouter.delete("/delete/:id", deleteRoles);
 
-rolesRouter.put("/update/:id", AuthorizationsRole, updateRoles);
+rolesRouter.put("/update/:id", updateRoles);
 
 module.exports = rolesRouter;
