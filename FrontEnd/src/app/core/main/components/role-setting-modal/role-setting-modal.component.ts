@@ -56,7 +56,7 @@ export class RoleSettingModalComponent implements OnInit {
       message: "Are you sure you want to delete this role?",
       operations: () => {
         this.SettingModalService.deleteRole(id).subscribe({
-          next: (res: boolean) => {
+          next: (res) => {
             if (res) {
               this.AlertMessageServices.success("Role deleted successfully!");
             }
@@ -65,7 +65,11 @@ export class RoleSettingModalComponent implements OnInit {
             }
           },
           error: (err: any) => {
-            this.AlertMessageServices.error(err.message);
+            if (err.status == 401) {
+              this.AlertMessageServices.error("You do not have permission to delete Roles !!!");
+            } else {
+              this.AlertMessageServices.error(err.message);
+            }
           }
         });
         this.SettingsComponent.getRoles();
@@ -76,7 +80,7 @@ export class RoleSettingModalComponent implements OnInit {
 
   editRole(data: SettingsDto) {
     this.SettingModalService.editRole(data).subscribe({
-      next: (res: boolean) => {
+      next: (res) => {
         if (res) {
           this.AlertMessageServices.success("Role is edited successfully");
         } else {
@@ -84,21 +88,26 @@ export class RoleSettingModalComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        this.AlertMessageServices.error("This Role is already exists !!!");
+        if (err.status == 401) {
+          this.AlertMessageServices.error("You do not have permission to update Roles !!!");
+        } else {
+          this.AlertMessageServices.error(err.message);
+        }
+        // this.AlertMessageServices.error("This Group is already exists !!!");
       }
     });
   }
 
   onRowEditInit(data: SettingsDto) {
-    this.clonedGroups[data.id] = { ...data };
+    this.clonedGroups[data._id] = { ...data };
   }
 
   onRowEditSave(data: SettingsDto) {
-    delete this.clonedGroups[data.id];
+    delete this.clonedGroups[data._id];
     this.editRole(data)
   }
 
   onRowEditCancel(data: SettingsDto, index: number) {
-    this.data2[index] = this.clonedGroups[data.id];
+    this.data2[index] = this.clonedGroups[data._id];
   }
 }

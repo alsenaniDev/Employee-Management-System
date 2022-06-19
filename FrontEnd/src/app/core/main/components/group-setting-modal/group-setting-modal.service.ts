@@ -3,13 +3,15 @@ import { DatePipe } from '@angular/common';
 import { Observable, of } from "rxjs";
 import { Guid } from "guid-typescript";
 import { SettingsDto } from "../../pages/settings/Settings.Dto";
+import { GroupSettingModalProxy } from "./group-setting-modal.proxy"
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
     providedIn: 'root',
 })
 
 export class SettingModalService {
-    constructor(private datePipe: DatePipe) { }
+    constructor(private datePipe: DatePipe, private http: HttpClient) { }
 
     addGroup(name: string): Observable<boolean> {
         let userFound = JSON.parse(localStorage.getItem("userInfo") || "[]");
@@ -33,29 +35,15 @@ export class SettingModalService {
         }
     }
 
-    deleteGroup(groupId: number): Observable<boolean> {
-        let Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]");
-
-        const deletedGroupIndex = Groups.findIndex((i: any) => {
-            return i.id == groupId;
-        });
-
-        Groups.splice(deletedGroupIndex, 1);
-
-        localStorage.setItem("GroupsDB", JSON.stringify(Groups));
-        return of(!Groups.find((element: any) => element.id == groupId))
+    deleteGroup(groupId: number) {
+        return this.http.delete(GroupSettingModalProxy.DELETE_GROUP + groupId)
     }
 
-    editGroup(data: SettingsDto): Observable<boolean> {
-        let Groups = JSON.parse(localStorage.getItem("GroupsDB") || "[]");
-
-        if (Groups.find((group: any) => group.name == data.name) == undefined) {
-            let group = Groups.find((x: any) => x.id == data.id);
-            group.name = data.name;
-            localStorage.setItem("GroupsDB", JSON.stringify(Groups));
-            return of(true)
-        } else {
-            return of(false)
+    editGroup(data: SettingsDto) {
+        let body = {
+            name: data.name,
         }
+        
+        return this.http.put<SettingsDto>(GroupSettingModalProxy.UPDATE_GROUP + data._id, body)
     }
 }

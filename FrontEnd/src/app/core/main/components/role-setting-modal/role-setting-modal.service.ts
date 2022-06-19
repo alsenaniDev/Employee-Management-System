@@ -3,13 +3,15 @@ import { DatePipe } from '@angular/common';
 import { Observable, of } from "rxjs";
 import { Guid } from "guid-typescript";
 import { SettingsDto } from "../../pages/settings/Settings.Dto";
+import { HttpClient } from "@angular/common/http";
+import { RoleSettingModalProxy } from "./role-setting-modal.proxy";
 
 @Injectable({
     providedIn: 'root',
 })
 
 export class SettingModalService {
-    constructor(private datePipe: DatePipe) { }
+    constructor(private datePipe: DatePipe, private http: HttpClient) { }
 
     addRole(name: string) {
         let userFound = JSON.parse(localStorage.getItem("userInfo") || "[]");
@@ -33,29 +35,13 @@ export class SettingModalService {
         }
     }
 
-    deleteRole(roleId: number): Observable<boolean> {
-        let Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]");
-
-        const deletedRoleIndex = Roles.findIndex((i: any) => {
-            return i.id == roleId;
-        });
-
-        Roles.splice(deletedRoleIndex, 1);
-
-        localStorage.setItem("RolesDB", JSON.stringify(Roles));
-        return of(!Roles.find((element: any) => element.id == roleId))
+    deleteRole(roleId: number) {
+        return this.http.delete(RoleSettingModalProxy.DELETE_ROLE + roleId)
     }
 
-    editRole(data: SettingsDto): Observable<boolean> {
-        let Roles = JSON.parse(localStorage.getItem("RolesDB") || "[]");
-
-        if (Roles.find((role: any) => role.name == data.name) == undefined) {
-            let group = Roles.find((x: any) => x.id == data.id);
-            group.name = data.name;
-            localStorage.setItem("RolesDB", JSON.stringify(Roles));
-            return of(true)
-        } else {
-            return of(false)
-        }
+    editRole(data: SettingsDto) {
+        return this.http.put<SettingsDto>(RoleSettingModalProxy.UPDATE_ROLE + data._id, {
+            name: data.name,
+        })
     }
 }

@@ -51,14 +51,12 @@ export class GroupSettingModalComponent implements OnInit {
   }
 
   deleteGroup(id: number) {
-    console.log(id);
-
     this.popupAlertMessage.servicesAlert({
       header: "Delete Group",
       message: "Are you sure you want to delete this group?",
       operations: () => {
         this.SettingModalService.deleteGroup(id).subscribe({
-          next: (res: boolean) => {
+          next: (res) => {
             if (res) {
               this.AlertMessageServices.success("Group deleted successfully!");
             }
@@ -67,7 +65,11 @@ export class GroupSettingModalComponent implements OnInit {
             }
           },
           error: (err: any) => {
-            this.AlertMessageServices.error(err.message);
+            if (err.status == 401) {
+              this.AlertMessageServices.error("You do not have permission to delete Groups !!!");
+            } else {
+              this.AlertMessageServices.error(err.message);
+            }
           }
         });
         this.SettingsComponent.getGroups();
@@ -78,7 +80,7 @@ export class GroupSettingModalComponent implements OnInit {
 
   editGroup(data: SettingsDto) {
     this.SettingModalService.editGroup(data).subscribe({
-      next: (res: boolean) => {
+      next: (res) => {
         if (res) {
           this.AlertMessageServices.success("Group is edited successfully");
         } else {
@@ -86,21 +88,26 @@ export class GroupSettingModalComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        this.AlertMessageServices.error("This Group is already exists !!!");
+        if (err.status == 401) {
+          this.AlertMessageServices.error("You do not have permission to update Groups !!!");
+        } else {
+          this.AlertMessageServices.error(err.message);
+        }
+        // this.AlertMessageServices.error("This Group is already exists !!!");
       }
     });
   }
 
   onRowEditInit(data: SettingsDto) {
-    this.clonedGroups[data.id] = { ...data };
+    this.clonedGroups[data._id] = { ...data };
   }
 
   onRowEditSave(data: SettingsDto) {
-    delete this.clonedGroups[data.id];
+    delete this.clonedGroups[data._id];
     this.editGroup(data)
   }
 
   onRowEditCancel(data: SettingsDto, index: number) {
-    this.data2[index] = this.clonedGroups[data.id];
+    this.data2[index] = this.clonedGroups[data._id];
   }
 }

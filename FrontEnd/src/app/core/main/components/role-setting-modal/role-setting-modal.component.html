@@ -1,6 +1,3 @@
-<p-toast></p-toast>
-
-
 <div class="modal fade" id="RoleModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -70,7 +67,7 @@
               </td>
 
               <td>
-                <button type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteRole(data.id)">
+                <button type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteRole(data._id)">
                   <i class="ri-delete-bin-6-line"></i>
                 </button>
               </td>
