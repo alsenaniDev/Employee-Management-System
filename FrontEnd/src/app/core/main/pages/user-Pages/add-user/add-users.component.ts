@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { AlertMessageServices } from '../../../utility/services/alert/AlertMessage.Services';
 import { CommonService } from '../../../utility/services/common/settings.service';
+import { SettingsDto } from '../../settings/Settings.Dto';
 import { getGroupModel, getRoleModel } from '../show-users/Show-users-Dto';
 import { UsersServices } from '../users.service';
 
@@ -22,8 +23,8 @@ export class AddUsersComponent {
   AddUserForm: FormGroup;
   UsersEmail = JSON.parse(localStorage.getItem("UsersDB") || "[]")
     .map((e: getUserModel) => e.email)
-  Roles: getRoleModel[];
-  Groups: getGroupModel[];
+  Roles: SettingsDto[];
+  Groups: SettingsDto[];
 
   constructor(
     public formBuilder: FormBuilder,
@@ -112,9 +113,10 @@ export class AddUsersComponent {
     }
 
   }
+
   getRoles() {
     this.commonService.getRoles().subscribe({
-      next: (res: getRoleModel[]) => {
+      next: (res: SettingsDto[]) => {
         this.Roles = res
       },
       error: (err: any) => {
@@ -122,9 +124,10 @@ export class AddUsersComponent {
       }
     })
   }
+
   getGroups() {
     this.commonService.getGroups().subscribe({
-      next: (res: getGroupModel[]) => {
+      next: (res: SettingsDto[]) => {
         this.Groups = res
       },
       error: (err: any) => {
