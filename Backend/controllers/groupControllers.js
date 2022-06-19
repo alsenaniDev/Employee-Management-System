@@ -18,9 +18,7 @@ const addGroups = (req, res) => {
 
 const showGroups = (req, res) => {
   Groups.find({}, (err, group) => {
-    res.json({
-      data: group
-    });
+    res.json(group);
   }).populate({
     path: "createBy",
     select: "_id firstName lastName email phoneNumber"
