@@ -14,7 +14,8 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userProfile = this.sidebarService.userProfile
+    let data = JSON.parse(localStorage.getItem("userInfo") || "null");
+    this.userProfile = data.data
   }
 
   checkRole(userRole: string, superRole?: string) {

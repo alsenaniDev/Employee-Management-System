@@ -35,7 +35,9 @@ const getUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     var userInfo = await usersInfo
-      .findOne({ userId: req.params.id })
+      .findOne({
+        userId: req.params.id
+      })
       .populate("userId")
       .populate("roleId")
       .populate("groupsId")
@@ -60,7 +62,16 @@ const getUserById = async (req, res) => {
 
 const addUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phoneNumber, roleId, groupsId, CreatedBy } = req.body
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneNumber,
+      roleId,
+      groupsId,
+      CreatedBy
+    } = req.body
     const newUser = new users({
       firstName,
       lastName,
@@ -86,10 +97,14 @@ const addUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const userData = await users.findById(req.params.id)
-    const userIds = await usersInfo.findOne({ userId: req.params.id })
+    const userIds = await usersInfo.findOne({
+      userId: req.params.id
+    })
     if (!userData || !userIds) return res.status(404).send("User not found")
     await users.findByIdAndDelete(userData._id)
-    await usersInfo.findOneAndDelete({ userId: req.params.id })
+    await usersInfo.findOneAndDelete({
+      userId: req.params.id
+    })
     res.json("The User is Delete")
   } catch (error) {
     console.log(error)
@@ -97,14 +112,24 @@ const deleteUser = async (req, res) => {
   }
 }
 
-const deleteSeleectedUsers = async (req, res) => {
+const deleteSelectedUsers = async (req, res) => {
   try {
-    const { usersSelect } = req.body
+    const {
+      usersSelect
+    } = req.body
     // const usersSelectIds = usersSelect.map(a => mongoose.Types.ObjectId(a))
     const usersSelectIds = usersSelect.map(a => ObjectId(a))
 
-    await users.deleteMany({ _id: { $in: usersSelect } })
-    await usersInfo.deleteMany({ userId: { $in: usersSelect } })
+    await users.deleteMany({
+      _id: {
+        $in: usersSelect
+      }
+    })
+    await usersInfo.deleteMany({
+      userId: {
+        $in: usersSelect
+      }
+    })
     res.json("the users is deleted")
   } catch (error) {
     console.log(error)
@@ -114,16 +139,39 @@ const deleteSeleectedUsers = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phoneNumber, roleId, groupsId } = req.body
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneNumber,
+      roleId,
+      groupsId
+    } = req.body
     const userData = await users.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: { firstName, lastName, email, password, phoneNumber },
-      },
-      { new: true }
+      req.params.id, {
+        $set: {
+          firstName,
+          lastName,
+          email,
+          password,
+          phoneNumber
+        },
+      }, {
+        new: true
+      }
     )
     const userIds = await usersInfo
-      .findOneAndUpdate({ userId: req.params.id }, { $set: { roleId, groupsId } }, { new: true })
+      .findOneAndUpdate({
+        userId: req.params.id
+      }, {
+        $set: {
+          roleId,
+          groupsId
+        }
+      }, {
+        new: true
+      })
       .populate("roleId")
       .populate("groupsId")
     if (!userData || !userIds) return res.status(404).json("User not found")
@@ -134,4 +182,47 @@ const updateUser = async (req, res) => {
   }
 }
 
-module.exports = { getUsers, getUserById, deleteUser, addUser, updateUser, deleteSeleectedUsers }
+const getGroupsByUserId = async (req, res) => {
+  try {
+    var userInfo = await usersInfo
+      .findOne({
+        userId: req.params.id
+      })
+      .populate("groupsId")
+    var response = {
+      groups: userInfo.groupsId.map(group => group.name),
+    }
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error.message)
+  }
+}
+
+const getRoleByUserId = async (req, res) => {
+  try {
+    var userInfo = await usersInfo
+      .findOne({
+        userId: req.params.id
+      })
+      .populate("roleId")
+    var response = {
+      role: userInfo.roleId.name,
+    }
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error.message)
+  }
+}
+
+module.exports = {
+  getUsers,
+  getUserById,
+  deleteUser,
+  addUser,
+  updateUser,
+  deleteSelectedUsers,
+  getGroupsByUserId,
+  getRoleByUserId
+}
