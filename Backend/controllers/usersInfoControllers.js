@@ -8,7 +8,11 @@ ObjectId = require("mongodb").ObjectID
 
 const getUsers = async (req, res) => {
   let userData = await usersInfo
-    .find()
+    .find({
+      userId: {
+        $ne: req.params.id
+      }
+    })
     .populate({
       path: "userId",
     })
