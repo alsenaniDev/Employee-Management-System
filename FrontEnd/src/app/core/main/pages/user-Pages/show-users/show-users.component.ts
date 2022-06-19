@@ -47,17 +47,12 @@ export class ShowUsersComponent {
   }
 
   ngOnInit() {
-
     this.Init_UpdateUserInfoForm();
     this.getUserInfo()
     this.getUserInfoById()
     this.getGroups()
     this.getRoles()
     // this.validation = this.ValidationPhone.numberOnly(event)
-    // if (this.userInfo?.role !== "Admin" && this.userInfo?.role !== "Super-Admin") {
-    //   this.Groups = this.Groups.filter((group: getGroupModel) => this.userInfo.groups.includes(group.name))
-    //   this.Roles = this.Roles.filter((role: getRoleModel) => role.name == this.userInfo?.role)
-    // }
   }
 
 
@@ -112,7 +107,6 @@ export class ShowUsersComponent {
       },
       error: (err: any) => {
         return err;
-
       }
     })
   }
@@ -121,6 +115,11 @@ export class ShowUsersComponent {
     this.commonService.getRoles().subscribe({
       next: (res: SettingsDto[]) => {
         this.Roles = res
+        // if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
+
+        // } else {
+        //   this.Roles = res.filter((role: SettingsDto) => role.name == this.userInfo?.role)
+        // }
       },
       error: (err: any) => {
         return err;
@@ -132,6 +131,11 @@ export class ShowUsersComponent {
     this.commonService.getGroups().subscribe({
       next: (res: SettingsDto[]) => {
         this.Groups = res
+        // if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
+
+        // } else {
+        //   this.Groups = res.filter((group: SettingsDto) => this.userInfo?.groups.includes(group.name))
+        // }
       },
       error: (err: any) => {
         return err;
@@ -173,20 +177,20 @@ export class ShowUsersComponent {
         role: this.EditUserInfoForm.value.role,
         groups: this.EditUserInfoForm.value.groups,
       }
-      this.userServices.UpdateUserInfo(userDto).subscribe({
-        next: (res: boolean) => {
-          if (res) {
-            this.alertMessage.success("The User is updated")
-            this.getUserInfo()
-          } else {
-            this.alertMessage.Warning("The User Was Not Update")
-          }
-          this.UserDialog = false;
-        }, error: (err: any) => {
-          this.UserDialog = false;
-          return err
-        }
-      })
+      // this.userServices.UpdateUserInfo(userDto).subscribe({
+      //   next: (res: boolean) => {
+      //     if (res) {
+      //       this.alertMessage.success("The User is updated")
+      //       this.getUserInfo()
+      //     } else {
+      //       this.alertMessage.Warning("The User Was Not Update")
+      //     }
+      //     this.UserDialog = false;
+      //   }, error: (err: any) => {
+      //     this.UserDialog = false;
+      //     return err
+      //   }
+      // })
     }
 
   }
@@ -271,12 +275,12 @@ export class ShowUsersComponent {
   }
 
   checkuserRole(userRole: any, superRole?: string) {
-    return this.userInfo?.role.name == userRole || this.userInfo?.role.name == superRole;
+    return this.userInfo?.role == userRole || this.userInfo?.role == superRole;
   }
 
   checkSuperRole(usersInfo: any, userInfoRole: string, superRole: string) {
 
-    return ((usersInfo?.role.name == userInfoRole || usersInfo?.role.name == superRole) && (this.userInfo?.role.name != superRole || usersInfo?.role.name == superRole))
+    return ((usersInfo?.role == userInfoRole || usersInfo?.role == superRole) && (this.userInfo?.role != superRole || usersInfo?.role == superRole))
   }
 
 
