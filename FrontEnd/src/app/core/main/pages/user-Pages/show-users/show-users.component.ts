@@ -8,6 +8,7 @@ import { getGroupModel, getRoleModel } from './Show-users-Dto';
 import { UsersServices } from '../users.service';
 import { UpdateUserInfoDto } from './UserDto';
 import { CommonService } from '../../../utility/services/common/settings.service';
+import { SettingsDto } from '../../settings/Settings.Dto';
 
 
 @Component({
@@ -20,8 +21,8 @@ export class ShowUsersComponent {
   @ViewChild("check") check: ElementRef["nativeElement"]
   EditUserInfoForm: FormGroup;
   UsersData: getUserModel[];
-  Groups: getGroupModel[]
-  Roles: getRoleModel[]
+  Groups: SettingsDto[]
+  Roles: SettingsDto[]
   selectedUsers: getUserInfoModel[]
   selectedRole: any
   selectedGroup: any
@@ -115,9 +116,10 @@ export class ShowUsersComponent {
       }
     })
   }
+
   getRoles() {
     this.commonService.getRoles().subscribe({
-      next: (res: getRoleModel[]) => {
+      next: (res: SettingsDto[]) => {
         this.Roles = res
       },
       error: (err: any) => {
@@ -125,9 +127,10 @@ export class ShowUsersComponent {
       }
     })
   }
+
   getGroups() {
     this.commonService.getGroups().subscribe({
-      next: (res: getGroupModel[]) => {
+      next: (res: SettingsDto[]) => {
         this.Groups = res
       },
       error: (err: any) => {
