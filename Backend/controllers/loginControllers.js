@@ -19,7 +19,6 @@ const login = async (req, res) => {
     // res.json({token : token})
 
     let userId = user._id
-    console.log(userId)
     let response = await usersInfo.findOne({
       userId
     }).populate({
@@ -41,7 +40,6 @@ const login = async (req, res) => {
     })
 
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }

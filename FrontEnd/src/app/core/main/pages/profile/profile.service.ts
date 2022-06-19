@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
-import { FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { AlertMessageServices } from "../../utility/services/alert/AlertMessage.Services";
 import { getGroupModel, getRoleModel } from "../user-Pages/show-users/Show-users-Dto";
 import { User } from "../../pages/user-Pages/show-users/UserDto";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
 import { getUserModel } from "../../utility/Models/get-user-model.dto";
 import { UpdateUserInfoDto, UpdateUserPasswordDto } from "./profile.dto";
+import { HttpClient } from "@angular/common/http";
+import { ProfileProxy } from "./profile.proxy"
 
 @Injectable({
     providedIn: "root",
@@ -15,65 +15,23 @@ import { UpdateUserInfoDto, UpdateUserPasswordDto } from "./profile.dto";
 
 export class ProfileService {
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private http: HttpClient) {
 
     }
 
-    getUsersData(): Observable<getUserModel[]> {
-        return of(JSON.parse(localStorage.getItem("UsersDB") || "[]"));
+    getUsersData() {
+        return this.http.get<getUserInfoModel[]>(ProfileProxy.GET_USERS_DATA)
     }
 
-    getUserInfoById(userId: string): Observable<getUserInfoModel> {
-        // method chaining 
-        var userInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-            .find((user: User) => user.userId == userId);
-
-        var user = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-            .find((user: getUserModel) => user.userId == userInfo?.userId ?? userId);
-
-        var userRoles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-            .find((role: getRoleModel) => role.id == userInfo.role).name;
-
-        var userGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-            .filter((group: getGroupModel) => userInfo.groups.includes(group.id))
-            .map((item: getGroupModel) => { return item.name; });
-
-        var response: getUserInfoModel = {
-            userId: user.userId,
-            CreatedAt: user.CreatedAt,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phoneNumber: user.phoneNumber,
-            CreatedBy: user.CreatedBy,
-            password: user.password,
-            groups: userGroups,
-            role: userRoles
-        }
-        return of(response);
+    getUserInfoById(userId: string) {
+        return this.http.get<getUserInfoModel>(ProfileProxy.GET_USER_INFO_BY_ID + userId);
     }
 
-    UpdateUserInformation(dto: UpdateUserInfoDto): Observable<boolean> {
-        let users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        let userIndex = users.findIndex((user: any) => user.userId == dto.userId)
-        let userInfoBeforeUpdate = JSON.stringify(users[userIndex])
-        users[userIndex] = Object.assign({}, users[userIndex],
-            {
-                firstName: dto.firstName,
-                lastName: dto.lastName,
-                phoneNumber: dto.phoneNumber
-            })
-        localStorage.setItem("UsersDB", JSON.stringify(users))
-        return of(userInfoBeforeUpdate != JSON.stringify(users[userIndex]))
+    UpdateUserInformation(dto: UpdateUserInfoDto) {
+        return this.http.put<UpdateUserInfoDto>(ProfileProxy.UPDATE_PROFILE_INFO + dto.userId, dto)
     }
 
-    UpdateUserPassword(dto: UpdateUserPasswordDto): Observable<boolean> {
-        let users = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        let userIndex = users.findIndex((user: any) => user.userId == dto.userId)
-        let userInfoBeforeUpdate = JSON.stringify(users[userIndex])
-        users[userIndex] = Object.assign({}, users[userIndex], { password: dto.password })
-        localStorage.setItem("UsersDB", JSON.stringify(users))
-        return of(userInfoBeforeUpdate != JSON.stringify(users[userIndex])
-        )
+    UpdateUserPassword(dto: UpdateUserPasswordDto) {
+        return this.http.put<UpdateUserInfoDto>(ProfileProxy.UPDATE_PROFILE_PASSWORD + dto.userId, dto)
     }
 }
