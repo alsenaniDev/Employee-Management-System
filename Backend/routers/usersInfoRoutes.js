@@ -12,8 +12,8 @@ const {
 const AuthorizationsRole = require("../middleware/AuthorizationsRole")
 
 userInfoRouter.get("/show", getUsers)
-userInfoRouter.get("/show/:id", getUserById)
-userInfoRouter.post("/add", AuthorizationsRole, addUser)
+userInfoRouter.get("/showUserById/:id", getUserById)
+userInfoRouter.post("/add", addUser)
 userInfoRouter.put("/update/:id", AuthorizationsRole, updateUser)
 userInfoRouter.delete("/delete/:id", AuthorizationsRole, deleteUser)
 userInfoRouter.delete("/deleteSelcted", AuthorizationsRole, deleteSeleectedUsers)

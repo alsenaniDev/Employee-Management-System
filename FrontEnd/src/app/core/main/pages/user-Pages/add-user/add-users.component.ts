@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { AlertMessageServices } from '../../../utility/services/alert/AlertMessage.Services';
+import { CommonService } from '../../../utility/services/common/settings.service';
 import { getGroupModel, getRoleModel } from '../show-users/Show-users-Dto';
 import { UsersServices } from '../users.service';
 
@@ -28,6 +29,7 @@ export class AddUsersComponent {
     public formBuilder: FormBuilder,
     private router: Router,
     public usersServices: UsersServices,
+    private commonService: CommonService,
     private alrtMessage: AlertMessageServices,
     private userServices: UsersServices
   ) {
@@ -111,7 +113,7 @@ export class AddUsersComponent {
 
   }
   getRoles() {
-    this.userServices.getRoles().subscribe({
+    this.commonService.getRoles().subscribe({
       next: (res: getRoleModel[]) => {
         this.Roles = res
       },
@@ -121,7 +123,7 @@ export class AddUsersComponent {
     })
   }
   getGroups() {
-    this.userServices.getGroups().subscribe({
+    this.commonService.getGroups().subscribe({
       next: (res: getGroupModel[]) => {
         this.Groups = res
       },

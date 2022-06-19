@@ -20,45 +20,47 @@ export class UsersServices {
         return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY)
     }
 
-    getUserInfoById(userId: string): Observable<getUserInfoModel> {
-        // method chaining 
-        var userInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
-            .find((user: User) => user.userId == userId);
+    getUserInfoById() {
+        let userId = JSON.parse(localStorage.getItem("userInfo") || "")
+        return this.http.get<getUserInfoModel>(ShowUsersProxy.SHOW_USER_BY_ID_PROXY + "/" + userId.data.userId)
+        // // method chaining 
+        // var userInfo = JSON.parse(localStorage.getItem("usersInfoDB") || "[]")
+        //     .find((user: User) => user.userId == userId);
 
-        var user = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-            .find((user: getUserModel) => user.userId == userInfo?.userId ?? userId);
+        // var user = JSON.parse(localStorage.getItem("UsersDB") || "[]")
+        //     .find((user: getUserModel) => user.userId == userInfo?.userId ?? userId);
 
-        var userRoles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-            .find((role: getRoleModel) => role.id == userInfo.role).name;
+        // var userRoles = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+        //     .find((role: getRoleModel) => role.id == userInfo.role).name;
 
-        var userGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-            .filter((group: getGroupModel) => userInfo.groups.includes(group.id))
-            .map((item: getGroupModel) => { return item.name; });
+        // var userGroups = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
+        //     .filter((group: getGroupModel) => userInfo.groups.includes(group.id))
+        //     .map((item: getGroupModel) => { return item.name; });
 
-        var response: getUserInfoModel = {
-            userId: user.userId,
-            CreatedAt: user.CreatedAt,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phoneNumber: user.phoneNumber,
-            CreatedBy: user.CreatedBy,
-            password: user.password,
-            groups: userGroups,
-            role: userRoles
-        }
-        return of(response);
+        // var response: getUserInfoModel = {
+        //     userId: user.userId,
+        //     CreatedAt: user.CreatedAt,
+        //     email: user.email,
+        //     firstName: user.firstName,
+        //     lastName: user.lastName,
+        //     phoneNumber: user.phoneNumber,
+        //     CreatedBy: user.CreatedBy,
+        //     password: user.password,
+        //     groups: userGroups,
+        //     role: userRoles
+        // }
+        // return of(response);
     }
 
-    getRoles(): Observable<getRoleModel[]> {
-        let response = JSON.parse(localStorage.getItem("RolesDB") || "[]")
-        return of(response)
-    }
+    // getRoles(): Observable<getRoleModel[]> {
+    //     let response = JSON.parse(localStorage.getItem("RolesDB") || "[]")
+    //     return of(response)
+    // }
 
-    getGroups(): Observable<getGroupModel[]> {
-        let response = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
-        return of(response)
-    }
+    // getGroups(): Observable<getGroupModel[]> {
+    //     let response = JSON.parse(localStorage.getItem("GroupsDB") || "[]")
+    //     return of(response)
+    // }
 
     DeleteUser(userId: string): Observable<boolean> {
 

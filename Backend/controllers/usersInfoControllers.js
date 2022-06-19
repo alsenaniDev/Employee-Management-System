@@ -60,14 +60,14 @@ const getUserById = async (req, res) => {
 
 const addUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phoneNumber, roleId, groupsId } = req.body
+    const { firstName, lastName, email, password, phoneNumber, roleId, groupsId, CreatedBy } = req.body
     const newUser = new users({
       firstName,
       lastName,
       email,
       password,
       phoneNumber,
-      CreatedBy: req.userId,
+      CreatedBy,
     })
     const userIds = new usersInfo({
       userId: newUser._id,
@@ -103,9 +103,8 @@ const deleteSeleectedUsers = async (req, res) => {
     // const usersSelectIds = usersSelect.map(a => mongoose.Types.ObjectId(a))
     const usersSelectIds = usersSelect.map(a => ObjectId(a))
 
-
-    await users.deleteMany({ _id: { $in:  usersSelect  } })
-    await usersInfo.deleteMany({ userId: { $in: usersSelect  } })
+    await users.deleteMany({ _id: { $in: usersSelect } })
+    await usersInfo.deleteMany({ userId: { $in: usersSelect } })
     res.json("the users is deleted")
   } catch (error) {
     console.log(error)
