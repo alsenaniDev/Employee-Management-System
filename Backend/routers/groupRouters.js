@@ -6,7 +6,7 @@ const {
     addGroups,
     deleteGroups,
     updateGroups,
-    getGroupById
+    getGroupById,
 } = require("../controllers/groupControllers")
 const {
     Authorization

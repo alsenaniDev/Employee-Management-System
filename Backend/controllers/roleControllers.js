@@ -2,9 +2,7 @@ const Roles = require("../models/roles")
 
 const showRoles = (req, res) => {
   Roles.find({}, (err, role) => {
-    res.json({
-      data: role
-    })
+    res.json(role)
   }).populate({
     path: "createBy",
     select: "_id firstName lastName email phoneNumber"
