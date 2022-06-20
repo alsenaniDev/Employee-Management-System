@@ -1,7 +1,7 @@
 import { Component, Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { getUserModel } from '../../../utility/Models/get-user-model.dto';
+import { getUserInfoModel, getUserModel } from '../../../utility/Models/get-user-model.dto';
 import { AlertMessageServices } from '../../../utility/services/alert/AlertMessage.Services';
 import { CommonService } from '../../../utility/services/common/settings.service';
 import { SettingsDto } from '../../settings/Settings.Dto';
@@ -25,6 +25,7 @@ export class AddUsersComponent {
     .map((e: getUserModel) => e.email)
   Roles: SettingsDto[];
   Groups: SettingsDto[];
+  userInfo: any
 
   constructor(
     public formBuilder: FormBuilder,
@@ -33,7 +34,14 @@ export class AddUsersComponent {
     private commonService: CommonService,
     private alrtMessage: AlertMessageServices,
     private userServices: UsersServices
-  ) {
+  ) { }
+
+  ngOnInit(): void {
+    this.Init_AddUserForm();
+    this.getGroups();
+    this.getRoles()
+    this.getUserInfoById()
+    this.AddUserForm.value.email = ""
   }
   controls = [
     {
@@ -64,12 +72,6 @@ export class AddUsersComponent {
     },
   ];
 
-  ngOnInit(): void {
-    this.Init_AddUserForm();
-    this.getGroups();
-    this.getRoles()
-    this.AddUserForm.value.email = ""
-  }
 
   Init_AddUserForm() {
     this.AddUserForm = this.formBuilder.group({
@@ -83,9 +85,24 @@ export class AddUsersComponent {
     });
   }
 
+  getUserInfoById() {
+    this.userServices.getUserInfoById().subscribe({
+      next: (res: getUserInfoModel) => {
+        this.userInfo = res
+        console.log('====================================');
+        console.log(this.userInfo);
+        console.log('====================================');
+      },
+      error: (err: any) => {
+        return err;
+      }
+    })
+  }
+
 
 
   AddUser() {
+
     if (this.AddUserForm.invalid) {
       this.AddUserForm.markAllAsTouched()
     }
@@ -98,11 +115,12 @@ export class AddUsersComponent {
         lastName: this.AddUserForm.value.lname,
         password: this.AddUserForm.value.password,
         phoneNumber: this.AddUserForm.value.phoneNumber,
-        role: this.AddUserForm.value.role,
-        groups: this.AddUserForm.value.groups
+        roleId: this.AddUserForm.value.role,
+        groupsId: this.AddUserForm.value.groups,
+        CreatedBy: this.userInfo?.userId
       }
       this.usersServices.addUser(dto).subscribe({
-        next: (res: boolean) => {
+        next: (res: string) => {
           if (res) {
             this.router.navigateByUrl("/main/show-users")
           }
