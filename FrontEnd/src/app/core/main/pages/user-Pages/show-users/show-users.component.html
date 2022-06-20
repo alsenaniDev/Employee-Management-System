@@ -60,65 +60,75 @@
       </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="usersDataInfo" [rows]="10" [paginator]="true" [(selection)]="selectedUsers" [rowHover]="true"
-      dataKey="userId" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [showCurrentPageReport]="true">
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
-          <th>Id
-          </th>
-          <th>Name
-          </th>
-          <th>Email
-          </th>
-          <th>Phone Number
-          </th>
-          <th>Role
-          </th>
-          <th>Groups
-          </th>
-          <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Edit</th>
-          <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Delete</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-User let-rowIndex="rowIndex">
-        <tr>
-          <td>
-            <p-tableCheckbox [value]="User">
-            </p-tableCheckbox>
-          </td>
-          <td>{{rowIndex + 1}}</td>
-          <td>{{User.firstName}} {{User.lastName}}</td>
-          <td>{{User.email}}</td>
-          <td>{{User.phoneNumber | phoneFormat}}</td>
-          <td>
-            <span roleBorder #role>{{User.role}}</span>
-          </td>
+    <ng-container *ngIf="show; else table">
+      <p-progressSpinner [style]="{width: '50px', height: '50px', left: '50%',
+    transform: 'translate(-50%, 0px)'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)"
+        animationDuration=".5s"></p-progressSpinner>
+    </ng-container>
 
-          <td>
-            <ng-container *ngFor="let group of User.groups">
-              <span>{{group}}</span> <br>
-            </ng-container>
-          </td>
-          <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2"
-              (click)="ToggleUpdateUserInfo(User)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
-          </td>
-          <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-              (click)="deleteUser(User.userId)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="summary">
-        <div class="p-d-flex p-ai-center p-jc-between">
-          In total there are {{usersDataInfo ? usersDataInfo.length : 0 }} Users.
-        </div>
-      </ng-template>
-    </p-table>
+    <ng-template #table>
+      <p-table #dt [value]="usersDataInfo" [rows]="10" [paginator]="true" [(selection)]="selectedUsers"
+        [rowHover]="true" dataKey="userId"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>Id
+            </th>
+            <th>Name
+            </th>
+            <th>Email
+            </th>
+            <th>Phone Number
+            </th>
+            <th>Role
+            </th>
+            <th>Groups
+            </th>
+            <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Edit</th>
+            <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Delete</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-User let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="User">
+              </p-tableCheckbox>
+            </td>
+            <td>{{rowIndex + 1}}</td>
+            <td>{{User.firstName}} {{User.lastName}}</td>
+            <td>{{User.email}}</td>
+            <td>{{User.phoneNumber | phoneFormat}}</td>
+            <td>
+              <span roleBorder #role>{{User.role}}</span>
+            </td>
+
+            <td>
+              <ng-container *ngFor="let group of User.groups">
+                <span>{{group}}</span> <br>
+              </ng-container>
+            </td>
+            <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2"
+                (click)="ToggleUpdateUserInfo(User)"
+                [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
+            </td>
+            <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                (click)="deleteUser(User.userId)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            In total there are {{usersDataInfo ? usersDataInfo.length : 0 }} Users.
+          </div>
+        </ng-template>
+      </p-table>
+    </ng-template>
+
   </div>
   <form [formGroup]="EditUserInfoForm" (ngSubmit)="UpdateUserInfo()">
     <p-dialog [(visible)]="UserDialog" [style]="{width: '450px'}" header="User Details" [modal]="true"

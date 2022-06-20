@@ -15,6 +15,7 @@ export class StatsCardComponent implements OnInit {
   userFound: any
   users: getUserInfoModel[]
   userInfo: any
+  show = true
 
 
   constructor(private statsCardServices: StatsCardServices, private userServices: UsersServices) {
@@ -22,16 +23,8 @@ export class StatsCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.users = this.statsCardServices.users
-
     this.getUserInfo()
     this.getUserInfoById()
-    console.log('====================================');
-    console.log(this.users);
-    console.log('====================================');
-    // this.userProfile = this.statsCardServices.userProfile
-    // this.usersInfo = this.statsCardServices.usersInfo
-    // this.userFound = this.usersInfo.find((user: any) => user.userId == this.userProfile.userId)
   }
 
   checkRole(userRole: string, superRole?: string) {
@@ -41,22 +34,20 @@ export class StatsCardComponent implements OnInit {
     this.userServices.getUsersInfoData().subscribe({
       next: (res: getUserInfoModel[]) => {
         this.users = res
-        console.log(this.users)
+        this.show = false
       }, error: (err: any) => {
         return err;
       }
     })
   }
+
   getUserInfoById() {
     this.userServices.getUserInfoById().subscribe({
       next: (res: any) => {
         this.userInfo = res
-        console.log(this.userInfo);
-
       },
       error: (err: any) => {
         return err;
-
       }
     })
   }

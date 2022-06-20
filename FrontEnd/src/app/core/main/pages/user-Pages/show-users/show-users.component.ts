@@ -35,6 +35,7 @@ export class ShowUsersComponent {
   usersGroups: getGroupModel[]
   UserRole: any
   validation: boolean
+  show = true
 
   constructor(
     private userServices: UsersServices,
@@ -93,10 +94,10 @@ export class ShowUsersComponent {
 
 
   getUserInfo() {
-    this.getUserInfoById()
     this.userServices.getUsersInfoData().subscribe({
       next: (res: getUserInfoModel[]) => {
-        this.usersDataInfo = res.filter((user: getUserInfoModel) => user.userId != this.userInfo?.userId)
+        this.usersDataInfo = res
+        this.show = false;
       }, error: (err: any) => {
         return err;
       }

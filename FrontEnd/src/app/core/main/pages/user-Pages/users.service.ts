@@ -17,7 +17,10 @@ export class UsersServices {
     constructor(private http: HttpClient) { }
 
     getUsersInfoData() {
-        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY)
+        let userId = JSON.parse(localStorage.getItem('userInfo'))
+        console.log(ShowUsersProxy.SHOW_USERS_PROXY + userId?.data?.userId);
+
+        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY + userId?.data?.userId)
     }
 
     getUserInfoById() {
