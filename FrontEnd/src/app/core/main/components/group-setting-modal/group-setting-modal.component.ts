@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingModalService } from './group-setting-modal.service';
 import { SettingsComponent } from '../../pages/settings/settings.component';
-import { SettingsDto } from '../../pages/settings/Settings.Dto';
+import { AddSettingsDto, SettingsDto } from '../../pages/settings/Settings.Dto';
 import { AlertMessageServices } from '../../utility/services/alert/AlertMessage.Services'
 import { popupAlertMessage } from '../../utility/services/alert/popupAlert.services'
 
@@ -33,8 +33,15 @@ export class GroupSettingModalComponent implements OnInit {
 
   addGroup() {
     if (this.inputValue != "") {
-      this.SettingModalService.addGroup(this.inputValue).subscribe({
+
+      let dto: AddSettingsDto = {
+        name: this.inputValue
+      }
+
+      this.SettingModalService.addGroup(dto).subscribe({
         next: (res: any) => {
+          console.log(res);
+
           if (res) {
             this.AlertMessageServices.success("Group added successfully");
             this.SettingsComponent.getGroups();

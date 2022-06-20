@@ -11,13 +11,26 @@
 
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <ng-container *ngIf="show; else userData">
+              <p-skeleton shape="circle" size="7.5rem"></p-skeleton>
+              <div style="position: relative; margin-top: 10px;">
+                <p-skeleton width="20rem" height="25px" styleClass="p-mb-2"></p-skeleton>
+              </div>
+              <div style="position: relative; margin-top: 10px;">
+                <p-skeleton width="5rem" height="25px" styleClass="p-mb-2"></p-skeleton>
+              </div>
+            </ng-container>
 
-            <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" alt="Profile"
-              class="rounded-circle">
-            <h2>
-              {{userInfo?.firstName}} {{userInfo?.lastName}}
-            </h2>
-            <h3>{{userInfo?.role}}</h3>
+
+            <ng-template #userData>
+              <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" alt="Profile"
+                class="rounded-circle">
+              <h2>
+                {{userInfo?.firstName}} {{userInfo?.lastName}}
+              </h2>
+              <h3>{{userInfo?.role}}</h3>
+            </ng-template>
+
 
           </div>
         </div>
@@ -55,28 +68,70 @@
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Full Name</div>
                   <div class="col-lg-9 col-md-8">
-                    {{userInfo?.firstName}} {{userInfo?.lastName}}</div>
+                    <ng-container *ngIf="show; else fullName">
+                      <div>
+                        <p-skeleton width="20rem" height="25px" styleClass="p-mb-2"></p-skeleton>
+                      </div>
+                    </ng-container>
+                    <ng-template #fullName>
+                      {{userInfo?.firstName}} {{userInfo?.lastName}}
+                    </ng-template>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Email</div>
                   <div class="col-lg-9 col-md-8">
-                    {{userInfo?.email}}</div>
+                    <ng-container *ngIf="show; else email">
+                      <div>
+                        <p-skeleton width="20rem" height="25px" styleClass="p-mb-2"></p-skeleton>
+                      </div>
+                    </ng-container>
+                    <ng-template #email>
+                      {{userInfo?.email}}
+                    </ng-template>
+                  </div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Phone</div>
                   <div class="col-lg-9 col-md-8">
-                    {{userInfo?.phoneNumber}}</div>
+                    <ng-container *ngIf="show; else phone">
+                      <div>
+                        <p-skeleton width="20rem" height="25px" styleClass="p-mb-2"></p-skeleton>
+                      </div>
+                    </ng-container>
+                    <ng-template #phone>
+                      {{userInfo?.phoneNumber}}
+                    </ng-template>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Role</div>
-                  <div class="col-lg-9 col-md-8">{{userInfo?.role}}</div>
+                  <div class="col-lg-9 col-md-8">
+                    <ng-container *ngIf="show; else role">
+                      <div>
+                        <p-skeleton width="20rem" height="25px" styleClass="p-mb-2"></p-skeleton>
+                      </div>
+                    </ng-container>
+                    <ng-template #role>
+                      {{userInfo?.role}}
+                    </ng-template>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Groups</div>
 
                   <div *ngFor="let group of userInfo?.groups" class="groupName">
-                    <span>{{group}}</span><br>
+                    <span>
+                      <ng-container *ngIf="show; else userGroups">
+                        <div>
+                          <p-skeleton width="20rem" height="25px" styleClass="p-mb-2"></p-skeleton>
+                        </div>
+                      </ng-container>
+                      <ng-template #userGroups>
+                        {{group}}
+                      </ng-template>
+                    </span><br>
                   </div>
 
                 </div>

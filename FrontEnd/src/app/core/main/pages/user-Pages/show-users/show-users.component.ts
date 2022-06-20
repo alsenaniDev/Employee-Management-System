@@ -53,10 +53,6 @@ export class ShowUsersComponent {
     this.getUserInfoById()
     this.getGroups()
     this.getRoles()
-    console.log('====================================');
-
-    console.log('====================================');
-    // this.validation = this.ValidationPhone.numberOnly(event)
   }
 
 
@@ -89,7 +85,6 @@ export class ShowUsersComponent {
       controlName: 'password',
       type: "password"
     }
-
   ];
 
 

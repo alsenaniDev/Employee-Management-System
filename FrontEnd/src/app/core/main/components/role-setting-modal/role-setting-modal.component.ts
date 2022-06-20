@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingModalService } from './role-setting-modal.service';
 import { SettingsComponent } from '../../pages/settings/settings.component';
-import { SettingsDto } from '../../pages/settings/Settings.Dto';
+import { AddSettingsDto, SettingsDto } from '../../pages/settings/Settings.Dto';
 import { AlertMessageServices } from '../../utility/services/alert/AlertMessage.Services'
 import { popupAlertMessage } from '../../utility/services/alert/popupAlert.services'
 
@@ -32,8 +32,13 @@ export class RoleSettingModalComponent implements OnInit {
   }
 
   addRole() {
+
+    let dto: AddSettingsDto = {
+      name: this.inputValue
+    }
+
     if (this.inputValue != "") {
-      this.SettingModalService.addRole(this.inputValue).subscribe({
+      this.SettingModalService.addRole(dto).subscribe({
         next: (res: any) => {
           if (res) {
             this.AlertMessageServices.success("Role added successfully");
