@@ -50,6 +50,7 @@ import { StatsCardComponent } from './core/main/components/stats-card/stats-card
 import { InputWarring } from './core/main/utility/directives/InputWarring';
 import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumberValidation';
 import { HttpClientModule } from '@angular/common/http';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 
@@ -105,7 +106,8 @@ import { HttpClientModule } from '@angular/common/http';
     FileUploadModule,
     RadioButtonModule,
     InputNumberModule,
-    HttpClientModule
+    HttpClientModule,
+    ProgressSpinnerModule
   ],
   providers: [MessageService, ConfirmationService, DatePipe],
   bootstrap: [AppComponent]

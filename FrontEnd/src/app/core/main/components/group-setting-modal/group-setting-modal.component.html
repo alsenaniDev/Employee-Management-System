@@ -27,56 +27,64 @@
         </div>
         <hr />
         <label class="form-label" id="label-table"></label>
+        <ng-container *ngIf="show; else table">
+          <p-progressSpinner [style]="{width: '50px', height: '50px', left: '50%',
+        transform: 'translate(-50%, 0px)'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)"
+            animationDuration=".5s"></p-progressSpinner>
+        </ng-container>
 
-        <p-table [value]="data2" dataKey="id" editMode="row">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Id</th>
-              <th>Name</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
-            <tr [pEditableRow]="data">
+        <ng-template #table>
+          <p-table [value]="data2" dataKey="id" editMode="row">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
+              <tr [pEditableRow]="data">
 
-              <td>
-                {{ri + 1}}
-              </td>
+                <td>
+                  {{ri + 1}}
+                </td>
 
-              <td>
-                <p-cellEditor>
-                  <ng-template pTemplate="input">
-                    <input pInputText type="text" [(ngModel)]="data.name">
-                  </ng-template>
-                  <ng-template pTemplate="output">
-                    {{data.name}}
-                  </ng-template>
-                </p-cellEditor>
-              </td>
+                <td>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" [(ngModel)]="data.name">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{data.name}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
 
-              <td style="text-align:center">
-                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                  (click)="onRowEditInit(data)" class="p-element p-ripple p-button-help p-button p-component"></button>
+                <td style="text-align:center">
+                  <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                    (click)="onRowEditInit(data)"
+                    class="p-element p-ripple p-button-help p-button p-component"></button>
 
-                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                  (click)="onRowEditSave(data)"
-                  class="p-element p-ripple p-button-success p-button p-component"></button>
+                  <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                    (click)="onRowEditSave(data)"
+                    class="p-element p-ripple p-button-success p-button p-component"></button>
 
-                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                  (click)="onRowEditCancel(data, ri)"
-                  class="p-element p-ripple p-button-danger p-button p-component"></button>
-              </td>
+                  <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                    (click)="onRowEditCancel(data, ri)"
+                    class="p-element p-ripple p-button-danger p-button p-component"></button>
+                </td>
 
-              <td>
-                <button type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteGroup(data._id)">
-                  <i class="ri-delete-bin-6-line"></i>
-                </button>
-              </td>
+                <td>
+                  <button type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteGroup(data._id)">
+                    <i class="ri-delete-bin-6-line"></i>
+                  </button>
+                </td>
 
-            </tr>
-          </ng-template>
-        </p-table>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
