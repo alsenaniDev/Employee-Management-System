@@ -18,6 +18,7 @@ export class SettingsComponent implements OnInit {
   rolesNumber: number = 0;
   dataName: string = "";
   showModal: any
+  show = true
 
   constructor(private CommonService: CommonService) { }
   @ViewChild(GroupSettingModalComponent) groupModal: GroupSettingModalComponent
@@ -46,6 +47,7 @@ export class SettingsComponent implements OnInit {
     this.CommonService.getGroupsCount().subscribe({
       next: (res: any) => {
         this.groupsNumber = res.data;
+        this.show = false
       },
       error: (err: any) => {
         console.log(err);
@@ -59,6 +61,7 @@ export class SettingsComponent implements OnInit {
         this.roleModal.data = res
         this.roleModal.data2 = res
         this.roleModal.alertShow = false
+        this.roleModal.show = false
       },
       error: (err: any) => {
         console.log(err);
@@ -70,6 +73,7 @@ export class SettingsComponent implements OnInit {
     this.CommonService.getRolesCount().subscribe({
       next: (res: any) => {
         this.rolesNumber = res.data;
+        this.show = false
       },
       error: (err: any) => {
         console.log(err);

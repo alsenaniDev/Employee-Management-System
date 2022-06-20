@@ -13,6 +13,7 @@ import { popupAlertMessage } from '../../utility/services/alert/popupAlert.servi
 export class RoleSettingModalComponent implements OnInit {
   inputValue = "";
   alertShow = false;
+  show = true
 
   data: any = [];
   data2: any = [];
