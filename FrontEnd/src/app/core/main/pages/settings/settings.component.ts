@@ -31,9 +31,10 @@ export class SettingsComponent implements OnInit {
   getGroups() {
     this.CommonService.getGroups().subscribe({
       next: (res: any) => {
-        this.groupModal.data = res.data
-        this.groupModal.data2 = res.data
+        this.groupModal.data = res
+        this.groupModal.data2 = res
         this.groupModal.alertShow = false
+        this.groupModal.show = false
       },
       error: (err: any) => {
         console.log(err);
@@ -55,8 +56,8 @@ export class SettingsComponent implements OnInit {
   getRoles() {
     this.CommonService.getRoles().subscribe({
       next: (res: any) => {
-        this.roleModal.data = res.data
-        this.roleModal.data2 = res.data
+        this.roleModal.data = res
+        this.roleModal.data2 = res
         this.roleModal.alertShow = false
       },
       error: (err: any) => {
