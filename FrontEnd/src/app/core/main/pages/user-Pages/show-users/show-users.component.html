@@ -6,8 +6,7 @@
       <ng-template pTemplate="left">
         <div class="filter-toolbar">
           <div>
-            <div *ngIf="checkuserRole('Admin' , 'Super-Admin'), else userData"
-              class="p-d-flex p-ai-center p-jc-between">
+            <div class="p-d-flex p-ai-center p-jc-between">
               <h5 class="p-m-0">Filter By Role</h5>
               <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="name"
                 [(ngModel)]="selectedRole" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
@@ -18,26 +17,14 @@
             </div>
 
           </div>
-          <div class="userRole">
-            <ng-template #userData class="p-d-flex  p-ai-center p-jc-between">
-              <div class="p-d-flex p-ai-center p-jc-between">
-                <h5 class="p-m-0">Filter By Role</h5>
-                <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="name"
-                  [(ngModel)]="selectedRole" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
-                </p-dropdown>
-                <br />
-                <button pButton pRipple label="All Roles" icon="pi pi-align-justify" class="p-button-info"
-                  (click)="clearRole()"></button>
-              </div>
-            </ng-template>
-          </div>
 
           <div>
             <div class="p-d-flex p-ai-center p-jc-between ml-20">
               <h5 class="p-m-0">Filter By Groups</h5>
               <p-multiSelect placeholder="Select Groups" [options]="Groups" optionLabel="name" optionValue="name"
-                [virtualScroll]="true" [style]="{'width':'240px'}" [panelStyle]="{'width':'200px'}" display="chip"
-                [(ngModel)]="selectedGroup" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
+                [virtualScroll]="true" [style]="{'width':'240px'}"
+                [panelStyle]="{'width':'200px'}" display="chip" [(ngModel)]="selectedGroup"
+                (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
               </p-multiSelect>
               <br />
               <button pButton pRipple label="All Groups" icon="pi pi-align-justify" class="p-button-info"

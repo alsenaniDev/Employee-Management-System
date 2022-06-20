@@ -23,6 +23,8 @@ export class ShowUsersComponent {
   UsersData: getUserModel[];
   Groups: SettingsDto[]
   Roles: SettingsDto[]
+  FindUserRoleById: SettingsDto[]
+  FindUserGroupsById: any
   selectedUsers: getUserInfoModel[]
   selectedRole: any
   selectedGroup: any
@@ -53,6 +55,8 @@ export class ShowUsersComponent {
     this.getUserInfoById()
     this.getGroups()
     this.getRoles()
+    // this.getUserRoleById()
+    // this.getUserGroupsById()
     console.log('====================================');
 
     console.log('====================================');
@@ -119,33 +123,47 @@ export class ShowUsersComponent {
     this.commonService.getRoles().subscribe({
       next: (res: SettingsDto[]) => {
         this.Roles = res
-        // if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
-
-        // } else {
-        //   this.Roles = res.filter((role: SettingsDto) => role.name == this.userInfo?.role)
-        // }
       },
       error: (err: any) => {
         return err;
       }
     })
   }
+
+  // getUserRoleById() {
+  //   this.userServices.getUserRoleById().subscribe({
+  //     next: (res: any) => {
+  //       this.FindUserRoleById = res
+  //       console.log('====================================');
+  //       console.log(res);
+  //       console.log('====================================');
+  //     }, error: (err: any) => {
+  //       return err;
+  //     }
+  //   })
+  // }
 
   getGroups() {
     this.commonService.getGroups().subscribe({
       next: (res: SettingsDto[]) => {
         this.Groups = res
-        // if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
-
-        // } else {
-        //   this.Groups = res.filter((group: SettingsDto) => this.userInfo?.groups.includes(group.name))
-        // }
       },
       error: (err: any) => {
         return err;
       }
     })
   }
+
+  // getUserGroupsById() {
+  //   this.userServices.getUserGroupsById().subscribe({
+  //     next: (res: any) => {
+  //       this.FindUserGroupsById = res
+  //       console.log('====================================');
+  //       console.log(res);
+  //       console.log('====================================');
+  //     }
+  //   })
+  // }
 
 
 

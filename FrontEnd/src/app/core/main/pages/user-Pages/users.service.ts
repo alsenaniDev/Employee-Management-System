@@ -8,6 +8,7 @@ import { HttpClient } from "@angular/common/http";
 import { ShowUsersProxy } from "./users.proxy";
 import { AddUserDto } from "./add-user/AddUserDto";
 import { Guid } from "guid-typescript";
+import { SettingsDto } from "../settings/Settings.Dto";
 
 
 @Injectable({ providedIn: "root" })
@@ -18,9 +19,7 @@ export class UsersServices {
 
     getUsersInfoData() {
         let userId = JSON.parse(localStorage.getItem('userInfo'))
-        console.log(ShowUsersProxy.SHOW_USERS_PROXY + userId?.data?.userId);
-
-        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY + userId?.data?.userId)
+        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY + userId.data.userId)
     }
 
     getUserInfoById() {
@@ -35,16 +34,6 @@ export class UsersServices {
     DeleteSelectUser(usersSelect: string[]): Observable<any> {
         return this.http.delete<string>(ShowUsersProxy.DELETE_SELECTED_USERS_PROXY, { body: { "usersSelect": usersSelect } })
 
-        // must be :
-        // {"usersSelect": [.., .., ..] }} 
-
-        // WE DID
-        //  [.., .., ..] 
-
-        // THE FIX
-        // {"usersSelect": [.., .., ..] }} 
-
-
     }
 
     UpdateUserInfo(body: UpdateUserInfoDto) {
@@ -55,40 +44,5 @@ export class UsersServices {
     addUser(body: AddUserDto) {
 
         return this.http.post<string>(ShowUsersProxy.ADD_USER_PROXY, body)
-        // let getUsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        // let getUsersInfoIds = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
-        // let userFound = JSON.parse(localStorage.getItem("userInfo") || "null")
-
-
-        // let guid = Guid.create().toJSON();
-        // let userGuid = guid.value
-
-
-        // let userData = {
-        //     userId: userGuid,
-        //     firstName: dto.firstName,
-        //     lastName: dto.lastName,
-        //     email: dto.email,
-        //     password: dto.password,
-        //     phoneNumber: dto.phoneNumber,
-        //     CreatedBy: userFound.userId,
-        //     CreatedAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
-        // }
-
-        // getUsersData.push(userData)
-        // localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
-
-        // const userInfo = {
-        //     userId: userGuid,
-        //     role: dto.role,
-        //     groups: dto.groups
-        // }
-        // getUsersInfoIds.push(userInfo)
-        // localStorage.setItem("usersInfoDB", JSON.stringify(getUsersInfoIds))
-
-        // let FindUserInfoIds = getUsersInfoIds?.find((user: getUserModel) => user.userId == userData.userId)
-        // let findUserData = getUsersInfoIds?.find((user: User) => user.userId == userInfo.userId)
-        // return of(FindUserInfoIds && findUserData)
     }
-
 }

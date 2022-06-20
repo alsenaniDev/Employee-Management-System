@@ -1,4 +1,5 @@
 const Groups = require("../models/groups")
+const usersInfo = require("../models/usersInfo")
 
 const addGroups = (req, res) => {
   const newGroup = new Groups({
@@ -15,13 +16,18 @@ const addGroups = (req, res) => {
     .catch(err => console.log(err))
 }
 
-const showGroups = (req, res) => {
-  Groups.find({}, (err, group) => {
-    res.json(group);
-  }).populate({
+const showGroups = async (req, res) => {
+  let userFound = await usersInfo.findOne({ userId: req.params.id }).populate("roleId")
+  let group = await Groups.find().populate({
     path: "createBy",
     select: "_id firstName lastName email phoneNumber",
   })
+  if (userFound.roleId.name == "Admin" || userFound.roleId.name == "Super-Admin") {
+    res.json(group)
+  } else {
+    let userGroups = group.filter(group => userFound.groupsId.includes(group._id))
+    res.json(userGroups)
+  }
 }
 
 const getGroupsCount = (req, res) => {

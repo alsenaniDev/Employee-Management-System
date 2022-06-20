@@ -15,7 +15,7 @@ const AuthorizationsRole = require("../middleware/AuthorizationsRole")
 
 groupsRouter.post("/add", addGroups)
 
-groupsRouter.get("/show", showGroups)
+groupsRouter.get("/show/:id", showGroups)
 groupsRouter.get("/show/:id", getGroupById)
 groupsRouter.get("/getCount", getGroupsCount)
 
