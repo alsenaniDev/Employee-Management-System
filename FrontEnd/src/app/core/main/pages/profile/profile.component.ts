@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  Users: getUserModel[];
+  Users: getUserInfoModel[];
   userInfo: getUserInfoModel
   UpdateUserInfoForm: FormGroup
   UpdateUserPasswordForm: FormGroup
@@ -28,18 +28,15 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUsersData()
     this.getUserInfoById()
-    this.Init_UpdateUserInfoForm(this.userInfo)
     this.Init_UpdateUserPasswordForm()
-
   }
 
   Init_UpdateUserInfoForm(userInfo: any) {
     this.UpdateUserInfoForm = this.fb.group({
-      firstName: [userInfo.firstName, [Validators.required, Validators.minLength(3)]],
-      lastName: [userInfo.lastName, [Validators.required, Validators.minLength(3)]],
-      phoneNumber: [userInfo.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]]
+      firstName: [userInfo?.firstName, [Validators.required, Validators.minLength(3)]],
+      lastName: [userInfo?.lastName, [Validators.required, Validators.minLength(3)]],
+      phoneNumber: [userInfo?.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]]
     })
 
   }
@@ -52,22 +49,13 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  getUsersData() {
-    this.profileService.getUsersData().subscribe({
-      next: (res: getUserModel[]) => {
-        this.Users = res;
-      },
-      error: (err: any) => {
-        return err;
-      }
-    })
-  }
-
   getUserInfoById() {
     let userInfo = JSON.parse(localStorage.getItem("userInfo") || "")
-    this.profileService.getUserInfoById(userInfo.userId).subscribe({
+    let userId = userInfo.data.userId
+    this.profileService.getUserInfoById(userId).subscribe({
       next: (res: getUserInfoModel) => {
         this.userInfo = res
+        this.Init_UpdateUserInfoForm(this.userInfo)
       },
       error: (err: any) => {
         return err;
@@ -87,11 +75,12 @@ export class ProfileComponent implements OnInit {
       lastName: this.UpdateUserInfoForm.value.lastName,
       phoneNumber: this.UpdateUserInfoForm.value.phoneNumber
     }
+    
     this.profileService.UpdateUserInformation(dto).subscribe({
-      next: (res: boolean) => {
+      next: (res: UpdateUserInfoDto) => {
         if (res) {
           this.alertMessage.success("The Information is Update")
-          this.getUsersData()
+          this.getUserInfoById()
         }
         else {
           this.alertMessage.Warning("The Information is Not Change")
@@ -125,8 +114,9 @@ export class ProfileComponent implements OnInit {
         userId: userId,
         password: this.UpdateUserPasswordForm.value.password
       }
+
       this.profileService.UpdateUserPassword(dto).subscribe({
-        next: (res: boolean) => {
+        next: (res: UpdateUserInfoDto) => {
           if (res) {
             this.router.navigateByUrl("/account/login")
           } else {

@@ -11,11 +11,13 @@ const groupsRouter = require("./routers/groupRouters")
 const rolesRouter = require("./routers/roleRouters")
 const userInfoRouter = require("./routers/usersInfoRoutes")
 const loginRouters = require("./routers/loginRouters")
+const profileRouters = require("./routers/profileRouters")
 
 app.use("/api/groups", groupsRouter)
 app.use("/api/roles", rolesRouter)
 app.use("/api/users", userInfoRouter)
 app.use("/api/login", loginRouters)
+app.use("/api/profile", profileRouters)
 
 app.get("/", (req, res) => {
   res.send("App Works !!!!")

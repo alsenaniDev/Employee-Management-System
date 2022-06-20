@@ -8,7 +8,11 @@ ObjectId = require("mongodb").ObjectID
 
 const getUsers = async (req, res) => {
   let userData = await usersInfo
-    .find()
+    .find({
+      userId: {
+        $ne: req.params.id
+      }
+    })
     .populate({
       path: "userId",
     })
@@ -55,7 +59,6 @@ const getUserById = async (req, res) => {
     }
     res.json(response)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -80,7 +83,6 @@ const addUser = async (req, res) => {
     await userIds.save()
     res.json({ message: "the user is Added" })
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -98,13 +100,11 @@ const deleteUser = async (req, res) => {
     })
     res.json("The User is Delete")
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
 
 const deleteSelectedUsers = async (req, res) => {
-  // try {
   const { usersSelect } = req.body
   await users.deleteMany({
     _id: {
@@ -116,12 +116,7 @@ const deleteSelectedUsers = async (req, res) => {
       $in: usersSelect,
     },
   })
-  // if (!usersInfo || !usersIds) return res.status(404).send("Some User Not Found")
   res.json({ message: "the users is deleted" })
-  // } catch (error) {
-  //   console.log(error)
-  //   res.status(500).json(error.message)
-  // }
 }
 
 const updateUser = async (req, res) => {
@@ -162,7 +157,6 @@ const updateUser = async (req, res) => {
     if (!userData || !userIds) return res.status(404).json("User not found")
     res.json(userIds)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -179,7 +173,6 @@ const getGroupsByUserId = async (req, res) => {
     }
     res.json(response)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }
@@ -196,7 +189,6 @@ const getRoleByUserId = async (req, res) => {
     }
     res.json(response)
   } catch (error) {
-    console.log(error)
     res.status(500).json(error.message)
   }
 }

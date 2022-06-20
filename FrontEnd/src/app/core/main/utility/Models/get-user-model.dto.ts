@@ -1,4 +1,5 @@
-import { getGroupModel, getRoleModel } from "../../pages/user-Pages/show-users/Show-users-Dto";
+import { SettingsDto } from "../../pages/settings/Settings.Dto";
+import { getGroupModel } from "../../pages/user-Pages/show-users/Show-users-Dto";
 
 export class getUserModel {
     CreatedAt: Date;
@@ -12,6 +13,6 @@ export class getUserModel {
 }
 
 export class getUserInfoModel extends getUserModel {
-    role: getRoleModel;
+    role: SettingsDto;
     groups: getGroupModel[];
 }
