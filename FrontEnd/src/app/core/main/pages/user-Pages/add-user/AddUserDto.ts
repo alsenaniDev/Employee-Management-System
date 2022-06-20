@@ -6,6 +6,7 @@ export interface AddUserDto {
     lastName: string;
     password: string;
     phoneNumber: number;
-    role?: getRoleModel,
-    groups?: getGroupModel
+    roleId?: getRoleModel,
+    groupsId?: getGroupModel,
+    CreatedBy: any
 }

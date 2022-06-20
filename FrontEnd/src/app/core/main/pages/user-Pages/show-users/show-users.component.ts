@@ -33,7 +33,7 @@ export class ShowUsersComponent {
   userInfo: any
   userDetails: getUserInfoModel
   usersGroups: getGroupModel[]
-  UserRole: boolean
+  UserRole: any
   validation: boolean
 
   constructor(
@@ -52,6 +52,9 @@ export class ShowUsersComponent {
     this.getUserInfoById()
     this.getGroups()
     this.getRoles()
+    console.log('====================================');
+
+    console.log('====================================');
     // this.validation = this.ValidationPhone.numberOnly(event)
   }
 
@@ -154,7 +157,7 @@ export class ShowUsersComponent {
       email: [userDetails?.email, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$")]],
       phoneNumber: [userDetails?.phoneNumber, [Validators.required, Validators.pattern(`05[0-9]{8}$`)]],
       password: [userDetails?.password, [Validators.required, Validators.minLength(6)]],
-      role: [userDetails?.role, Validators.required],
+      role: [this.UserRole?.name, Validators.required],
       groups: [this.userGroupsSelect, Validators.required],
     })
     console.log(this.EditUserInfoForm.value.groups)
@@ -174,23 +177,23 @@ export class ShowUsersComponent {
         email: this.EditUserInfoForm.value.email,
         phoneNumber: this.EditUserInfoForm.value.phoneNumber,
         password: this.EditUserInfoForm.value.password,
-        role: this.EditUserInfoForm.value.role,
-        groups: this.EditUserInfoForm.value.groups,
+        roleId: this.EditUserInfoForm.value.role._id,
+        groupsId: this.EditUserInfoForm.value.groups.map((g: SettingsDto) => g._id),
       }
-      // this.userServices.UpdateUserInfo(userDto).subscribe({
-      //   next: (res: boolean) => {
-      //     if (res) {
-      //       this.alertMessage.success("The User is updated")
-      //       this.getUserInfo()
-      //     } else {
-      //       this.alertMessage.Warning("The User Was Not Update")
-      //     }
-      //     this.UserDialog = false;
-      //   }, error: (err: any) => {
-      //     this.UserDialog = false;
-      //     return err
-      //   }
-      // })
+      this.userServices.UpdateUserInfo(userDto).subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.alertMessage.success("The User is updated")
+            this.getUserInfo()
+          } else {
+            this.alertMessage.Warning("The User Was Not Update")
+          }
+          this.UserDialog = false;
+        }, error: (err: any) => {
+          this.UserDialog = false;
+          return err
+        }
+      })
     }
 
   }
@@ -203,6 +206,7 @@ export class ShowUsersComponent {
       this.Init_UpdateUserInfoForm(userFormDto)
       this.userGroupsSelect = this.Groups.filter((group: any) =>
         userFormDto.groups.includes(group.name))
+      this.UserRole = this.Roles.find((g: any) => g.name == userFormDto.role)
     }
   }
 
@@ -213,7 +217,7 @@ export class ShowUsersComponent {
       message: 'Are you sure you want to delete This User ?',
       operations: () => {
         this.userServices.DeleteUser(userId).subscribe({
-          next: (res: boolean) => {
+          next: (res: string) => {
             if (res) {
               this.alertMessage.success("The User is Delete")
             } else {
@@ -234,17 +238,18 @@ export class ShowUsersComponent {
       header: "Confirm",
       message: 'Are you sure you want to delete This Users ?',
       operations: () => {
-        this.userServices.DeleteSelectUser(this.selectedUsers).subscribe({
-          next: (res: boolean) => {
+        const usersSelect = this.selectedUsers.map((id: getUserInfoModel) => id.userId)
+        this.userServices.DeleteSelectUser(usersSelect).subscribe({
+          next: (res) => {
             if (res) {
-              this.alertMessage.success("The Users is Delete")
+              this.alertMessage.success(res.message)
               this.selectedUsers = []
+              this.getUserInfo()
             }
           }, error: (err: any) => {
             this.alertMessage.error("Action Valid")
           }
         })
-        this.getUserInfo()
       }
     })
   }
@@ -254,24 +259,27 @@ export class ShowUsersComponent {
   }
 
   filterTableData(role: any, group: any) {
-    this.getUserInfo()
-
-    let dataFiltered = this.usersDataInfo?.filter((user: getUserInfoModel) =>
-      user.userId != this.userInfo?.userId)
-    if ((role) && (group && group?.length != 0)) {
-      dataFiltered = dataFiltered.filter((user: any) => (user.userId != this.userInfo.userId)
-        && (user.role == role
-          && user.groups.find((g: getGroupModel) => group?.includes(g)))
-      )
-    }
-    if (role || group && group?.length != 0) {
-      dataFiltered = dataFiltered.filter((user: any) => (user.userId != this.userInfo.userId)
-        && (user.role == role
-          || user.groups?.find((g: getGroupModel) => group?.includes(g)))
-      )
-    }
-
-    this.usersDataInfo = dataFiltered
+    this.userServices.getUsersInfoData().subscribe({
+      next: (res: getUserInfoModel[]) => {
+        if ((role) && (group && group?.length != 0)) {
+          this.usersDataInfo = res.filter((user: any) => (user.userId != this.userInfo.userId)
+            && (user.role == role
+              && user.groups.find((g: getGroupModel) => group?.includes(g)))
+          )
+        }
+        else if (role || group && group?.length != 0) {
+          this.usersDataInfo = res.filter((user: any) => (user.userId != this.userInfo.userId)
+            && (user.role == role
+              || user.groups?.find((g: getGroupModel) => group?.includes(g)))
+          )
+        }
+        else {
+          this.usersDataInfo = res
+        }
+      }, error: (err: any) => {
+        return err;
+      }
+    })
   }
 
   checkuserRole(userRole: any, superRole?: string) {
@@ -298,8 +306,5 @@ export class ShowUsersComponent {
     let usersSelect = selectedUsers?.map((check: any) => check.role)
     return usersSelect?.includes("Super-Admin") || (usersSelect?.includes("Admin") && this.userInfo?.role != 'Super-Admin')
   }
-  getRoleCheck() {
 
-    this.usersDataInfo = this.usersDataInfo?.filter((u: any) => u.role == this.userInfo?.role.name)
-  }
 }

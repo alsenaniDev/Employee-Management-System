@@ -41,7 +41,7 @@
               <div class="col-md-4">
                 <label class="form-label">Groups</label>
                 <ng-select formControlName="groups" [maxSelectedItems]="3" [multiple]="true" [items]="Groups"
-                  bindLabel="name" bindValue="id" placeholder="Select Groups">
+                  bindLabel="name" bindValue="_id" placeholder="Select Groups">
                 </ng-select>
                 <app-alerts [formName]="AddUserForm" [title]="'Groups'" [controlName]="'groups'"></app-alerts>
               </div>

@@ -138,10 +138,13 @@
         </div>
         <div class="col-md-12 mt-3">
           <label class="form-label">Role</label>
-          <select label="Select Role" class="form-select" formControlName="role">
+          <select [(ngModel)]="UserRole" label="Select Role" class="form-select" formControlName="role">
             <option selected disabled>Choose...</option>
-            <option *ngFor="let role of Roles" [ngValue]="role.name">{{role.name}}</option>
+            <option *ngFor="let role of Roles" [ngValue]="role">{{role.name}}</option>
           </select>
+          <!-- <p-dropdown appendTo="body" [options]="Roles" placeholder="Select a Role" optionLabel="name">
+          </p-dropdown> -->
+
           <label class="form-label">Groups</label>
           <p-multiSelect formControlName="groups" appendTo="body" [options]="Groups" [(ngModel)]="userGroupsSelect"
             defaultLabel="Select a Groups" optionLabel="name" display="chip">
