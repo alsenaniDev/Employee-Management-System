@@ -49,6 +49,7 @@ import { LoginPageComponent } from './core/account/pages/login-Page/login-page.c
 import { StatsCardComponent } from './core/main/components/stats-card/stats-card.component';
 import { InputWarring } from './core/main/utility/directives/InputWarring';
 import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumberValidation';
+import { SkeletonModule } from 'primeng/skeleton';
 import { HttpClientModule } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -107,7 +108,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     RadioButtonModule,
     InputNumberModule,
     HttpClientModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    SkeletonModule
   ],
   providers: [MessageService, ConfirmationService, DatePipe],
   bootstrap: [AppComponent]

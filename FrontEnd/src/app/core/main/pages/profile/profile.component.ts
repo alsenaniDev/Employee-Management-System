@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   userInfo: getUserInfoModel
   UpdateUserInfoForm: FormGroup
   UpdateUserPasswordForm: FormGroup
+  show = true;
 
   constructor(private fb: FormBuilder,
     private profileService: ProfileService,
@@ -56,6 +57,7 @@ export class ProfileComponent implements OnInit {
       next: (res: getUserInfoModel) => {
         this.userInfo = res
         this.Init_UpdateUserInfoForm(this.userInfo)
+        this.show = false
       },
       error: (err: any) => {
         return err;
@@ -75,7 +77,7 @@ export class ProfileComponent implements OnInit {
       lastName: this.UpdateUserInfoForm.value.lastName,
       phoneNumber: this.UpdateUserInfoForm.value.phoneNumber
     }
-    
+
     this.profileService.UpdateUserInformation(dto).subscribe({
       next: (res: UpdateUserInfoDto) => {
         if (res) {
