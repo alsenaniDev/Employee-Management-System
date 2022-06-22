@@ -11,7 +11,8 @@ export class CommonService {
     constructor(private http: HttpClient) { }
 
     getGroups() {
-        return this.http.get<SettingsDto[]>(SettingsProxy.GET_GROUPS);
+        let userId = JSON.parse(localStorage.getItem('userInfo'))
+        return this.http.get<SettingsDto[]>(SettingsProxy.GET_GROUPS + userId?.data.userId);
     }
 
     getGroupsCount() {
@@ -19,7 +20,8 @@ export class CommonService {
     }
 
     getRoles() {
-        return this.http.get<SettingsDto[]>(SettingsProxy.GET_ROLES);
+        let userId = JSON.parse(localStorage.getItem('userInfo'))
+        return this.http.get<SettingsDto[]>(SettingsProxy.GET_ROLES + userId?.data.userId);
     }
 
     getRolesCount() {
