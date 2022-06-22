@@ -12,7 +12,7 @@ const AuthorizationsRole = require("../middleware/AuthorizationsRole")
 
 rolesRouter.post("/add", addRoles);
 
-rolesRouter.get("/show", showRoles);
+rolesRouter.get("/show/:id", showRoles);
 rolesRouter.get("/show/:id", getRoleById);
 rolesRouter.get("/getCount", getCount);
 

@@ -11,6 +11,10 @@ class PagedResult {
 }
 
 const getUsers = async (req, res) => {
+  let userFound = await usersInfo.findOne({ userId: req.params.id }).populate("roleId").populate("groupsId")
+  let GroupsIds = userFound.groupsId.map(group => group.name)
+
+  // return console.log(GroupsIds)
   let userData = await usersInfo
     .find({
       userId: {
@@ -37,7 +41,13 @@ const getUsers = async (req, res) => {
       role: user.roleId.name,
     }
   })
-  res.json(response)
+  if (userFound.roleId.name == "Admin") {
+    res.json(response)
+  } else {
+    let user = response.filter(u => u.role == userFound.roleId.name || u.groups.find(g => GroupsIds.includes(g)))
+    res.json(user)
+    console.log(user)
+  }
 }
 
 const getUserById = async (req, res) => {
@@ -178,10 +188,7 @@ const getGroupsByUserId = async (req, res) => {
         userId: req.params.id,
       })
       .populate("groupsId")
-    var response = {
-      groups: userInfo.groupsId.map(group => group.name),
-    }
-    res.json(response)
+    res.json(userInfo.groupsId)
   } catch (error) {
     res.status(500).json(error.message)
   }
@@ -194,9 +201,7 @@ const getRoleByUserId = async (req, res) => {
         userId: req.params.id,
       })
       .populate("roleId")
-    var response = {
-      role: userInfo.roleId.name,
-    }
+    res.json(userInfo.roleId)
     res.json(response)
   } catch (error) {
     res.status(500).json(error.message)

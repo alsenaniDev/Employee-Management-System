@@ -9,6 +9,7 @@ import { ShowUsersProxy } from "./users.proxy";
 import { AddUserDto } from "./add-user/AddUserDto";
 import { Guid } from "guid-typescript";
 import { getAllUsersModelDto, pagedResultRequest } from "../../utility/Models/pagedResult.dto";
+import { SettingsDto } from "../settings/Settings.Dto";
 
 
 @Injectable({ providedIn: "root" })
@@ -19,9 +20,7 @@ export class UsersServices {
 
     getUsersInfoData() {
         let userId = JSON.parse(localStorage.getItem('userInfo'))
-        console.log(ShowUsersProxy.SHOW_USERS_PROXY + userId?.data?.userId);
-
-        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY + userId?.data?.userId)
+        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY + userId.data.userId)
     }
 
     getUserInfoById() {
@@ -43,7 +42,6 @@ export class UsersServices {
 
 
     addUser(body: AddUserDto) {
-
         return this.http.post<string>(ShowUsersProxy.ADD_USER_PROXY, body)
     }
 
@@ -51,5 +49,4 @@ export class UsersServices {
         let userId = JSON.parse(localStorage.getItem("userInfo"))
         return this.http.post<any>(ShowUsersProxy.GET_USERS_PAGINATOR + userId.data.userId + "/", { request })
     }
-
 }

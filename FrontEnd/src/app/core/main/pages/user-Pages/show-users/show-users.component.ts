@@ -25,6 +25,8 @@ export class ShowUsersComponent {
   EditUserInfoForm: FormGroup;
   Groups: SettingsDto[]
   Roles: SettingsDto[]
+  FindUserRoleById: SettingsDto[]
+  FindUserGroupsById: any
   selectedUsers: getUserInfoModel[]
   selectedRole: any
   selectedGroups: any
@@ -128,6 +130,19 @@ export class ShowUsersComponent {
     })
   }
 
+  // getUserRoleById() {
+  //   this.userServices.getUserRoleById().subscribe({
+  //     next: (res: any) => {
+  //       this.FindUserRoleById = res
+  //       console.log('====================================');
+  //       console.log(res);
+  //       console.log('====================================');
+  //     }, error: (err: any) => {
+  //       return err;
+  //     }
+  //   })
+  // }
+
   getGroups() {
     this.commonService.getGroups().subscribe({
       next: (res: SettingsDto[]) => {
@@ -138,6 +153,17 @@ export class ShowUsersComponent {
       }
     })
   }
+
+  // getUserGroupsById() {
+  //   this.userServices.getUserGroupsById().subscribe({
+  //     next: (res: any) => {
+  //       this.FindUserGroupsById = res
+  //       console.log('====================================');
+  //       console.log(res);
+  //       console.log('====================================');
+  //     }
+  //   })
+  // }
 
 
 

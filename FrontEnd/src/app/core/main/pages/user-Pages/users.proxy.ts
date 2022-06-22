@@ -9,5 +9,4 @@ export class ShowUsersProxy {
     public static DELETE_SELECTED_USERS_PROXY: string = this.rootURL + "/users/deleteSelcted";
     public static ADD_USER_PROXY: string = this.rootURL + "/users/add";
     public static GET_USERS_PAGINATOR: string = this.rootURL + "/users/paganition/";
-
 }
