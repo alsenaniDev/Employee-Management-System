@@ -23,12 +23,14 @@ const getCount = (req, res) => {
   })
 }
 
-const addRoles = (req, res) => {
+const addRoles = async (req, res) => {
   const newRole = new Roles({
     name: req.body.name,
     createBy: req.userId,
   })
 
+  const rolesFound = await Roles.findOne({ name: newRole.name })
+  if (rolesFound) return res.status(404).send("The Role is Already Exist")
   newRole
     .save()
     .then(result =>

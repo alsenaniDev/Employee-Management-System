@@ -8,27 +8,21 @@
           <div>
             <div class="p-d-flex p-ai-center p-jc-between">
               <h5 class="p-m-0">Filter By Role</h5>
-              <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="name"
-                [(ngModel)]="selectedRole" (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
+              <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="_id"
+                [showClear]="true" [(ngModel)]="selectedRole"
+                (ngModelChange)="filterTableData()">
               </p-dropdown>
-              <br />
-              <button pButton pRipple label="All Roles" icon="pi pi-align-justify" class="p-button-info"
-                (click)="clearRole()"></button>
             </div>
 
           </div>
-
           <div>
             <div class="p-d-flex p-ai-center p-jc-between ml-20">
               <h5 class="p-m-0">Filter By Groups</h5>
-              <p-multiSelect placeholder="Select Groups" [options]="Groups" optionLabel="name" optionValue="name"
-                [virtualScroll]="true" [style]="{'width':'240px'}"
-                [panelStyle]="{'width':'200px'}" display="chip" [(ngModel)]="selectedGroup"
-                (ngModelChange)="filterTableData(selectedRole , selectedGroup)">
+              <p-multiSelect placeholder="Select Groups" [options]="Groups" optionLabel="name" optionValue="_id"
+                [showClear]="true" [virtualScroll]="true" [style]="{'width':'240px'}" [panelStyle]="{'width':'200px'}"
+                display="chip" [(ngModel)]="selectedGroups"
+                (ngModelChange)="filterTableData()">
               </p-multiSelect>
-              <br />
-              <button pButton pRipple label="All Groups" icon="pi pi-align-justify" class="p-button-info"
-                (click)="clearGroup()"></button>
             </div>
           </div>
           <div>
@@ -54,13 +48,18 @@
     </ng-container>
 
     <ng-template #table>
-      <p-table #dt [value]="usersDataInfo" [rows]="10" [paginator]="true" [(selection)]="selectedUsers"
-        [rowHover]="true" dataKey="userId"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+      <p-table #dt [value]="getUsers" [rows]="pageLimit" [paginator]="true" [(selection)]="selectedUsers" [lazy]="true"
+        [rowHover]="true" dataKey="userId" (onPage)="onPage($event)" [totalRecords]="allRecords"
+        currentPageReportTemplate="Showing {first} to {last} of {{allRecords}} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="header">
           <tr>
-            <th style="width: 3rem">
+            <th style="width: 3rem;">
+              <div (click)="clearSelect()">
+                <i class="pi pi-minus-circle"
+                  style="font-size: 20px ; color: darkgrey; cursor: pointer; margin-bottom: 16px;"></i>
+              </div>
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+
             </th>
             <th>Id
             </th>
@@ -99,18 +98,21 @@
             </td>
             <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
               <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2"
-                (click)="ToggleUpdateUserInfo(User)"
-                [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
+                (click)="ToggleUpdateUserInfo(User)" [disabled]="(checkSuperRole(User , 'Admin' , 'Super-Admin') )|| 
+                (selectedUsers?.length > 1) || 
+                (selectedUsers?.length == 1 && selectedUsers[0]?.userId != User.userId)"></button>
             </td>
             <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
               <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                (click)="deleteUser(User.userId)" [disabled]="checkSuperRole(User , 'Admin' , 'Super-Admin')"></button>
+                (click)="deleteUser(User.userId)" [disabled]="(checkSuperRole(User , 'Admin' , 'Super-Admin') ) 
+                || (selectedUsers?.length > 1) || 
+                (selectedUsers?.length == 1 && selectedUsers[0]?.userId != User.userId)"></button>
             </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
           <div class="p-d-flex p-ai-center p-jc-between">
-            In total there are {{usersDataInfo ? usersDataInfo.length : 0 }} Users.
+            In total there are {{getUsers ? allRecords : 0}} Users.
           </div>
         </ng-template>
       </p-table>

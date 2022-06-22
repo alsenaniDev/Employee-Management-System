@@ -10,6 +10,7 @@ const {
   deleteSelectedUsers,
   getGroupsByUserId,
   getRoleByUserId,
+  getUsersPagination,
 } = require("../controllers/usersInfoControllers")
 const AuthorizationsRole = require("../middleware/AuthorizationsRole")
 
@@ -24,5 +25,7 @@ userInfoRouter.put("/update/:id", updateUser)
 
 userInfoRouter.delete("/delete/:id", deleteUser)
 userInfoRouter.delete("/deleteSelcted", deleteSelectedUsers)
+
+userInfoRouter.post("/paganition/:id", getUsersPagination)
 
 module.exports = userInfoRouter

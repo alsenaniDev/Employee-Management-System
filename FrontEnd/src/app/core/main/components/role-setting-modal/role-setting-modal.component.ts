@@ -46,9 +46,10 @@ export class RoleSettingModalComponent implements OnInit {
             this.SettingsComponent.getRolesCount();
             this.inputValue = ""
             this.alertShow = false;
-          } else {
-            this.AlertMessageServices.Warning("This Role is already exists !!!");
           }
+        }, error: (err: any) => {
+
+          this.AlertMessageServices.Warning(err.error);
         }
       });
     } else {
@@ -99,7 +100,6 @@ export class RoleSettingModalComponent implements OnInit {
         } else {
           this.AlertMessageServices.error(err.message);
         }
-        // this.AlertMessageServices.error("This Group is already exists !!!");
       }
     });
   }

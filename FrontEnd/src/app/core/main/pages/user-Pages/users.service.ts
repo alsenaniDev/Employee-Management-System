@@ -4,10 +4,11 @@ import { getUserModel } from "../../utility/Models/get-user-model.dto";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
 import { getGroupModel, getRoleModel } from "./show-users/Show-users-Dto";
 import { UpdateUserInfoDto, User } from "./show-users/UserDto";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { ShowUsersProxy } from "./users.proxy";
 import { AddUserDto } from "./add-user/AddUserDto";
 import { Guid } from "guid-typescript";
+import { getAllUsersModelDto, pagedResultRequest } from "../../utility/Models/pagedResult.dto";
 import { SettingsDto } from "../settings/Settings.Dto";
 
 
@@ -33,7 +34,6 @@ export class UsersServices {
 
     DeleteSelectUser(usersSelect: string[]): Observable<any> {
         return this.http.delete<string>(ShowUsersProxy.DELETE_SELECTED_USERS_PROXY, { body: { "usersSelect": usersSelect } })
-
     }
 
     UpdateUserInfo(body: UpdateUserInfoDto) {
@@ -42,7 +42,11 @@ export class UsersServices {
 
 
     addUser(body: AddUserDto) {
-
         return this.http.post<string>(ShowUsersProxy.ADD_USER_PROXY, body)
+    }
+
+    GetUserPaginator(request: getAllUsersModelDto) {
+        let userId = JSON.parse(localStorage.getItem("userInfo"))
+        return this.http.post<any>(ShowUsersProxy.GET_USERS_PAGINATOR + userId.data.userId + "/", { request })
     }
 }

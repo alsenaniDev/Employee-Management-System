@@ -48,9 +48,10 @@ export class GroupSettingModalComponent implements OnInit {
             this.SettingsComponent.getGroupsCount();
             this.inputValue = "";
             this.alertShow = false;
-          } else {
-            this.AlertMessageServices.Warning("This Group is already exists !!!");
           }
+        }, error: (err: any) => {
+
+          this.AlertMessageServices.Warning(err.error);
         }
       });
     } else {

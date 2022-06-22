@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertMessageServices } from 'src/app/core/main/utility/services/alert/AlertMessage.Services';
 import { LogInService } from './login-page.service'
 
 @Component({
@@ -17,6 +18,7 @@ export class LoginPageComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private router: Router,
+    private alertMessage: AlertMessageServices,
     private LogInService: LogInService) {
 
   }
@@ -37,14 +39,12 @@ export class LoginPageComponent implements OnInit {
     this.LogInService.logIn(this.email, this.password).subscribe({
       next: (res: any) => {
         if (res) {
-          window.location.href = "main/home"
+          this.router.navigate(["main/home"])
           localStorage.setItem("userInfo", JSON.stringify(res))
-        } else {
-          this.show = true
-        }
+        } 
       },
       error: (err: any) => {
-        console.log(err);
+        this.alertMessage.Warning(err.error)
       }
     })
   }
