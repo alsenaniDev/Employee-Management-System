@@ -21,8 +21,6 @@ declare var $: any;
 
 export class AddUsersComponent {
   AddUserForm: FormGroup;
-  UsersEmail = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-    .map((e: getUserModel) => e.email)
   Roles: SettingsDto[];
   Groups: SettingsDto[];
   userInfo: any
@@ -41,7 +39,6 @@ export class AddUsersComponent {
     this.getGroups();
     this.getRoles()
     this.getUserInfoById()
-    this.AddUserForm.value.email = ""
   }
   controls = [
     {
@@ -89,9 +86,6 @@ export class AddUsersComponent {
     this.userServices.getUserInfoById().subscribe({
       next: (res: getUserInfoModel) => {
         this.userInfo = res
-        console.log('====================================');
-        console.log(this.userInfo);
-        console.log('====================================');
       },
       error: (err: any) => {
         return err;
@@ -106,9 +100,7 @@ export class AddUsersComponent {
     if (this.AddUserForm.invalid) {
       this.AddUserForm.markAllAsTouched()
     }
-    else if (this.UsersEmail.includes(this.AddUserForm.value.email)) {
-      this.AddUserForm.invalid
-    } else {
+    else {
       let dto: AddUserDto = {
         email: this.AddUserForm.value.email,
         firstName: this.AddUserForm.value.fname,
@@ -125,7 +117,7 @@ export class AddUsersComponent {
             this.router.navigateByUrl("/main/show-users")
           }
         }, error: (err: any) => {
-          return err
+          this.alrtMessage.Warning(err.error)
         }
       })
     }

@@ -4,10 +4,11 @@ import { getUserModel } from "../../utility/Models/get-user-model.dto";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
 import { getGroupModel, getRoleModel } from "./show-users/Show-users-Dto";
 import { UpdateUserInfoDto, User } from "./show-users/UserDto";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { ShowUsersProxy } from "./users.proxy";
 import { AddUserDto } from "./add-user/AddUserDto";
 import { Guid } from "guid-typescript";
+import { getAllUsersModelDto, pagedResultRequest } from "../../utility/Models/pagedResult.dto";
 
 
 @Injectable({ providedIn: "root" })
@@ -34,17 +35,6 @@ export class UsersServices {
 
     DeleteSelectUser(usersSelect: string[]): Observable<any> {
         return this.http.delete<string>(ShowUsersProxy.DELETE_SELECTED_USERS_PROXY, { body: { "usersSelect": usersSelect } })
-
-        // must be :
-        // {"usersSelect": [.., .., ..] }} 
-
-        // WE DID
-        //  [.., .., ..] 
-
-        // THE FIX
-        // {"usersSelect": [.., .., ..] }} 
-
-
     }
 
     UpdateUserInfo(body: UpdateUserInfoDto) {
@@ -55,40 +45,11 @@ export class UsersServices {
     addUser(body: AddUserDto) {
 
         return this.http.post<string>(ShowUsersProxy.ADD_USER_PROXY, body)
-        // let getUsersData = JSON.parse(localStorage.getItem("UsersDB") || "[]")
-        // let getUsersInfoIds = JSON.parse(localStorage.getItem("usersInfoDB" || "[]"))
-        // let userFound = JSON.parse(localStorage.getItem("userInfo") || "null")
+    }
 
-
-        // let guid = Guid.create().toJSON();
-        // let userGuid = guid.value
-
-
-        // let userData = {
-        //     userId: userGuid,
-        //     firstName: dto.firstName,
-        //     lastName: dto.lastName,
-        //     email: dto.email,
-        //     password: dto.password,
-        //     phoneNumber: dto.phoneNumber,
-        //     CreatedBy: userFound.userId,
-        //     CreatedAt: this.datePipe.transform(Date.now(), 'yyyy-MM-dd')
-        // }
-
-        // getUsersData.push(userData)
-        // localStorage.setItem("UsersDB", JSON.stringify(getUsersData))
-
-        // const userInfo = {
-        //     userId: userGuid,
-        //     role: dto.role,
-        //     groups: dto.groups
-        // }
-        // getUsersInfoIds.push(userInfo)
-        // localStorage.setItem("usersInfoDB", JSON.stringify(getUsersInfoIds))
-
-        // let FindUserInfoIds = getUsersInfoIds?.find((user: getUserModel) => user.userId == userData.userId)
-        // let findUserData = getUsersInfoIds?.find((user: User) => user.userId == userInfo.userId)
-        // return of(FindUserInfoIds && findUserData)
+    GetUserPaginator(request: getAllUsersModelDto) {
+        let userId = JSON.parse(localStorage.getItem("userInfo"))
+        return this.http.post<any>(ShowUsersProxy.GET_USERS_PAGINATOR + userId.data.userId + "/", { request })
     }
 
 }

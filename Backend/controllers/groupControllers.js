@@ -1,10 +1,12 @@
 const Groups = require("../models/groups")
 
-const addGroups = (req, res) => {
+const addGroups = async (req, res) => {
   const newGroup = new Groups({
     name: req.body.name,
     createBy: req.userId,
   })
+  const groupFound = await Groups.findOne({ name: newGroup.name })
+  if (groupFound) return res.status(404).send("The Group is Already Exist")
   newGroup
     .save()
     .then(result =>
@@ -17,7 +19,7 @@ const addGroups = (req, res) => {
 
 const showGroups = (req, res) => {
   Groups.find({}, (err, group) => {
-    res.json(group);
+    res.json(group)
   }).populate({
     path: "createBy",
     select: "_id firstName lastName email phoneNumber",

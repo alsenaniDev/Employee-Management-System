@@ -9,6 +9,8 @@ import { UsersServices } from '../users.service';
 import { UpdateUserInfoDto } from './UserDto';
 import { CommonService } from '../../../utility/services/common/settings.service';
 import { SettingsDto } from '../../settings/Settings.Dto';
+import { getAllUsersModelDto, pagedResultRequest, pagedResultResponse } from '../../../utility/Models/pagedResult.dto';
+import { Table } from 'primeng/table';
 
 
 @Component({
@@ -19,23 +21,26 @@ import { SettingsDto } from '../../settings/Settings.Dto';
 
 export class ShowUsersComponent {
   @ViewChild("check") check: ElementRef["nativeElement"]
+  @ViewChild("dt") pTable: Table
   EditUserInfoForm: FormGroup;
-  UsersData: getUserModel[];
   Groups: SettingsDto[]
   Roles: SettingsDto[]
   selectedUsers: getUserInfoModel[]
   selectedRole: any
-  selectedGroup: any
+  selectedGroups: any
   UserDialog!: boolean;
-  checkInput!: any
   userGroupsSelect: any[]
   usersDataInfo: getUserInfoModel[]
+  getUsers: Array<getUserInfoModel>
   userInfo: any
   userDetails: getUserInfoModel
   usersGroups: getGroupModel[]
   UserRole: any
-  validation: boolean
   show = true
+  // page:pagedResultRequest;
+  allRecords: number = 100;
+  pageNumber: number = 1;
+  pageLimit: number = 10;
 
   constructor(
     private userServices: UsersServices,
@@ -53,6 +58,8 @@ export class ShowUsersComponent {
     this.getUserInfoById()
     this.getGroups()
     this.getRoles()
+    this.getUsersPaginator()
+
   }
 
 
@@ -114,11 +121,6 @@ export class ShowUsersComponent {
     this.commonService.getRoles().subscribe({
       next: (res: SettingsDto[]) => {
         this.Roles = res
-        // if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
-
-        // } else {
-        //   this.Roles = res.filter((role: SettingsDto) => role.name == this.userInfo?.role)
-        // }
       },
       error: (err: any) => {
         return err;
@@ -130,11 +132,6 @@ export class ShowUsersComponent {
     this.commonService.getGroups().subscribe({
       next: (res: SettingsDto[]) => {
         this.Groups = res
-        // if (this.userInfo?.role == "Admin" || this.userInfo?.role == "Super-Admin") {
-
-        // } else {
-        //   this.Groups = res.filter((group: SettingsDto) => this.userInfo?.groups.includes(group.name))
-        // }
       },
       error: (err: any) => {
         return err;
@@ -180,7 +177,7 @@ export class ShowUsersComponent {
         next: (res: any) => {
           if (res) {
             this.alertMessage.success("The User is updated")
-            this.getUserInfo()
+            this.getUsersPaginator()
           } else {
             this.alertMessage.Warning("The User Was Not Update")
           }
@@ -254,28 +251,37 @@ export class ShowUsersComponent {
     this.UserDialog = false;;
   }
 
-  filterTableData(role: any, group: any) {
-    this.userServices.getUsersInfoData().subscribe({
-      next: (res: getUserInfoModel[]) => {
-        if ((role) && (group && group?.length != 0)) {
-          this.usersDataInfo = res.filter((user: any) => (user.userId != this.userInfo.userId)
-            && (user.role == role
-              && user.groups.find((g: getGroupModel) => group?.includes(g)))
-          )
-        }
-        else if (role || group && group?.length != 0) {
-          this.usersDataInfo = res.filter((user: any) => (user.userId != this.userInfo.userId)
-            && (user.role == role
-              || user.groups?.find((g: getGroupModel) => group?.includes(g)))
-          )
-        }
-        else {
-          this.usersDataInfo = res
-        }
-      }, error: (err: any) => {
-        return err;
-      }
-    })
+  filterTableData() {
+    // this.userServices.GetUserPaginator(new pagedResultRequest).subscribe({
+    //   next: (res: any) => {
+    //     if ((role) && (group && group?.length != 0)) {
+    //       this.getUsers = res.result.filter((user: any) => (user.userId != this.userInfo.userId)
+    //         && (user.role == role
+    //           && user.groups.find((g: getGroupModel) => group?.includes(g)))
+    //       )
+    //     }
+    //     else if (role || group && group?.length != 0) {
+    //       this.getUsers = res.result.filter((user: any) => (user.userId != this.userInfo.userId)
+    //         && (user.role == role
+    //           || user.groups?.find((g: getGroupModel) => group?.includes(g)))
+    //       )
+    //     }
+    //     else {
+    //       this.getUsers = res.result
+
+
+    //     }
+    //     console.log(this.selectedUsers);
+    //   }, error: (err: any) => {
+    //     return err;
+    //   }
+    // })
+    var request: getAllUsersModelDto = new getAllUsersModelDto();
+    request.role = this.selectedRole;
+    request.groups = this.selectedGroups
+    console.log('groups is : ' + this.selectedGroups?.length, 'Roles is : ' + this.selectedRole);
+
+    this.getUsersPaginator(request)
   }
 
   checkuserRole(userRole: any, superRole?: string) {
@@ -287,20 +293,38 @@ export class ShowUsersComponent {
     return ((usersInfo?.role == userInfoRole || usersInfo?.role == superRole) && (this.userInfo?.role != superRole || usersInfo?.role == superRole))
   }
 
-
-  clearGroup() {
-    this.selectedGroup = undefined;
-    this.filterTableData(this.selectedRole, this.selectedGroup)
-  }
-
-  clearRole() {
-    this.selectedRole = undefined;
-    this.filterTableData(this.selectedRole, this.selectedGroup)
-  }
-
   checkSelectedUsers(selectedUsers: any) {
     let usersSelect = selectedUsers?.map((check: any) => check.role)
     return usersSelect?.includes("Super-Admin") || (usersSelect?.includes("Admin") && this.userInfo?.role != 'Super-Admin')
   }
+
+  async getUsersPaginator(requestDto: getAllUsersModelDto = new getAllUsersModelDto) {
+    this.pageNumber = requestDto?.pageNum;
+    this.pageLimit = requestDto?.pageLimit,
+      this.userServices.GetUserPaginator(requestDto).subscribe({
+        next: (res: pagedResultResponse<getUserInfoModel>) => {
+          this.getUsers = res.result
+          this.allRecords = res.totalRecords;
+          console.log(res.result);
+
+        }
+      })
+
+  }
+
+  clearSelect() {
+    this.selectedUsers = []
+  }
+
+
+  onPage(event: any) {
+    var request: getAllUsersModelDto = new getAllUsersModelDto();
+    request.role = this.selectedRole ?? null;
+    request.groups = this.selectedGroups ?? null;
+    request.pageNum = 1 + event.first / this.pageLimit /// ??
+    this.getUsersPaginator(request)
+  }
+
+
 
 }
