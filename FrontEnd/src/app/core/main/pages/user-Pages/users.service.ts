@@ -18,10 +18,10 @@ export class UsersServices {
 
     constructor(private http: HttpClient) { }
 
-    getUsersInfoData() {
-        let userId = JSON.parse(localStorage.getItem('userInfo'))
-        return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY + userId.data.userId)
-    }
+    // getUsersInfoData() {
+    //     let userId = JSON.parse(localStorage.getItem('userInfo'))
+    //     return this.http.get<getUserInfoModel[]>(ShowUsersProxy.SHOW_USERS_PROXY + userId.data.userId)
+    // }
 
     getUserInfoById() {
         let userId = JSON.parse(localStorage.getItem("userInfo") || "")

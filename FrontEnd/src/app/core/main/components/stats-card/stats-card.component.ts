@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StatsCardServices } from './stats-card.service';
 import { UsersServices } from "../../pages/user-Pages/users.service";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
+import { getAllUsersModelDto, pagedResultResponse } from '../../utility/Models/pagedResult.dto';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class StatsCardComponent implements OnInit {
   userProfile: any
   usersInfo: any
   userFound: any
-  users: getUserInfoModel[]
+  usersCount : number
   userInfo: any
   show = true
 
@@ -31,9 +32,9 @@ export class StatsCardComponent implements OnInit {
     return this.userInfo?.role == userRole || this.userInfo?.role == superRole;
   }
   getUserInfo() {
-    this.userServices.getUsersInfoData().subscribe({
-      next: (res: getUserInfoModel[]) => {
-        this.users = res
+    this.userServices.GetUserPaginator(new getAllUsersModelDto).subscribe({
+      next: (res: pagedResultResponse<getUserInfoModel>) => {
+        this.usersCount = res.totalRecords;
         this.show = false
       }, error: (err: any) => {
         return err;

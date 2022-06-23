@@ -10,45 +10,45 @@ class PagedResult {
   result
 }
 
-const getUsers = async (req, res) => {
-  let userFound = await usersInfo.findOne({ userId: req.params.id }).populate("roleId").populate("groupsId")
-  let GroupsIds = userFound.groupsId.map(group => group.name)
+// const getUsers = async (req, res) => {
+//   let userFound = await usersInfo.findOne({ userId: req.params.id }).populate("roleId").populate("groupsId")
+//   let GroupsIds = userFound.groupsId.map(group => group.name)
 
-  // return console.log(GroupsIds)
-  let userData = await usersInfo
-    .find({
-      userId: {
-        $ne: req.params.id,
-      },
-    })
-    .populate({
-      path: "userId",
-    })
-    .populate("roleId")
-    .populate("groupsId")
+//   // return console.log(GroupsIds)
+//   let userData = await usersInfo
+//     .find({
+//       userId: {
+//         $ne: req.params.id,
+//       },
+//     })
+//     .populate({
+//       path: "userId",
+//     })
+//     .populate("roleId")
+//     .populate("groupsId")
 
-  let response = userData.map(user => {
-    return {
-      userId: user.userId._id,
-      CreatedAt: user.userId.CreatedAt,
-      email: user.userId.email,
-      firstName: user.userId.firstName,
-      lastName: user.userId.lastName,
-      phoneNumber: user.userId.phoneNumber,
-      CreatedBy: user.userId.CreatedBy,
-      password: user.userId.password,
-      groups: user.groupsId.map(group => group.name),
-      role: user.roleId.name,
-    }
-  })
-  if (userFound.roleId.name == "Admin") {
-    res.json(response)
-  } else {
-    let user = response.filter(u => u.role == userFound.roleId.name || u.groups.find(g => GroupsIds.includes(g)))
-    res.json(user)
-    console.log(user)
-  }
-}
+//   let response = userData.map(user => {
+//     return {
+//       userId: user.userId._id,
+//       CreatedAt: user.userId.CreatedAt,
+//       email: user.userId.email,
+//       firstName: user.userId.firstName,
+//       lastName: user.userId.lastName,
+//       phoneNumber: user.userId.phoneNumber,
+//       CreatedBy: user.userId.CreatedBy,
+//       password: user.userId.password,
+//       groups: user.groupsId.map(group => group.name),
+//       role: user.roleId.name,
+//     }
+//   })
+//   if (userFound.roleId.name == "Admin") {
+//     res.json(response)
+//   } else {
+//     let user = response.filter(u => u.role == userFound.roleId.name || u.groups.find(g => GroupsIds.includes(g)))
+//     res.json(user)
+//     console.log(user)
+//   }
+// }
 
 const getUserById = async (req, res) => {
   try {
@@ -207,6 +207,7 @@ const getRoleByUserId = async (req, res) => {
     res.status(500).json(error.message)
   }
 }
+
 const getUsersPagination = async (req, res) => {
   let countRecord
   const { role, groups } = req.body.request
@@ -266,7 +267,7 @@ const getUsersPagination = async (req, res) => {
   if (req.body.request.role && req.body.request.groups && req.body.request.groups.length > 0) {
     userData = getUserDataByRoleAndGroup
     countRecord = usersRolesAndGroupsCount
-  } else if ((req.body.request.role) || (req.body.request.groups && req.body.request.groups?.length > 0)) {
+  } else if (req.body.request.role || (req.body.request.groups && req.body.request.groups?.length > 0)) {
     userData = getUserDataByRoleOrGroup
     countRecord = usersRolesOrGroupsCount
   } else {
@@ -306,7 +307,7 @@ const getUsersPagination = async (req, res) => {
 }
 
 module.exports = {
-  getUsers,
+  // getUsers,
   getUserById,
   deleteUser,
   addUser,
