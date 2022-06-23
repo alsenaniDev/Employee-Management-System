@@ -23,8 +23,9 @@
                 <input *ngIf="control.controlName != 'phoneNumber' , else PhoneInput" [InputWarring]="control.type"
                   type={{control.type}} class="form-control" formControlName={{control.controlName}}>
                 <ng-template #PhoneInput>
-                  <input phoneValidation [attr.maxLength]="control.controlName == 'phoneNumber' ? '10' : ''"
-                    type={{control.type}} class="form-control" formControlName={{control.controlName}}>
+                  <input [phoneValidation]="'phoneNumber'"
+                    [attr.maxLength]="control.controlName == 'phoneNumber' ? '10' : ''" type={{control.type}}
+                    class="form-control" formControlName={{control.controlName}}>
                 </ng-template>
                 <app-alerts [formName]="AddUserForm" [title]="control.title" [controlName]="control.controlName">
                 </app-alerts>
