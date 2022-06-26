@@ -1,4 +1,5 @@
 import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
+import { forkJoin, Observable } from 'rxjs';
 import { GroupSettingModalComponent } from '../../components/group-setting-modal/group-setting-modal.component';
 import { RoleSettingModalComponent } from '../../components/role-setting-modal/role-setting-modal.component';
 import { CommonService } from '../../utility/services/common/settings.service'
@@ -25,8 +26,7 @@ export class SettingsComponent implements OnInit {
   @ViewChild(RoleSettingModalComponent) roleModal: RoleSettingModalComponent
 
   ngOnInit(): void {
-    this.getGroupsCount()
-    this.getRolesCount()
+    this.getRolesAndGroupsCount()
   }
 
   getGroups() {
@@ -79,5 +79,17 @@ export class SettingsComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  getRolesAndGroupsCount() {
+    let groups = (this.CommonService.getGroupsCount())
+    let roles = (this.CommonService.getRolesCount())
+
+    forkJoin([groups, roles])
+      .subscribe(results => {
+        this.groupsNumber = results[0];
+        this.rolesNumber = results[1];
+        this.show = false
+      });
   }
 }

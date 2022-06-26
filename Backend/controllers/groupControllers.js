@@ -6,7 +6,9 @@ const addGroups = async (req, res) => {
     name: req.body.name,
     createBy: req.userId,
   })
-  const groupFound = await Groups.findOne({ name: newGroup.name })
+  const groupFound = await Groups.findOne({
+    name: newGroup.name
+  })
   if (groupFound) return res.status(404).send("The Group is Already Exist")
   newGroup
     .save()
@@ -20,7 +22,9 @@ const addGroups = async (req, res) => {
 
 
 const showGroups = async (req, res) => {
-  let userFound = await usersInfo.findOne({ userId: req.params.id }).populate("roleId")
+  let userFound = await usersInfo.findOne({
+    userId: req.params.id
+  }).populate("roleId")
   let group = await Groups.find().populate({
     path: "createBy",
     select: "_id firstName lastName email phoneNumber",
@@ -35,15 +39,12 @@ const showGroups = async (req, res) => {
 
 const getGroupsCount = (req, res) => {
   Groups.find({}, (err, group) => {
-    res.json({
-      data: group.length,
-    })
+    res.json(group.length)
   })
 }
 
 const getGroupById = (req, res) => {
-  Groups.findOne(
-    {
+  Groups.findOne({
       _id: req.params.id,
     },
     (err, group) => {
@@ -58,8 +59,7 @@ const getGroupById = (req, res) => {
 }
 
 const deleteGroups = (req, res) => {
-  Groups.deleteOne(
-    {
+  Groups.deleteOne({
       _id: req.params.id,
     },
     (err, group) => {
@@ -71,11 +71,9 @@ const deleteGroups = (req, res) => {
 }
 
 const updateGroups = (req, res) => {
-  Groups.findByIdAndUpdate(
-    {
+  Groups.findByIdAndUpdate({
       _id: req.params.id,
-    },
-    {
+    }, {
       name: req.body.name,
     },
     (err, group) => {

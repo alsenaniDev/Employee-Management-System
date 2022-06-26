@@ -2,7 +2,9 @@ const Roles = require("../models/roles")
 const usersInfo = require("../models/usersInfo")
 
 const showRoles = async (req, res) => {
-  let userFound = await usersInfo.findOne({ userId: req.params.id }).populate("roleId")
+  let userFound = await usersInfo.findOne({
+    userId: req.params.id
+  }).populate("roleId")
   let roles = await Roles.find().populate({
     path: "createBy",
     select: "_id firstName lastName email phoneNumber",
@@ -17,9 +19,7 @@ const showRoles = async (req, res) => {
 
 const getCount = (req, res) => {
   Roles.find({}, (err, role) => {
-    res.json({
-      data: role.length,
-    })
+    res.json(role.length)
   })
 }
 
@@ -29,7 +29,9 @@ const addRoles = async (req, res) => {
     createBy: req.userId,
   })
 
-  const rolesFound = await Roles.findOne({ name: newRole.name })
+  const rolesFound = await Roles.findOne({
+    name: newRole.name
+  })
   if (rolesFound) return res.status(404).send("The Role is Already Exist")
   newRole
     .save()
@@ -42,8 +44,7 @@ const addRoles = async (req, res) => {
 }
 
 const deleteRoles = (req, res) => {
-  Roles.deleteOne(
-    {
+  Roles.deleteOne({
       _id: req.params.id,
     },
     (err, role) => {
@@ -55,11 +56,9 @@ const deleteRoles = (req, res) => {
 }
 
 const updateRoles = (req, res) => {
-  Roles.findByIdAndUpdate(
-    {
+  Roles.findByIdAndUpdate({
       _id: req.params.id,
-    },
-    {
+    }, {
       name: req.body.name,
     },
     (err, role) => {
@@ -71,8 +70,7 @@ const updateRoles = (req, res) => {
 }
 
 const getRoleById = (req, res) => {
-  Roles.findOne(
-    {
+  Roles.findOne({
       _id: req.params.id,
     },
     (err, role) => {
