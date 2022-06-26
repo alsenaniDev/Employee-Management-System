@@ -9,8 +9,7 @@
             <div class="p-d-flex p-ai-center p-jc-between">
               <h5 class="p-m-0">Filter By Role</h5>
               <p-dropdown placeholder="Select Role" [options]="Roles" optionLabel="name" optionValue="_id"
-                [showClear]="true" [(ngModel)]="selectedRole"
-                (ngModelChange)="filterTableData()">
+                [showClear]="true" [(ngModel)]="selectedRole">
               </p-dropdown>
             </div>
 
@@ -20,14 +19,17 @@
               <h5 class="p-m-0">Filter By Groups</h5>
               <p-multiSelect placeholder="Select Groups" [options]="Groups" optionLabel="name" optionValue="_id"
                 [showClear]="true" [virtualScroll]="true" [style]="{'width':'240px'}" [panelStyle]="{'width':'200px'}"
-                display="chip" [(ngModel)]="selectedGroups"
-                (ngModelChange)="filterTableData()">
+                display="chip" [(ngModel)]="selectedGroups">
               </p-multiSelect>
             </div>
           </div>
-          <div>
+          <div class="button-filter">
+            <button (click)="filterTableData()" pButton pRipple type="button" label="Filter"
+              style="width: 70px; letter-spacing:1px; font-weight: 100px; background-color: #0288D1;"
+              class="p-button-raised"></button>
           </div>
         </div>
+
       </ng-template>
 
       <ng-template pTemplate="right">

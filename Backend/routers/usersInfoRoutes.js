@@ -2,7 +2,7 @@ const express = require("express")
 
 const userInfoRouter = express.Router()
 const {
-  getUsers,
+  // getUsers,
   getUserById,
   deleteUser,
   addUser,
@@ -14,7 +14,7 @@ const {
 } = require("../controllers/usersInfoControllers")
 const AuthorizationsRole = require("../middleware/AuthorizationsRole")
 
-userInfoRouter.get("/show/:id", getUsers)
+// userInfoRouter.get("/show/:id", getUsers)
 userInfoRouter.get("/showUserById/:id", getUserById)
 userInfoRouter.get("/getGroupsByUserId/:id", getGroupsByUserId)
 userInfoRouter.get("/getRoleByUserId/:id", getRoleByUserId)

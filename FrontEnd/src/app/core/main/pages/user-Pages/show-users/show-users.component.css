@@ -11,3 +11,8 @@
     border-color: #ddd;
     outline: 0;
 }
+
+.button-filter{
+    margin-top: 25px;
+    margin-left: 10px;
+}

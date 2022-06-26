@@ -56,11 +56,11 @@ export class ShowUsersComponent {
 
   ngOnInit() {
     this.Init_UpdateUserInfoForm();
-    this.getUserInfo()
+    // this.getUserInfo()
     this.getUserInfoById()
     this.getGroups()
     this.getRoles()
-    this.getUsersPaginator()
+    this.getUsersPaginator(new getAllUsersModelDto)
 
   }
 
@@ -97,16 +97,16 @@ export class ShowUsersComponent {
   ];
 
 
-  getUserInfo() {
-    this.userServices.getUsersInfoData().subscribe({
-      next: (res: getUserInfoModel[]) => {
-        this.usersDataInfo = res
-        this.show = false;
-      }, error: (err: any) => {
-        return err;
-      }
-    })
-  }
+  // getUserInfo() {
+  //   this.userServices.getUsersInfoData().subscribe({
+  //     next: (res: getUserInfoModel[]) => {
+  //       this.usersDataInfo = res
+  //       this.show = false;
+  //     }, error: (err: any) => {
+  //       return err;
+  //     }
+  //   })
+  // }
 
   getUserInfoById() {
     this.userServices.getUserInfoById().subscribe({
@@ -130,18 +130,6 @@ export class ShowUsersComponent {
     })
   }
 
-  // getUserRoleById() {
-  //   this.userServices.getUserRoleById().subscribe({
-  //     next: (res: any) => {
-  //       this.FindUserRoleById = res
-  //       console.log('====================================');
-  //       console.log(res);
-  //       console.log('====================================');
-  //     }, error: (err: any) => {
-  //       return err;
-  //     }
-  //   })
-  // }
 
   getGroups() {
     this.commonService.getGroups().subscribe({
@@ -154,16 +142,7 @@ export class ShowUsersComponent {
     })
   }
 
-  // getUserGroupsById() {
-  //   this.userServices.getUserGroupsById().subscribe({
-  //     next: (res: any) => {
-  //       this.FindUserGroupsById = res
-  //       console.log('====================================');
-  //       console.log(res);
-  //       console.log('====================================');
-  //     }
-  //   })
-  // }
+
 
 
 
@@ -246,7 +225,7 @@ export class ShowUsersComponent {
             return err
           }
         });
-        this.getUserInfo()
+        this.getUsersPaginator()
       }
     })
 
@@ -263,7 +242,7 @@ export class ShowUsersComponent {
             if (res) {
               this.alertMessage.success(res.message)
               this.selectedUsers = []
-              this.getUserInfo()
+              this.getUsersPaginator()
             }
           }, error: (err: any) => {
             this.alertMessage.error("Action Valid")
@@ -303,9 +282,14 @@ export class ShowUsersComponent {
     //   }
     // })
     var request: getAllUsersModelDto = new getAllUsersModelDto();
+
+    if (this.pTable) {
+      this.pTable._first = 0
+    }
+
     request.role = this.selectedRole;
     request.groups = this.selectedGroups
-    console.log('groups is : ' + this.selectedGroups?.length, 'Roles is : ' + this.selectedRole);
+    console.log('groups is : ' + this.selectedGroups?.length, 'Roles is : ' + this.selectedRole, 'page Number : ' + request.pageNum);
 
     this.getUsersPaginator(request)
   }
@@ -331,6 +315,7 @@ export class ShowUsersComponent {
         next: (res: pagedResultResponse<getUserInfoModel>) => {
           this.getUsers = res.result
           this.allRecords = res.totalRecords;
+          this.show = false;
           console.log(res.result);
 
         }
@@ -350,6 +335,8 @@ export class ShowUsersComponent {
     request.pageNum = 1 + event.first / this.pageLimit /// ??
     this.getUsersPaginator(request)
   }
+
+
 
 
 
