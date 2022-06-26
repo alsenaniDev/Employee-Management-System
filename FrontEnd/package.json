@@ -24,6 +24,7 @@
     "@sweetalert2/ngx-sweetalert2": "^11.0.0",
     "bootstrap": "^5.1.3",
     "bootstrap-select": "^1.13.18",
+    "chart.js": "^3.8.0",
     "font-awesome": "^4.7.0",
     "guid-typescript": "^1.0.9",
     "jquery": "^3.6.0",

@@ -52,6 +52,7 @@ import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumbe
 import { SkeletonModule } from 'primeng/skeleton';
 import { HttpClientModule } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import {ChartModule } from 'primeng/chart';
 
 
 
@@ -109,7 +110,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputNumberModule,
     HttpClientModule,
     ProgressSpinnerModule,
-    SkeletonModule
+    SkeletonModule ,
+    ChartModule
   ],
   providers: [MessageService, ConfirmationService, DatePipe],
   bootstrap: [AppComponent]

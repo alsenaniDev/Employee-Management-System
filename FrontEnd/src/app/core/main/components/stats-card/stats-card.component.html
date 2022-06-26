@@ -17,7 +17,7 @@
           </ng-container>
 
           <ng-template #card>
-            <div *ngIf="checkRole('Admin' , 'Super-Admin') , else groups" class="col-xxl-4 col-md-6">
+            <!-- <div *ngIf="checkRole('Admin' , 'Super-Admin') , else groups" class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
                 <div class="card-body">
                   <h5 class="card-title">Users</h5>
@@ -31,8 +31,19 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
+            <div class="container-chart">
+              <div [style]="{'width': '40%'}">
+                <h5 class="titleOfStats ">Stats Of Groups</h5>
+                <p-chart [options]="optionsObject" type="bar" [data]="basicDataGroups"></p-chart>
+              </div>
 
+              <div [style]="{'width': '40%','margin-top' : '50px'}">
+                <h5 class="titleOfStats ">Stats Of Roles</h5>
+                <p-chart type="bar" [data]="basicDataRoles"></p-chart>
+
+              </div>
+            </div>
             <ng-template #groups>
               <div class="col-xxl-4 col-md-6">
                 <div class="card info-card sales-card">
