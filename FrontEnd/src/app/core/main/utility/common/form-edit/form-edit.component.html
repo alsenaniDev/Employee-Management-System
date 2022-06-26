@@ -4,7 +4,7 @@
     <div [formGroup]="formName">
       <input type="{{type}}" [InputWarring]="type" id="{{id}}"
         [attr.maxLength]="ControlName == 'phoneNumber' ? '10' : ''" [phoneValidation]="ControlName"
-        maxlength="maxLength" formControlName="{{ControlName}}" class="form-control">
+        formControlName="{{ControlName}}" class="form-control">
       <app-alerts [title]="label" [controlName]="ControlName" [formName]="formName">
       </app-alerts>
     </div>
