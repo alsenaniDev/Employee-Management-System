@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { SettingsDto } from "../../../pages/settings/Settings.Dto"
 import { HttpClient } from '@angular/common/http';
 import { SettingsProxy } from './settings.proxy'
+import { mergeMap, interval } from 'rxjs';
 
 @Injectable({
     providedIn: "root",
@@ -16,7 +17,7 @@ export class CommonService {
     }
 
     getGroupsCount() {
-        return this.http.get<SettingsDto[]>(SettingsProxy.GET_GROUPS_COUNT);
+        return this.http.get<number>(SettingsProxy.GET_GROUPS_COUNT);
     }
 
     getRoles() {
@@ -25,6 +26,6 @@ export class CommonService {
     }
 
     getRolesCount() {
-        return this.http.get<SettingsDto[]>(SettingsProxy.GET_ROLES_COUNT);
+        return this.http.get<number>(SettingsProxy.GET_ROLES_COUNT);
     }
 }
