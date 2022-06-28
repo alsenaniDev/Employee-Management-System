@@ -1,6 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+:root {
+  --labelsColor: rgb(170, 170, 170);
+  --BarColor: rgb(38, 0, 252);
+  --navColor: #fff;
+  --textColor: #012970;
+  --textHover: #4154f1;
+  --navItemHover: #FFFFFF;
+  --colorForMainPart: #f6f9ff;
+  --cardColor: #FFFFFF;
+  --btnPrimary: #0d6efd;
+}
+
 @media only screen and (min-width: 1200px) {
   #sidebar {
     left: 0px;
@@ -17,10 +29,127 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  background: var(--colorForMainPart);
+}
+
+#main {
+  background: var(--colorForMainPart);
+  height: 100vh;
+}
+
+.pagetitle h1 {
+  color: var(--textColor);
+}
+
+hr {
+  color: var(--textColor);
 }
 
 body::-webkit-scrollbar {
   display: none;
+}
+
+.header {
+  transition: all 0.5s;
+  z-index: 997;
+  height: 60px;
+  box-shadow: 0px 2px 20px rgb(1 41 112 / 10%);
+  background-color: var(--navColor);
+  padding-left: 20px;
+}
+
+.logo span {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--textColor);
+  font-family: "Nunito", sans-serif;
+}
+
+.header .toggle-sidebar-btn {
+  color: var(--textColor);
+}
+
+.header-nav .nav-profile span {
+  color: var(--textColor);
+}
+
+.sidebar {
+  background-color: var(--navColor);
+}
+
+.sidebar-nav .nav-link {
+  background: var(--navColor);
+  color: var(--textColor);
+}
+
+.sidebar-nav .nav-link i {
+  color: var(--textColor);
+}
+
+.sidebar-nav .nav-link i:hover {
+  color: var(--textHover);
+}
+
+.sidebar-nav .nav-link.collapsed {
+  color: var(--textColor);
+  background: var(--navColor);
+}
+
+.sidebar-nav .nav-content a,
+.sidebar-nav .nav-content a {
+  color: var(--textColor);
+}
+
+.sidebar-nav .nav-content a:hover,
+.sidebar-nav .nav-content a.active {
+  color: var(--textHover);
+}
+
+.sidebar-nav .nav-link:hover i {
+  color: var(--textColor);
+}
+
+.sidebar-nav .nav-link:hover {
+  color: var(--textColor);
+  background: var(--navColor);
+}
+
+.bi-chevron-down::before {
+  content: "\f282";
+  color: var(--textColor);
+}
+
+.bi-chevron-down::after {
+  color: var(--textHover);
+}
+
+.sidebar-nav .nav-link.collapsed i {
+  color: var(--textColor);
+}
+
+.sidebar-nav .collapsed i {
+  color: var(--textColor);
+}
+
+.card {
+  background-color: var(--cardColor);
+}
+
+.card-title {
+  color: var(--textColor);
+}
+
+.dashboard .info-card h6 {
+  color: var(--textColor);
+}
+
+.btn-outline-primary {
+  color: var(--btnPrimary);
+  border-color: var(--btnPrimary);
+}
+
+.titleOfStats {
+  color: var(--textColor);
 }
 
 .p-button {
@@ -94,6 +223,10 @@ body::-webkit-scrollbar {
 
 .p-datatable .p-datatable-thead>tr>th {
   text-align: center;
+}
+
+.aaa {
+  background-color: var(--textColor);
 }
 
 @media only screen and (max-width: 600px) {

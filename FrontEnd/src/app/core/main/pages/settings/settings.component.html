@@ -24,9 +24,7 @@
                   <div class="ps-3">
 
                     <ng-container *ngIf="show; else counterRole">
-                      <p-progressSpinner [style]="{width: '30px', height: '30px', left: '50%',
-                      top: '50%'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)"
-                        animationDuration=".5s"></p-progressSpinner>
+                      <app-spinner></app-spinner>
                     </ng-container>
 
                     <ng-template #counterRole>
@@ -56,9 +54,7 @@
                   <div class="ps-3">
 
                     <ng-container *ngIf="show; else counterGroup">
-                      <p-progressSpinner [style]="{width: '30px', height: '30px', left: '50%',
-                      top: '50%'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)"
-                        animationDuration=".5s"></p-progressSpinner>
+                      <app-spinner></app-spinner>
                     </ng-container>
 
                     <ng-template #counterGroup>

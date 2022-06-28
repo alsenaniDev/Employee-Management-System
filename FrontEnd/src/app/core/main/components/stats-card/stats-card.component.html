@@ -11,9 +11,7 @@
         <div class="row">
 
           <ng-container *ngIf="show; else card">
-            <p-progressSpinner [style]="{width: '50px', height: '50px', left: '50%',
-            top: '50%', transform: 'translate(-50%, -50%)'}" styleClass="custom-spinner" strokeWidth="8"
-              fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+            <app-spinner></app-spinner>
           </ng-container>
 
           <ng-template #card>
@@ -33,15 +31,14 @@
               </div>
             </div> -->
             <div class="container-chart">
-              <div [style]="{'width': '40%'}">
-                <h5 class="titleOfStats ">Stats Of Groups</h5>
-                <p-chart [options]="optionsObject" type="bar" [data]="basicDataGroups"></p-chart>
+              <div [style]="{'width': '35%'}">
+                <h5 class="titleOfStats">Stats Of Roles</h5>
+                <p-chart class="aaa" type="bar" [options]="options" [data]="basicDataRoles"></p-chart>
               </div>
 
-              <div [style]="{'width': '40%','margin-top' : '50px'}">
-                <h5 class="titleOfStats ">Stats Of Roles</h5>
-                <p-chart type="bar" [data]="basicDataRoles"></p-chart>
-
+              <div [style]="{'width': '35%'}">
+                <h5 class="titleOfStats">Stats Of Groups</h5>
+                <p-chart [options]="options" type="bar" [data]="basicDataGroups"></p-chart>
               </div>
             </div>
             <ng-template #groups>

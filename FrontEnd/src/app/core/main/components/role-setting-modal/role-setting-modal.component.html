@@ -27,9 +27,7 @@
         <label class="form-label" id="label-table"></label>
 
         <ng-container *ngIf="show; else table">
-          <p-progressSpinner [style]="{width: '50px', height: '50px', left: '50%',
-        transform: 'translate(-50%, 0px)'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)"
-            animationDuration=".5s"></p-progressSpinner>
+          <app-spinner></app-spinner>
         </ng-container>
 
         <ng-template #table>

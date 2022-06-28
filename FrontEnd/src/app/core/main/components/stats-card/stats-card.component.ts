@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { StatsCardServices } from './stats-card.service';
 import { UsersServices } from "../../pages/user-Pages/users.service";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
@@ -9,11 +9,14 @@ import { SettingsDto } from '../../pages/settings/Settings.Dto';
 import { data } from 'jquery';
 
 
+@Injectable({ providedIn: "root" })
+
 @Component({
   selector: 'app-stats-card',
   templateUrl: './stats-card.component.html',
   styleUrls: ['./stats-card.component.css']
 })
+
 export class StatsCardComponent implements OnInit {
   userProfile: any
   usersInfo: any
@@ -28,11 +31,45 @@ export class StatsCardComponent implements OnInit {
   optionsObject: any
   getUsers: getUserInfoModel[]
 
+  // Chart Options
+  style = getComputedStyle(document.body)
+  options: any;
+  labelsColor: string = this.style.getPropertyValue('--labelsColor');
+  BarColor: string = this.style.getPropertyValue('--BarColor');
+
   constructor(private statsCardServices: StatsCardServices, private userServices: UsersServices,
     private settingService: CommonService
   ) {
-
     this.getUserInfo()
+
+    this.options = {
+      indexAxis: 'x',
+      plugins: {
+        legend: {
+          labels: {
+            color: this.labelsColor
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: this.labelsColor
+          },
+          grid: {
+            color: this.labelsColor
+          }
+        },
+        y: {
+          ticks: {
+            color: this.labelsColor
+          },
+          grid: {
+            color: this.labelsColor
+          }
+        }
+      }
+    };
   }
 
   ngOnInit(): void {
@@ -43,6 +80,7 @@ export class StatsCardComponent implements OnInit {
   checkRole(userRole: string, superRole?: string) {
     return this.userInfo?.role == userRole || this.userInfo?.role == superRole;
   }
+
   async getUserInfo() {
     this.userServices.GetUserPaginator(new getAllUsersModelDto).subscribe({
       next: (res: pagedResultResponse<getUserInfoModel>) => {
@@ -73,28 +111,17 @@ export class StatsCardComponent implements OnInit {
       next: (res) => {
         this.groups = res.map((g: any) => g.name)
         let groupsCount = this.groups.map((g: any) => this.getUsers?.filter((u: any) => u.groups.includes(g)).length)
-        this.optionsObject = {
-          legend: {
-            display: true,
-            labels: {
-              fontColor: "red",
-              fontSize: 25
-            }
-          },
-        }
         this.basicDataGroups = {
           labels: this.groups,
           datasets: [
             {
               label: 'Users',
-              backgroundColor: '#42A5F5',
+              backgroundColor: this.BarColor,
               data: groupsCount
             }]
         }
-
       }
     })
-
   }
 
   getRolesStats() {
@@ -102,18 +129,29 @@ export class StatsCardComponent implements OnInit {
       next: (res) => {
         this.roles = res.map((r: any) => r.name)
         let rolesCount = this.roles.map((r: any) => this.getUsers?.filter((u: any) => u.role == r).length)
+
         this.basicDataRoles = {
           labels: this.roles,
           datasets: [
             {
               label: 'Users',
-              backgroundColor: '#42A5F5',
-              color: "#42A5F5",
+              backgroundColor: this.BarColor,
               data: rolesCount,
-
             }]
         }
       }
     })
+  }
+
+  refresh() {
+    window.location.reload()
+  }
+
+  changeThemes(theme: string) {
+    if (theme == "dark") {
+      this.BarColor = "#FFF"
+    } else {
+      this.BarColor = "#000"
+    }
   }
 }

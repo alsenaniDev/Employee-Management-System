@@ -52,7 +52,8 @@ import { PhoneNumberValidation } from './core/main/utility/directives/PhoneNumbe
 import { SkeletonModule } from 'primeng/skeleton';
 import { HttpClientModule } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import {ChartModule } from 'primeng/chart';
+import { ChartModule } from 'primeng/chart';
+import { SpinnerComponent } from './core/main/utility/common/spinner/spinner.component'
 
 
 
@@ -79,6 +80,7 @@ import {ChartModule } from 'primeng/chart';
     InputWarring,
     PhoneNumberValidation,
     RoleBorderDirective,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -110,7 +112,7 @@ import {ChartModule } from 'primeng/chart';
     InputNumberModule,
     HttpClientModule,
     ProgressSpinnerModule,
-    SkeletonModule ,
+    SkeletonModule,
     ChartModule
   ],
   providers: [MessageService, ConfirmationService, DatePipe],
