@@ -9,6 +9,16 @@
 
   <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
+
+      <ng-container *ngIf="isDarkTheme; else moon">
+        <i class="bi bi-sun toggle-sidebar-btn" (click)="storeTheme()" onclick="toggleTheme(true);"
+          style="padding-right: 10px;"></i>
+      </ng-container>
+      <ng-template #moon>
+        <i class="bi bi-moon toggle-sidebar-btn" (click)="storeTheme()" onclick="toggleTheme(false);"
+          style="padding-right: 10px;"></i>
+      </ng-template>
+
       <li class="nav-item dropdown pe-3">
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="" data-bs-toggle="dropdown">
           <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" alt="Profile"
@@ -42,7 +52,6 @@
               <span>Sign Out</span>
             </a>
           </li>
-
         </ul>
       </li>
     </ul>
