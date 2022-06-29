@@ -4,6 +4,7 @@ const groups = require("../DB/GroupsDB")
 const usersInfo = require("../models/usersInfo")
 const users = require("../models/users")
 const Groups = require("../models/groups")
+const Roles = require("../models/roles")
 ObjectId = require("mongodb").ObjectID
 class PagedResult {
   totalRecords
@@ -210,8 +211,10 @@ const getRoleByUserId = async (req, res) => {
 
 const getUsersPagination = async (req, res) => {
   let countRecord
+  let userFound = await usersInfo.findOne({ userId: req.params.id }).populate("roleId").populate("groupsId")
+  let GroupsIds = userFound.groupsId.map(group => group._id)
   const { role, groups } = req.body.request
-  const usersCount = await usersInfo.count()
+  const usersCount = await usersInfo.find({ userId: { $ne: req.params.id } }).count()
 
   let usersRolesOrGroupsCount = await usersInfo
     .find({
@@ -228,10 +231,16 @@ const getUsersPagination = async (req, res) => {
     })
     .count()
 
-  console.log("users Roles or Groups Count :" + usersRolesOrGroupsCount)
+  let getUserDataInfoCount = await usersInfo
+    .find({
+      userId: { $ne: req.params.id },
+      $or: [{ roleId: userFound.roleId._id }, { groupsId: { $in: GroupsIds } }],
+    })
+    .count()
+
   offset = req.body.request.pageNum > 0 ? (req.body.request.pageNum - 1) * req.body.request.pageLimit : 0
 
-  let userDataInfo = await usersInfo
+  let getAllUsersDataInfo = await usersInfo
     .find({ userId: { $ne: req.params.id } })
     .sort({ _id: 1 })
     .skip(offset)
@@ -264,17 +273,34 @@ const getUsersPagination = async (req, res) => {
     .populate("roleId")
     .populate("groupsId")
 
+  let getUserDataInfo = await usersInfo
+    .find({
+      userId: { $ne: req.params.id },
+      $or: [{ roleId: userFound.roleId._id }, { groupsId: { $in: GroupsIds } }],
+    })
+    .sort({ _id: 1 })
+    .skip(offset)
+    .limit(req.body.request.pageLimit)
+    .populate({
+      path: "userId",
+    })
+    .populate("roleId")
+    .populate("groupsId")
+
   if (req.body.request.role && req.body.request.groups && req.body.request.groups.length > 0) {
     userData = getUserDataByRoleAndGroup
     countRecord = usersRolesAndGroupsCount
   } else if (req.body.request.role || (req.body.request.groups && req.body.request.groups?.length > 0)) {
     userData = getUserDataByRoleOrGroup
     countRecord = usersRolesOrGroupsCount
+  } else if (userFound?.roleId.name != "Admin" && userFound?.roleId.name != "Super-Admin") {
+    userData = getUserDataInfo
+    countRecord = getUserDataInfoCount
   } else {
-    userData = userDataInfo
+    userData = getAllUsersDataInfo
     countRecord = usersCount
   }
-
+  // return console.log(getUserDataInfo)
   let usersInformation = userData.map(user => {
     return {
       userId: user.userId._id,
@@ -306,6 +332,29 @@ const getUsersPagination = async (req, res) => {
   // res.json(response)
 }
 
+const getUsersRolesCount = async (req, res) => {
+  try {
+    const roles = (await Roles.find()).map(r => r.name)
+    const usersRoles = await usersInfo.find().populate("roleId")
+    const rolesCount = roles.map(r => usersRoles.filter(u => u.roleId.name == r).length)
+    res.json({ rolesNames: roles, rolesStats: rolesCount })
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+}
+
+const getUsersGroupsCount = async (req, res) => {
+  try {
+    const groups = await Groups.find()
+    const groupsIds = groups.map(g => g._id)
+    const usersGroups = await usersInfo.find()
+    const GroupsCount = groupsIds.map(g => usersGroups.filter(u => u.groupsId.includes(g)).length)
+    res.json({ groupsNames: groups.map(g => g.name), groupsStats: GroupsCount })
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+}
+
 module.exports = {
   // getUsers,
   getUserById,
@@ -316,4 +365,6 @@ module.exports = {
   getGroupsByUserId,
   getRoleByUserId,
   getUsersPagination,
+  getUsersRolesCount,
+  getUsersGroupsCount,
 }

@@ -1,7 +1,7 @@
 function toggleTheme(isDarkTheme) {
   isDarkTheme = !isDarkTheme;
-  let theme = localStorage.getItem('theme')
-  let root = document.querySelector(':root')
+  let theme = localStorage.getItem("theme");
+  let root = document.querySelector(":root");
 
   if (isDarkTheme) {
     root.style.setProperty('--navColor', '#3a3a3a');
@@ -23,9 +23,8 @@ function toggleTheme(isDarkTheme) {
 }
 
 function firstCheck() {
-  let theme = localStorage.getItem('theme')
-  let root = document.querySelector(':root')
-
+  let theme = localStorage.getItem("theme");
+  let root = document.querySelector(":root");
   if (theme === 'dark') {
     root.style.setProperty('--navColor', '#3a3a3a');
     root.style.setProperty('--textColor', '#fff');

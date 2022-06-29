@@ -7,6 +7,7 @@ import { CommonService } from '../../utility/services/common/settings.service';
 import { group } from '@angular/animations';
 import { SettingsDto } from '../../pages/settings/Settings.Dto';
 import { data } from 'jquery';
+import { mergeMap, of } from 'rxjs';
 
 
 @Injectable({ providedIn: "root" })
@@ -18,16 +19,15 @@ import { data } from 'jquery';
 })
 
 export class StatsCardComponent implements OnInit {
-  userProfile: any
-  usersInfo: any
-  userFound: any
   usersCount: number
   userInfo: any
   show = true
   basicDataGroups: any
   basicDataRoles: any
   groups: string[]
+  groupsCount: number[]
   roles: string[]
+  rolesCount: number[]
   optionsObject: any
   getUsers: getUserInfoModel[]
 
@@ -37,10 +37,12 @@ export class StatsCardComponent implements OnInit {
   labelsColor: string = this.style.getPropertyValue('--labelsColor');
   BarColor: string = this.style.getPropertyValue('--BarColor');
 
-  constructor(private statsCardServices: StatsCardServices, private userServices: UsersServices,
-    private settingService: CommonService
+  constructor(private statsCardServices: StatsCardServices,
+    private userServices: UsersServices,
+    private CommonService: CommonService
   ) {
-    this.getUserInfo()
+
+
 
     this.options = {
       indexAxis: 'x',
@@ -87,8 +89,7 @@ export class StatsCardComponent implements OnInit {
         this.getUsers = res.result
         this.usersCount = res.totalRecords;
         this.show = false
-        this.getGroupsStats()
-        this.getRolesStats()
+        this.GetGroupsAndRoles()
       }, error: (err: any) => {
         return err;
       }
@@ -106,41 +107,48 @@ export class StatsCardComponent implements OnInit {
     })
   }
 
-  getGroupsStats() {
-    this.settingService.getGroups().subscribe({
-      next: (res) => {
-        this.groups = res.map((g: any) => g.name)
-        let groupsCount = this.groups.map((g: any) => this.getUsers?.filter((u: any) => u.groups.includes(g)).length)
-        this.basicDataGroups = {
-          labels: this.groups,
-          datasets: [
-            {
-              label: 'Users',
-              backgroundColor: this.BarColor,
-              data: groupsCount
-            }]
-        }
-      }
-    })
-  }
 
-  getRolesStats() {
-    this.settingService.getRoles().subscribe({
-      next: (res) => {
-        this.roles = res.map((r: any) => r.name)
-        let rolesCount = this.roles.map((r: any) => this.getUsers?.filter((u: any) => u.role == r).length)
+  GetGroupsAndRoles() {
 
-        this.basicDataRoles = {
-          labels: this.roles,
-          datasets: [
-            {
-              label: 'Users',
-              backgroundColor: this.BarColor,
-              data: rolesCount,
-            }]
+    of(this.statsCardServices.getUsersGroupsStats(), this.statsCardServices.getUsersRolesStats())
+      .pipe(
+        mergeMap((data
+        ) => (
+          data
+        ))
+      )
+      .subscribe((data) => {
+        let theme = localStorage.getItem("theme")
+        if (Object.keys(data)[0] == "groupsNames") {
+          this.groups = data.groupsNames
+          this.groupsCount = data.groupsStats
+          this.basicDataGroups = {
+            labels: this.groups,
+            datasets: [
+              {
+                label: 'Users',
+                backgroundColor: theme == "dark" ? "white" : "#012970",
+                data: this.groupsCount
+              }]
+
+          }
         }
-      }
-    })
+        else {
+          this.roles = data.rolesNames
+          this.rolesCount = data.rolesStats
+          this.basicDataRoles = {
+            labels: this.roles,
+            datasets: [
+              {
+                label: 'Users',
+                backgroundColor: this.BarColor,
+                data: this.rolesCount,
+              }]
+          }
+
+
+        }
+      })
   }
 
   refresh() {
@@ -151,7 +159,7 @@ export class StatsCardComponent implements OnInit {
     if (theme == "dark") {
       this.BarColor = "#FFF"
     } else {
-      this.BarColor = "#000"
+      this.BarColor = "#012970"
     }
   }
 }
