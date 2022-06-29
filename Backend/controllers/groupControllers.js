@@ -6,9 +6,11 @@ const addGroups = async (req, res) => {
     name: req.body.name,
     createBy: req.userId,
   })
+
   const groupFound = await Groups.findOne({
     name: newGroup.name
   })
+  
   if (groupFound) return res.status(404).send("The Group is Already Exist")
   newGroup
     .save()
