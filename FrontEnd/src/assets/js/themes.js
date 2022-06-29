@@ -9,7 +9,7 @@ function toggleTheme(isDarkTheme) {
     root.style.setProperty('--textHover', '#dbdfff');
     root.style.setProperty('--colorForMainPart', '#4c4c4c');
     root.style.setProperty('--cardColor', '#262626');
-    root.style.setProperty('--btnPrimary', '#FFFFFF');
+    root.style.setProperty('--btnPrimary', '#161616');
     root.style.setProperty('--BarColor', '#FFFFFF');
   } else {
     root.style.setProperty('--navColor', '#fff');
@@ -17,7 +17,7 @@ function toggleTheme(isDarkTheme) {
     root.style.setProperty('--textHover', '#4154f1');
     root.style.setProperty('--colorForMainPart', '#f6f9ff');
     root.style.setProperty('--cardColor', '#FFFFFF');
-    root.style.setProperty('--btnPrimary', '#0d6efd');
+    root.style.setProperty('--btnPrimary', '#012970');
     root.style.setProperty('--BarColor', '#000000');
   }
 }
@@ -32,7 +32,7 @@ function firstCheck() {
     root.style.setProperty('--textHover', '#dbdfff');
     root.style.setProperty('--colorForMainPart', '#4c4c4c');
     root.style.setProperty('--cardColor', '#262626');
-    root.style.setProperty('--btnPrimary', '#FFFFFF');
+    root.style.setProperty('--btnPrimary', '#161616');
     root.style.setProperty('--BarColor', '#FFFFFF');
   } else {
     root.style.setProperty('--navColor', '#fff');
@@ -40,7 +40,7 @@ function firstCheck() {
     root.style.setProperty('--textHover', '#4154f1');
     root.style.setProperty('--colorForMainPart', '#f6f9ff');
     root.style.setProperty('--cardColor', '#FFFFFF');
-    root.style.setProperty('--btnPrimary', '#0d6efd');
+    root.style.setProperty('--btnPrimary', '#012970');
     root.style.setProperty('--BarColor', '#000000');
   }
 }
