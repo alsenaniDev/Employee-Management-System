@@ -10,7 +10,7 @@
   --navItemHover: #FFFFFF;
   --colorForMainPart: #f6f9ff;
   --cardColor: #FFFFFF;
-  --btnPrimary: #0d6efd;
+  --btnPrimary: #012970;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -148,21 +148,37 @@ body::-webkit-scrollbar {
   border-color: var(--btnPrimary);
 }
 
+.btn-outline-primary {
+  color: var(--btnPrimary);
+  border-color: var(--btnPrimary);
+}
+
 .titleOfStats {
   color: var(--textColor);
 }
 
-.p-button {
-  margin: 5px 2px;
-  display: inline-flex;
-  cursor: pointer;
-  -webkit-user-select: none;
-  user-select: none;
-  align-items: center;
-  vertical-align: bottom;
-  text-align: center;
-  overflow: hidden;
-  position: relative;
+label {
+  color: var(--textColor);
+}
+
+.btn-primary {
+  color: var(--navColor);
+  background-color: var(--textColor);
+  border-color: var(--textColor);
+}
+
+.btn-primary:hover {
+  color: var(--navColor);
+  background-color: var(--textColor);
+  border-color: var(--textColor);
+}
+
+.btn-check:focus+.btn-primary,
+.btn-primary:focus {
+  color: var(--navColor);
+  background-color: var(--textColor);
+  border-color: var(--textColor);
+  box-shadow: 0 0 0 0.25rem rgb(255 255 255 / 0%);
 }
 
 .filter-toolbar {
