@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Permission } from 'src/app/core/utility/permission';
 import { SidebarService } from './sidebar.service';
 
 @Component({
