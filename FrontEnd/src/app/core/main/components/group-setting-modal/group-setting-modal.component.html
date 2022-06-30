@@ -14,7 +14,7 @@
           Please Enter Group Name
           <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
         </div>
-        <div style="display: flex;justify-content: space-between;">
+        <div [checkServiceRoles]="'212'" style="display: flex;justify-content: space-between;">
           <div class="col-md-4">
             <label class="form-label" id="label-name">Enter Group Name</label>
             <input type="text" class="form-control" [(ngModel)]="inputValue">
@@ -36,8 +36,8 @@
               <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th [checkServiceRoles]="'213'">Edit</th>
+                <th [checkServiceRoles]="'214'">Delete</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data let-editing="editing" let-ri="rowIndex">
@@ -58,7 +58,7 @@
                   </p-cellEditor>
                 </td>
 
-                <td style="text-align:center">
+                <td [checkServiceRoles]="'213'" style="text-align:center">
                   <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
                     (click)="onRowEditInit(data)"
                     class="p-element p-ripple p-button-help p-button p-component"></button>
@@ -72,7 +72,7 @@
                     class="p-element p-ripple p-button-danger p-button p-component"></button>
                 </td>
 
-                <td>
+                <td [checkServiceRoles]="'214'">
                   <button type="button" class="btn btn-danger" id="{{data.id}}" (click)="deleteGroup(data._id)">
                     <i class="ri-delete-bin-6-line"></i>
                   </button>

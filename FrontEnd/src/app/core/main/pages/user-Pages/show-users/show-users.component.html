@@ -34,9 +34,9 @@
 
       <ng-template pTemplate="right">
         <div class="container-button-header">
-          <button pButton pRipple label="Message" icon="pi pi-send" class="p-button-info"
+          <button [checkServiceRoles]="'125'" pButton pRipple label="Message" icon="pi pi-send" class="p-button-info"
             [disabled]="!selectedUsers || !selectedUsers.length"></button>
-          <button *ngIf="checkuserRole('Admin' , 'Super-Admin')" pButton pRipple icon="pi pi-trash" [label]="'Delete'"
+          <button [checkServiceRoles]="'123'" pButton pRipple icon="pi pi-trash" [label]="'Delete'"
             class="p-button-danger" (click)="deleteSelectedUsers()"
             [disabled]="!selectedUsers || !selectedUsers.length || checkSelectedUsers(selectedUsers)"></button>
         </div>
@@ -44,9 +44,7 @@
     </p-toolbar>
 
     <ng-container *ngIf="show; else table">
-      <p-progressSpinner [style]="{width: '50px', height: '50px', left: '50%',
-    transform: 'translate(-50%, 0px)'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)"
-        animationDuration=".5s">gtyhujuyhyhyhyhhn</p-progressSpinner>
+      <app-spinner></app-spinner>
     </ng-container>
 
     <ng-template #table>
@@ -77,8 +75,8 @@
             </th>
             <th>Groups
             </th>
-            <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Edit</th>
-            <th *ngIf="checkuserRole('Admin' , 'Super-Admin')">Delete</th>
+            <th [checkServiceRoles]="'121'">Edit</th>
+            <th  [checkServiceRoles]="'122'">Delete</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-User let-rowIndex="rowIndex">
@@ -100,13 +98,13 @@
                 <span>{{group}}</span> <br>
               </ng-container>
             </td>
-            <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
+            <td  [checkServiceRoles]="'121'">
               <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2"
                 (click)="ToggleUpdateUserInfo(User)" [disabled]="(checkSuperRole(User , 'Admin' , 'Super-Admin') )|| 
                 (selectedUsers?.length > 1) || 
                 (selectedUsers?.length == 1 && selectedUsers[0]?.userId != User.userId)"></button>
             </td>
-            <td *ngIf="checkuserRole('Admin' , 'Super-Admin')">
+            <td  [checkServiceRoles]="'122'">
               <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
                 (click)="deleteUser(User.userId)" [disabled]="(checkSuperRole(User , 'Admin' , 'Super-Admin') ) 
                 || (selectedUsers?.length > 1) || 

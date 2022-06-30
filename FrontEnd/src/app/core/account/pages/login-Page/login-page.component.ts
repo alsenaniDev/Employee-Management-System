@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertMessageServices } from 'src/app/core/main/utility/services/alert/AlertMessage.Services';
+import { ServiceRoles } from 'src/app/core/main/utility/services/common/serviceRoles.service';
+import { Permission } from 'src/app/core/utility/permission';
 import { LogInService } from './login-page.service'
 
 @Component({
@@ -20,15 +22,16 @@ export class LoginPageComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private router: Router,
     private alertMessage: AlertMessageServices,
-    private LogInService: LogInService) {
+    private LogInService: LogInService,
+    private serviceRoles: ServiceRoles) {
 
   }
 
   ngOnInit(): void {
-    console.log(localStorage.getItem(''));
-    
+
     this.LogInService.bindData();
     this.loginFormFunction();
+    // this.getServiceRoles()
   }
 
   loginFormFunction() {
@@ -44,6 +47,7 @@ export class LoginPageComponent implements OnInit {
         if (res) {
           this.router.navigate(["main/home"])
           localStorage.setItem("userInfo", JSON.stringify(res))
+          this.getServiceRoles()
         }
       },
       error: (err: any) => {
@@ -51,4 +55,15 @@ export class LoginPageComponent implements OnInit {
       }
     })
   }
+
+  getServiceRoles() {
+    this.serviceRoles.getServiceRoles().subscribe({
+      next: (res) => {
+        localStorage.setItem("serviceRoles", JSON.stringify(res))
+      }, error(err) {
+        console.log(err);
+      },
+    })
+  }
+
 }
