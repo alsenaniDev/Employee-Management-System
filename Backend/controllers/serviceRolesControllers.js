@@ -3,8 +3,13 @@ const serviceRoles = require("../models/serviceRoles")
 const getAllServiceRoles = async (req, res) => {
     try {
         let serviceRole = await serviceRoles.find()
-            .populate("serviceId")
-            .populate("rolesIds")
+            .populate({
+                path: "serviceId"
+            })
+            .populate({
+                path: "rolesIds",
+                select: "-CreatedAt -CreateBy -createAt -__v"
+            })
 
         res.json(serviceRole)
     } catch (error) {
@@ -25,6 +30,15 @@ const addServiceRoles = async (req, res) => {
         )
         .catch(err => console.log(err))
 }
+
+// const CheckServiceRole = async (req , res) => {
+//     try {
+//         const serviceRoleFound = await serviceRoles.findOne()
+//         res.json(serviceRoleFound)
+//     } catch (error) {
+//         res.status(500).json(error.message)
+//     }
+// }
 
 module.exports = {
     getAllServiceRoles,

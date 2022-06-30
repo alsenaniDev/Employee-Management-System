@@ -15,6 +15,7 @@ export class LoginPageComponent implements OnInit {
   show: boolean = false
   email: string;
   password: string;
+  userRole: string;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -24,6 +25,8 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(localStorage.getItem(''));
+    
     this.LogInService.bindData();
     this.loginFormFunction();
   }
@@ -41,7 +44,7 @@ export class LoginPageComponent implements OnInit {
         if (res) {
           this.router.navigate(["main/home"])
           localStorage.setItem("userInfo", JSON.stringify(res))
-        } 
+        }
       },
       error: (err: any) => {
         this.alertMessage.Warning(err.error)

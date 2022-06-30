@@ -1,35 +1,45 @@
 <aside id="sidebar" class="sidebar">
-
-  <ul class="sidebar-nav" id="sidebar-nav">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/main/home">
-        <i class="ri-home-4-line"></i>
-        <span>Home</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-        <i class="ri-user-6-line"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li *ngIf="checkRole('Admin' , 'Super-Admin')">
-          <a routerLink="/main/add-users">
-            <i class="bi bi-circle"></i><span>Add new user</span>
+  <ng-container *ngIf="false; else sideBar">
+    <app-spinner></app-spinner>
+  </ng-container>
+  <ng-template #sideBar>
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/main/home">
+          <i class="ri-home-4-line"></i>
+          <span>Home</span>
+        </a>
+      </li>
+      <!-- <ng-container *ngIf="'checkServiceRoles'; else home">
+        <app-spinner></app-spinner>
+      </ng-container> -->
+      <!-- <ng-template #home> -->
+        <li class="nav-item">
+          <a  [checkServiceRoles]="'1'" class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <i class="ri-user-6-line"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
+          <ul [checkServiceRoles]="'1'" id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li [checkServiceRoles]="'1'">
+              <a routerLink="/main/add-users">
+                <i class="bi bi-circle"></i><span>Add new user</span>
+              </a>
+            </li>
+            <li [checkServiceRoles]="'1'">
+              <a routerLink="/main/show-users">
+                <i class="bi bi-circle"></i><span>Show users</span>
+              </a>
+            </li>
+          </ul>
         </li>
-        <li>
-          <a routerLink="/main/show-users">
-            <i class="bi bi-circle"></i><span>Show users</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li *ngIf="checkRole('Admin' , 'Super-Admin')" class="nav-item">
-      <a class="nav-link" routerLink="/main/settings">
-        <i class="ri-settings-3-line"></i>
-        <span>Settings</span>
-      </a>
-    </li>
-  </ul>
-
+      <!-- </ng-template> -->
+      
+     
+      <li [checkServiceRoles]="'2'" [roleId]="userProfile.roleId" class="nav-item">
+        <a class="nav-link" routerLink="/main/settings">
+          <i class="ri-settings-3-line"></i>
+          <span>Settings</span>
+        </a>
+      </li>
+    </ul>
+  </ng-template>
 </aside>
