@@ -8,9 +8,9 @@ import { SidebarService } from './sidebar.service';
 })
 export class SidebarComponent implements OnInit {
   userProfile: any = [];
+  show: boolean = true;
 
   constructor(private sidebarService: SidebarService) {
-
   }
 
   ngOnInit(): void {
@@ -18,8 +18,7 @@ export class SidebarComponent implements OnInit {
     this.userProfile = data.data
   }
 
-  checkRole(userRole: string, superRole?: string) {
-    return this.userProfile.role == userRole || this.userProfile.role == superRole;
-  }
-
+  // checkRole(userRole: string, superRole?: string) {
+  //   return this.userProfile.role == userRole || this.userProfile.role == superRole;
+  // }
 }

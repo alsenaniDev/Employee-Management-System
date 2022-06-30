@@ -34,6 +34,7 @@ const login = async (req, res) => {
       data: {
         userId: response.userId._id,
         fullName: response.userId.firstName + " " + response.userId.lastName,
+        roleId: response.roleId._id,
         role: response.roleId.name,
         groups: response.groupsId.map((groupName) => groupName.name)
       }

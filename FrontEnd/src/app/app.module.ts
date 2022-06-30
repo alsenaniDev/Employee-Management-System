@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PhoneFormat } from '../app/core/main/utility/pips/phoneFormat.pipe'
 import { RoleBorderDirective } from './core/main/utility/directives/roleBorder.directive';
+import { CheckServiceRoles } from './core/main/utility/directives/checkServiceRoles.directive';
 
 import { NavbarComponent } from '../app/core/main/utility/common/navbar/navbar.component';
 import { SidebarComponent } from '../app/core/main/utility/common/sidebar/sidebar.component';
@@ -80,7 +81,8 @@ import { SpinnerComponent } from './core/main/utility/common/spinner/spinner.com
     InputWarring,
     PhoneNumberValidation,
     RoleBorderDirective,
-    SpinnerComponent
+    SpinnerComponent,
+    CheckServiceRoles
   ],
   imports: [
     BrowserModule,
