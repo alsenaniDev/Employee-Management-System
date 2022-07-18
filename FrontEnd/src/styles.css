@@ -132,10 +132,45 @@ body::-webkit-scrollbar {
 }
 
 .card {
-  background-color: var(--cardColor);
+  background-color: var(--navColor);
+  color: var(--textColor);
+  box-shadow: none;
 }
 
+.profile .profile-card h2 {
+  color: var(--textColor);
+}
+
+.profile .profile-overview .label {
+  color: var(--textColor);
+}
+
+
+
+
 .card-title {
+  color: var(--textColor);
+}
+
+.profile .profile-overview .card-title {
+  color: var(--textColor);
+}
+
+.nav-tabs-bordered .nav-link.active {
+  color: var(--textHover);
+  border-bottom: 2px solid var(--textHover);
+  background-color: var(--navColor);
+}
+
+.profile .profile-edit label {
+  color: var(--textColor);
+}
+
+.nav-tabs-bordered .nav-link:hover, .nav-tabs-bordered .nav-link:focus {
+  color: var(--textHover);
+}
+
+.nav-tabs-bordered .nav-link {
   color: var(--textColor);
 }
 
@@ -245,6 +280,52 @@ label {
   background-color: var(--textColor);
 }
 
+
+
+.p-datatable .p-datatable-thead>tr>th {
+  background: var(--navColor) !important;
+  color: var(--BarColor);
+}
+
+.p-toolbar {
+  background: var(--navColor) !important;
+  color: var(--BarColor);
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+  background: var(--navColor) !important;
+  color: var(--BarColor);
+}
+
+.p-datatable .p-paginator-bottom {
+  background: var(--navColor) !important;
+}
+
+.p-paginator .p-paginator-current {
+  color: var(--BarColor);
+}
+
+/* .p-element.ng-star-inserted{
+  background: var(--navColor) !important;
+} */
+
+.p-paginator .p-paginator-pages .p-paginator-page {
+  color: var(--BarColor);
+}
+
+.p-paginator .p-paginator-first, .p-paginator .p-paginator-prev, .p-paginator .p-paginator-next, .p-paginator .p-paginator-last {
+  color: var(--BarColor);
+}
+
+.p-datatable .p-datatable-footer {
+  color: var(--BarColor);
+  background-color: var(--navColor);
+}
+
+.spinner-table {
+  background-color: var(--navColor);
+}
+
 @media only screen and (max-width: 600px) {
   .filter-toolbar {
     display: block;
@@ -254,4 +335,5 @@ label {
     margin-left: 0;
     margin-bottom: 10px;
   }
+
 }

@@ -15,33 +15,33 @@
           </ng-container>
 
           <ng-template #card>
-            <div [checkServiceRoles]="'3'"  class="container-chart">
+            <div [checkServiceRoles]="'3'" class="container-chart">
               <div [style]="{'width': '35%'}">
                 <h5 class="titleOfStats">Stats Of Roles</h5>
-                <p-chart class="aaa" type="bar" [options]="options" [data]="basicDataRoles"></p-chart>
+                <p-chart type="bar" [options]="options" [data]="basicDataRoles"></p-chart>
               </div>
 
               <div [style]="{'width': '35%'}">
                 <h5 class="titleOfStats">Stats Of Groups</h5>
-                <p-chart [options]="options" type="bar" [data]="basicDataGroups"></p-chart>
+                <p-chart #chartt [options]="options" type="bar" [data]="basicDataGroups"></p-chart>
               </div>
             </div>
             <!-- <ng-template #groups> -->
-              <div class="col-xxl-4 col-md-6">
-                <div class="card info-card sales-card">
-                  <div class="card-body">
-                    <h5 class="card-title">My Groups</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="ri-user-star-fill"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>{{userInfo?.groups.length}}</h6>
-                      </div>
+            <div id="group-card" class="col-xxl-4  col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">My Groups</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="ri-user-star-fill"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{userInfo?.groups.length}}</h6>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
             <!-- </ng-template> -->
           </ng-template>
         </div>

@@ -25,7 +25,7 @@
           </div>
           <div class="button-filter">
             <button (click)="filterTableData()" pButton pRipple type="button" label="Filter"
-              style="width: 70px; letter-spacing:1px; font-weight: 100px; background-color: #0288D1;"
+              style=" background-color: #0288D1;"
               class="p-button-raised"></button>
           </div>
         </div>
@@ -44,11 +44,11 @@
     </p-toolbar>
 
     <ng-container *ngIf="show; else table">
-      <app-spinner></app-spinner>
+      <app-spinner class="spinner-table"></app-spinner>
     </ng-container>
 
     <ng-template #table>
-      <p-table #dt [value]="getUsers" [rows]="pageLimit" [paginator]="true" [(selection)]="selectedUsers" [lazy]="true"
+      <p-table  #dt [value]="getUsers" [rows]="pageLimit" [paginator]="true" [(selection)]="selectedUsers" [lazy]="true"
         [rowHover]="true" dataKey="userId" (onPage)="onPage($event)" [totalRecords]="allRecords"
         currentPageReportTemplate="Showing {first} to {last} of {{allRecords}} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="header">

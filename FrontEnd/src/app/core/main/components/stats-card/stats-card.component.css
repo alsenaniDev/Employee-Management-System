@@ -3,3 +3,10 @@
   flex-direction: row;
   justify-content: space-around;
 }
+
+#group-card{
+  margin-left: 0%;
+  margin-top: 80px;
+}
+ 
+

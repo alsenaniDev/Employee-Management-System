@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
     this.isDarkTheme = localStorage.getItem("theme") == "dark" ? true : false;
     let data = JSON.parse(localStorage.getItem("userInfo") || "null")
     this.userProfile = data.data
-    this.stats.GetGroupsAndRoles()
+    // this.stats.GetGroupsAndRoles()
 
   }
 
@@ -37,12 +37,13 @@ export class NavbarComponent implements OnInit {
     if (this.isDarkTheme) {
       localStorage.setItem('theme', 'dark')
       this.isDarkTheme = true
-
+      // this.stats.basicDataGroups.datasets.backgroundColor = "white"
+      // console.log(this.stats.color);      
     } else {
       localStorage.setItem('theme', 'light')
       this.isDarkTheme = false
-
+      // this.stats.basicDataGroups.datasets.backgroundColor = "#012970"
     }
-    this.stats.GetGroupsAndRoles()
+
   }
 }

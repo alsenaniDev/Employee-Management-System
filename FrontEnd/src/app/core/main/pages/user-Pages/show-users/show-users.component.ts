@@ -11,6 +11,7 @@ import { CommonService } from '../../../utility/services/common/settings.service
 import { SettingsDto } from '../../settings/Settings.Dto';
 import { getAllUsersModelDto, pagedResultRequest, pagedResultResponse } from '../../../utility/Models/pagedResult.dto';
 import { Table } from 'primeng/table';
+import { Permission } from 'src/app/core/utility/permission';
 
 
 @Component({
@@ -317,7 +318,7 @@ export class ShowUsersComponent {
           this.allRecords = res.totalRecords;
           this.show = false;
           console.log(res.result);
-
+          
         }
       })
 

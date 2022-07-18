@@ -1,5 +1,5 @@
 export class Permission {
-    static SERVICE_ROLES: any
+    static SERVICE_ROLES : any 
 
     static getServiceRoles(): any {
         return this.SERVICE_ROLES
