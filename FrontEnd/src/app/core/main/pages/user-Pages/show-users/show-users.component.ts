@@ -12,6 +12,7 @@ import { SettingsDto } from '../../settings/Settings.Dto';
 import { getAllUsersModelDto, pagedResultRequest, pagedResultResponse } from '../../../utility/Models/pagedResult.dto';
 import { Table } from 'primeng/table';
 import { Permission } from 'src/app/core/utility/permission';
+import { async } from 'rxjs';
 
 
 @Component({
@@ -182,8 +183,15 @@ export class ShowUsersComponent {
       this.userServices.UpdateUserInfo(userDto).subscribe({
         next: (res: any) => {
           if (res) {
+            var request: getAllUsersModelDto = new getAllUsersModelDto();
+            request.pageNum = this.pageNumber
+            if (this.selectedRole || this.selectedGroups) {
+              request.role = this.selectedRole;
+              request.groups = this.selectedGroups
+            }
+            this.getUsersPaginator(request)
             this.alertMessage.success("The User is updated")
-            this.getUsersPaginator()
+
           } else {
             this.alertMessage.Warning("The User Was Not Update")
           }
@@ -219,6 +227,13 @@ export class ShowUsersComponent {
           next: (res: string) => {
             if (res) {
               this.alertMessage.success("The User is Delete")
+              var request: getAllUsersModelDto = new getAllUsersModelDto();
+              request.pageNum = this.pageNumber
+              if (this.selectedRole || this.selectedGroups) {
+                request.role = this.selectedRole;
+                request.groups = this.selectedGroups
+              }
+              this.getUsersPaginator(request)
             } else {
               this.alertMessage.Warning("The User Was Not Delete")
             }
@@ -226,7 +241,6 @@ export class ShowUsersComponent {
             return err
           }
         });
-        this.getUsersPaginator()
       }
     })
 
@@ -243,7 +257,13 @@ export class ShowUsersComponent {
             if (res) {
               this.alertMessage.success(res.message)
               this.selectedUsers = []
-              this.getUsersPaginator()
+              var request: getAllUsersModelDto = new getAllUsersModelDto();
+              request.pageNum = this.pageNumber
+              if (this.selectedRole || this.selectedGroups) {
+                request.role = this.selectedRole;
+                request.groups = this.selectedGroups
+              }
+              this.getUsersPaginator(request)
             }
           }, error: (err: any) => {
             this.alertMessage.error("Action Valid")
@@ -318,7 +338,7 @@ export class ShowUsersComponent {
           this.allRecords = res.totalRecords;
           this.show = false;
           console.log(res.result);
-          
+
         }
       })
 

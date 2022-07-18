@@ -34,7 +34,7 @@ export class StatsCardComponent implements OnInit {
   // Chart Options
   style = getComputedStyle(document.body)
   options: any;
-  labelsColor: string = this.style.getPropertyValue('--labelsColor');
+  // labelsColor: string = this.style.getPropertyValue('--labelsColor');
   @ViewChild("chartt") chart: UIChart;
 
   constructor(private statsCardServices: StatsCardServices,
@@ -49,25 +49,25 @@ export class StatsCardComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            color: this.labelsColor
+            color:' rgb(170, 170, 170)'
           }
         }
       },
       scales: {
         x: {
           ticks: {
-            color: this.labelsColor
+            color:' rgb(170, 170, 170)'
           },
           grid: {
-            color: this.labelsColor
+            color:' rgb(170, 170, 170)'
           }
         },
         y: {
           ticks: {
-            color: this.labelsColor
+            color:' rgb(170, 170, 170)'
           },
           grid: {
-            color: this.labelsColor
+            color:' rgb(170, 170, 170)'
           }
         }
       }
@@ -137,7 +137,7 @@ export class StatsCardComponent implements OnInit {
             datasets: [
               {
                 label: 'Users',
-                backgroundColor: this.labelsColor,
+                backgroundColor:' rgb(170, 170, 170)',
                 data: this.groupsCount
               }]
 
@@ -151,7 +151,7 @@ export class StatsCardComponent implements OnInit {
             datasets: [
               {
                 label: 'Users',
-                backgroundColor: this.labelsColor,
+                backgroundColor:' rgb(170, 170, 170)',
                 data: this.rolesCount,
               }]
           }

@@ -2,15 +2,10 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 :root {
-  --labelsColor: rgb(170, 170, 170);
-  --BarColor: rgb(38, 0, 252);
-  --navColor: #fff;
+  --primaryColor: #fff;
   --textColor: #012970;
   --textHover: #4154f1;
-  --navItemHover: #FFFFFF;
-  --colorForMainPart: #f6f9ff;
-  --cardColor: #FFFFFF;
-  --btnPrimary: #012970;
+  --secondaryColor: #f6f9ff;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -29,11 +24,11 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  background: var(--colorForMainPart);
+  background: var(--secondaryColor);
 }
 
 #main {
-  background: var(--colorForMainPart);
+  background: var(--secondaryColor);
   height: 100vh;
 }
 
@@ -54,7 +49,7 @@ body::-webkit-scrollbar {
   z-index: 997;
   height: 60px;
   box-shadow: 0px 2px 20px rgb(1 41 112 / 10%);
-  background-color: var(--navColor);
+  background-color: var(--primaryColor);
   padding-left: 20px;
 }
 
@@ -74,11 +69,11 @@ body::-webkit-scrollbar {
 }
 
 .sidebar {
-  background-color: var(--navColor);
+  background-color: var(--primaryColor);
 }
 
 .sidebar-nav .nav-link {
-  background: var(--navColor);
+  background: var(--primaryColor);
   color: var(--textColor);
 }
 
@@ -92,7 +87,7 @@ body::-webkit-scrollbar {
 
 .sidebar-nav .nav-link.collapsed {
   color: var(--textColor);
-  background: var(--navColor);
+  background: var(--primaryColor);
 }
 
 .sidebar-nav .nav-content a,
@@ -111,7 +106,7 @@ body::-webkit-scrollbar {
 
 .sidebar-nav .nav-link:hover {
   color: var(--textColor);
-  background: var(--navColor);
+  background: var(--primaryColor);
 }
 
 .bi-chevron-down::before {
@@ -132,7 +127,7 @@ body::-webkit-scrollbar {
 }
 
 .card {
-  background-color: var(--navColor);
+  background-color: var(--primaryColor);
   color: var(--textColor);
   box-shadow: none;
 }
@@ -159,7 +154,7 @@ body::-webkit-scrollbar {
 .nav-tabs-bordered .nav-link.active {
   color: var(--textHover);
   border-bottom: 2px solid var(--textHover);
-  background-color: var(--navColor);
+  background-color: var(--primaryColor);
 }
 
 .profile .profile-edit label {
@@ -179,13 +174,13 @@ body::-webkit-scrollbar {
 }
 
 .btn-outline-primary {
-  color: var(--btnPrimary);
-  border-color: var(--btnPrimary);
+  color: var(--textColor);
+  border-color: var(--textColor);
 }
 
 .btn-outline-primary {
-  color: var(--btnPrimary);
-  border-color: var(--btnPrimary);
+  color: var(--textColor);
+  border-color: var(--textColor);
 }
 
 .titleOfStats {
@@ -197,20 +192,20 @@ label {
 }
 
 .btn-primary {
-  color: var(--navColor);
+  color: var(--primaryColor);
   background-color: var(--textColor);
   border-color: var(--textColor);
 }
 
 .btn-primary:hover {
-  color: var(--navColor);
+  color: var(--primaryColor);
   background-color: var(--textColor);
   border-color: var(--textColor);
 }
 
 .btn-check:focus+.btn-primary,
 .btn-primary:focus {
-  color: var(--navColor);
+  color: var(--primaryColor);
   background-color: var(--textColor);
   border-color: var(--textColor);
   box-shadow: 0 0 0 0.25rem rgb(255 255 255 / 0%);
@@ -283,47 +278,73 @@ label {
 
 
 .p-datatable .p-datatable-thead>tr>th {
-  background: var(--navColor) !important;
-  color: var(--BarColor);
+  background: var(--primaryColor) !important;
+  color: var(--textColor);
+}
+
+.modal-body, .modal-header, .modal-footer {
+  background: var(--primaryColor) !important;
+}
+
+.modal-title {
+  color: var(--textColor);
+}
+
+.btn-outline-primary {
+  color: var(--textColor);
+  background-color: var(--primaryColor);
+  border: 1px solid var(--textColor);
+}
+
+.btn-outline-primary:hover {
+  color: var(--primaryColor);
+  background-color: var(--textColor);
+  border: 1px solid var(--primaryColor);
+}
+
+.close {
+  background-color: var(--primaryColor);
+  border: none;
+  color: var(--textColor);
 }
 
 .p-toolbar {
-  background: var(--navColor) !important;
-  color: var(--BarColor);
+  background: var(--primaryColor) !important;
+  color: var(--textColor);
 }
 
 .p-datatable .p-datatable-tbody>tr>td {
-  background: var(--navColor) !important;
-  color: var(--BarColor);
+  background: var(--primaryColor) !important;
+  color: var(--textColor);
 }
 
 .p-datatable .p-paginator-bottom {
-  background: var(--navColor) !important;
+  background: var(--primaryColor) !important;
 }
 
 .p-paginator .p-paginator-current {
-  color: var(--BarColor);
+  color: var(--textColor);
 }
 
 /* .p-element.ng-star-inserted{
-  background: var(--navColor) !important;
+  background: var(--primaryColor) !important;
 } */
 
 .p-paginator .p-paginator-pages .p-paginator-page {
-  color: var(--BarColor);
+  color: var(--textColor);
 }
 
 .p-paginator .p-paginator-first, .p-paginator .p-paginator-prev, .p-paginator .p-paginator-next, .p-paginator .p-paginator-last {
-  color: var(--BarColor);
+  color: var(--textColor);
 }
 
 .p-datatable .p-datatable-footer {
-  color: var(--BarColor);
-  background-color: var(--navColor);
+  color: var(--textColor);
+  background-color: var(--primaryColor);
 }
 
 .spinner-table {
-  background-color: var(--navColor);
+  background-color: var(--primaryColor);
 }
 
 @media only screen and (max-width: 600px) {
