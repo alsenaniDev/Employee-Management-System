@@ -12,7 +12,29 @@
     outline: 0;
 }
 
-.button-filter{
-    margin-top: 25px;
+.button-filter {
+    margin-top: 29px;
     margin-left: 10px;
 }
+
+.p-button-raised {
+    width: 70px;
+    letter-spacing: 1px;
+    font-weight: 100px;
+}
+
+.filter-toolbar {
+    display: flex;
+    align-items: center;
+}
+
+.table {
+    background: white !important;
+}
+
+/* .p-element {
+    background: black;
+} */
+/* .p-datatable{
+    color: red;
+} */

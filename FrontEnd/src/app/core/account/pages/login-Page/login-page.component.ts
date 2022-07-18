@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertMessageServices } from 'src/app/core/main/utility/services/alert/AlertMessage.Services';
 import { ServiceRoles } from 'src/app/core/main/utility/services/common/serviceRoles.service';
 import { Permission } from 'src/app/core/utility/permission';
+import { ServiceRolesPermission } from 'src/app/core/utility/Services/service-roles';
 import { LogInService } from './login-page.service'
 
 @Component({
@@ -23,7 +24,9 @@ export class LoginPageComponent implements OnInit {
     private router: Router,
     private alertMessage: AlertMessageServices,
     private LogInService: LogInService,
-    private serviceRoles: ServiceRoles) {
+    private serviceRoles: ServiceRoles,
+    private serviceRolesPermission: ServiceRolesPermission
+  ) {
 
   }
 
@@ -47,7 +50,7 @@ export class LoginPageComponent implements OnInit {
         if (res) {
           this.router.navigate(["main/home"])
           localStorage.setItem("userInfo", JSON.stringify(res))
-          this.getServiceRoles()
+          this.serviceRolesPermission.getServiceRoles()
         }
       },
       error: (err: any) => {
@@ -56,14 +59,5 @@ export class LoginPageComponent implements OnInit {
     })
   }
 
-  getServiceRoles() {
-    this.serviceRoles.getServiceRoles().subscribe({
-      next: (res) => {
-        localStorage.setItem("serviceRoles", JSON.stringify(res))
-      }, error(err) {
-        console.log(err);
-      },
-    })
-  }
 
 }

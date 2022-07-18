@@ -1,4 +1,4 @@
-import { Component, Injectable, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Injectable, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { StatsCardServices } from './stats-card.service';
 import { UsersServices } from "../../pages/user-Pages/users.service";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
@@ -8,7 +8,7 @@ import { group } from '@angular/animations';
 import { SettingsDto } from '../../pages/settings/Settings.Dto';
 import { data } from 'jquery';
 import { mergeMap, of } from 'rxjs';
-
+import { UIChart } from 'primeng/chart';
 
 @Injectable({ providedIn: "root" })
 
@@ -35,7 +35,7 @@ export class StatsCardComponent implements OnInit {
   style = getComputedStyle(document.body)
   options: any;
   labelsColor: string = this.style.getPropertyValue('--labelsColor');
-  BarColor: string = this.style.getPropertyValue('--BarColor');
+  @ViewChild("chartt") chart: UIChart;
 
   constructor(private statsCardServices: StatsCardServices,
     private userServices: UsersServices,
@@ -77,7 +77,17 @@ export class StatsCardComponent implements OnInit {
   ngOnInit(): void {
     this.getUserInfo()
     this.getUserInfoById()
+    // this.changeThemes()
+
+
   }
+  ngAfterViewInit() {
+    console.log(this.chart);
+
+  }
+  // ngAfterViewInit() {
+  //   this.changeThemes()
+  // }
 
   checkRole(userRole: string, superRole?: string) {
     return this.userInfo?.role == userRole || this.userInfo?.role == superRole;
@@ -109,7 +119,8 @@ export class StatsCardComponent implements OnInit {
 
 
   GetGroupsAndRoles() {
-
+    let BarColor = this.style.getPropertyValue('--BarColor');
+    let theme = localStorage.getItem("theme")
     of(this.statsCardServices.getUsersGroupsStats(), this.statsCardServices.getUsersRolesStats())
       .pipe(
         mergeMap((data
@@ -118,7 +129,6 @@ export class StatsCardComponent implements OnInit {
         ))
       )
       .subscribe((data) => {
-        let theme = localStorage.getItem("theme")
         if (Object.keys(data)[0] == "groupsNames") {
           this.groups = data.groupsNames
           this.groupsCount = data.groupsStats
@@ -127,7 +137,7 @@ export class StatsCardComponent implements OnInit {
             datasets: [
               {
                 label: 'Users',
-                backgroundColor: theme == "dark" ? "white" : "#012970",
+                backgroundColor: this.labelsColor,
                 data: this.groupsCount
               }]
 
@@ -141,25 +151,18 @@ export class StatsCardComponent implements OnInit {
             datasets: [
               {
                 label: 'Users',
-                backgroundColor: this.BarColor,
+                backgroundColor: this.labelsColor,
                 data: this.rolesCount,
               }]
           }
 
 
         }
+        console.log(theme);
+
       })
   }
 
-  refresh() {
-    window.location.reload()
-  }
 
-  changeThemes(theme: string) {
-    if (theme == "dark") {
-      this.BarColor = "#FFF"
-    } else {
-      this.BarColor = "#012970"
-    }
-  }
+
 }
