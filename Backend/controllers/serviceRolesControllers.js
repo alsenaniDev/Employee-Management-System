@@ -17,21 +17,7 @@ const getAllServiceRoles = async (req, res) => {
     }
 }
 
-const addServiceRoles = async (req, res) => {
-    const newServiceRoles = new serviceRoles({
-        serviceId: req.body.serviceId,
-        rolesIds: req.body.rolesIds,
-    })
-
-    newServiceRoles
-        .save()
-        .then(result =>
-            res.json(result)
-        )
-        .catch(err => console.log(err))
-}
-
-// const CheckServiceRole = async (req , res) => {
+// const IsServiceContainsRole = async (req, res) => {
 //     try {
 //         const serviceRoleFound = await serviceRoles.findOne()
 //         res.json(serviceRoleFound)
@@ -40,7 +26,52 @@ const addServiceRoles = async (req, res) => {
 //     }
 // }
 
+const addServiceRoles = async (req, res) => {
+    try {
+        let service = await serviceRoles.findOne({
+            serviceId: req.body.serviceId,
+        })
+
+        let newRolesIds = service.rolesIds.concat(req.body.rolesIds);
+
+        serviceRoles.findOneAndUpdate({
+                serviceId: req.body.serviceId,
+            }, {
+                rolesIds: newRolesIds,
+            },
+            (err, role) => {
+                res.json({
+                    result: role,
+                })
+            }
+        )
+    } catch (error) {
+        res.send("Error: No such service")
+    }
+}
+
+const deleteServiceRole = async (req, res) => {
+    let service = await serviceRoles.findOne({
+        serviceId: req.params.serviceId,
+    })
+
+    let roles = service.rolesIds.filter((role) => role != req.params.roleId)
+
+    serviceRoles.findOneAndUpdate({
+            serviceId: req.params.serviceId,
+        }, {
+            rolesIds: roles,
+        },
+        (err, role) => {
+            res.json({
+                result: role,
+            })
+        }
+    )
+}
+
 module.exports = {
     getAllServiceRoles,
-    addServiceRoles
+    addServiceRoles,
+    deleteServiceRole
 }
