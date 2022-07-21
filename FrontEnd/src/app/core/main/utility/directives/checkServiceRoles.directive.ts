@@ -19,14 +19,10 @@ export class CheckServiceRoles implements AfterViewInit {
         let data = JSON.parse(localStorage.getItem("userInfo") || "null");
         let res = JSON.parse(localStorage.getItem("serviceRoles") || "[]")
         this.userProfile = data.data
-        console.log(res);
 
         this.serviceRoleFound = res?.find((service: any) => service.serviceId.code == this.serviceCode)
-        if (!this.serviceRoleFound?.rolesIds.map((roleId: any) => roleId._id).includes(this.userProfile.roleId)) {
+        if (!this.serviceRoleFound?.rolesIds.includes(this.userProfile.roleId)) {
             this.elementRef.nativeElement.style.display = 'none';
         }
-
     }
-
-
 }

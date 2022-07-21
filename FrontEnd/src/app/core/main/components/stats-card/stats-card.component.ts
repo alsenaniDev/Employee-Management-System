@@ -3,11 +3,7 @@ import { StatsCardServices } from './stats-card.service';
 import { UsersServices } from "../../pages/user-Pages/users.service";
 import { getUserInfoModel } from "../../utility/Models/get-user-model.dto";
 import { getAllUsersModelDto, pagedResultResponse } from '../../utility/Models/pagedResult.dto';
-import { CommonService } from '../../utility/services/common/settings.service';
-import { group } from '@angular/animations';
-import { SettingsDto } from '../../pages/settings/Settings.Dto';
-import { data } from 'jquery';
-import { mergeMap, of } from 'rxjs';
+import { mergeMap, of, Subscription } from 'rxjs';
 import { UIChart } from 'primeng/chart';
 
 @Injectable({ providedIn: "root" })
@@ -30,64 +26,23 @@ export class StatsCardComponent implements OnInit {
   rolesCount: number[]
   optionsObject: any
   getUsers: getUserInfoModel[]
+  chartOptions: any
+
+  subscription: Subscription;
+
 
   // Chart Options
   style = getComputedStyle(document.body)
-  options: any;
-  // labelsColor: string = this.style.getPropertyValue('--labelsColor');
-  @ViewChild("chartt") chart: UIChart;
+  @ViewChild("chart") chart: UIChart;
 
   constructor(private statsCardServices: StatsCardServices,
-    private userServices: UsersServices,
-    private CommonService: CommonService
-  ) {
-
-
-
-    this.options = {
-      indexAxis: 'x',
-      plugins: {
-        legend: {
-          labels: {
-            color:' rgb(170, 170, 170)'
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color:' rgb(170, 170, 170)'
-          },
-          grid: {
-            color:' rgb(170, 170, 170)'
-          }
-        },
-        y: {
-          ticks: {
-            color:' rgb(170, 170, 170)'
-          },
-          grid: {
-            color:' rgb(170, 170, 170)'
-          }
-        }
-      }
-    };
-  }
+    private userServices: UsersServices
+  ) { }
 
   ngOnInit(): void {
     this.getUserInfo()
     this.getUserInfoById()
-    // this.changeThemes()
-
-
   }
-  ngAfterViewInit() {
-    console.log(this.chart);
-
-  }
-  // ngAfterViewInit() {
-  //   this.changeThemes()
-  // }
 
   checkRole(userRole: string, superRole?: string) {
     return this.userInfo?.role == userRole || this.userInfo?.role == superRole;
@@ -117,10 +72,7 @@ export class StatsCardComponent implements OnInit {
     })
   }
 
-
   GetGroupsAndRoles() {
-    let BarColor = this.style.getPropertyValue('--BarColor');
-    let theme = localStorage.getItem("theme")
     of(this.statsCardServices.getUsersGroupsStats(), this.statsCardServices.getUsersRolesStats())
       .pipe(
         mergeMap((data
@@ -137,10 +89,15 @@ export class StatsCardComponent implements OnInit {
             datasets: [
               {
                 label: 'Users',
-                backgroundColor:' rgb(170, 170, 170)',
-                data: this.groupsCount
+                data: this.groupsCount,
+                backgroundColor: [
+                  "#42A5F5",
+                  "#66BB6A",
+                  "#FFA726",
+                  "#26C6DA",
+                  "#7E57C2"
+                ],
               }]
-
           }
         }
         else {
@@ -151,18 +108,20 @@ export class StatsCardComponent implements OnInit {
             datasets: [
               {
                 label: 'Users',
-                backgroundColor:' rgb(170, 170, 170)',
                 data: this.rolesCount,
+                backgroundColor: [
+                  "#FF6384",
+                  "#36A2EB",
+                  "#FFCE56"
+                ],
+                hoverBackgroundColor: [
+                  "#FF6384",
+                  "#36A2EB",
+                  "#FFCE56"
+                ]
               }]
           }
-
-
         }
-        console.log(theme);
-
       })
   }
-
-
-
 }

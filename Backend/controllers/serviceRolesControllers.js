@@ -6,10 +6,6 @@ const getAllServiceRoles = async (req, res) => {
             .populate({
                 path: "serviceId"
             })
-            .populate({
-                path: "rolesIds",
-                select: "-CreatedAt -CreateBy -createAt -__v"
-            })
 
         res.json(serviceRole)
     } catch (error) {
@@ -17,14 +13,17 @@ const getAllServiceRoles = async (req, res) => {
     }
 }
 
-// const IsServiceContainsRole = async (req, res) => {
-//     try {
-//         const serviceRoleFound = await serviceRoles.findOne()
-//         res.json(serviceRoleFound)
-//     } catch (error) {
-//         res.status(500).json(error.message)
-//     }
-// }
+const getServiceRoles = async (req, res) => {
+    try {
+        let serviceRole = await serviceRoles.findOne({
+            serviceId: req.params.serviceId
+        }).select('rolesIds')
+
+        res.json(serviceRole)
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
 
 const addServiceRoles = async (req, res) => {
     try {
@@ -73,5 +72,6 @@ const deleteServiceRole = async (req, res) => {
 module.exports = {
     getAllServiceRoles,
     addServiceRoles,
-    deleteServiceRole
+    deleteServiceRole,
+    getServiceRoles
 }
