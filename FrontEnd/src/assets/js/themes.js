@@ -1,35 +1,21 @@
-function toggleTheme(isDarkTheme) {
-  isDarkTheme = !isDarkTheme;
-  let theme = localStorage.getItem("theme");
+function toggleTheme(theme) {
   let root = document.querySelector(":root");
+  let sun = document.getElementById("sun");
+  let moon = document.getElementById("moon");
 
-  if (isDarkTheme) {
-    root.style.setProperty('--primaryColor', '#3a3a3a');
-    root.style.setProperty('--textColor', '#fff');
-    root.style.setProperty('--textHover', '#dbdfff');
-    root.style.setProperty('--secondaryColor', '#4c4c4c');
+  if (theme === "dark") {
+    root.setAttribute("theme", "dark");
+    sun.style.display = "";
+    moon.style.display = "none";
+    localStorage.setItem("theme", "dark");
   } else {
-    root.style.setProperty('--primaryColor', '#fff');
-    root.style.setProperty('--textColor', '#012970');
-    root.style.setProperty('--textHover', '#4154f1');
-    root.style.setProperty('--secondaryColor', '#f6f9ff');
+    root.setAttribute("theme", "light");
+    sun.style.display = "none";
+    moon.style.display = "";
+    localStorage.setItem("theme", "light");
   }
 }
 
-function firstCheck() {
-  let theme = localStorage.getItem("theme");
-  let root = document.querySelector(":root");
-  if (theme === 'dark') {
-    root.style.setProperty('--primaryColor', '#3a3a3a');
-    root.style.setProperty('--textColor', '#fff');
-    root.style.setProperty('--textHover', '#dbdfff');
-    root.style.setProperty('--secondaryColor', '#4c4c4c');
-  } else {
-    root.style.setProperty('--primaryColor', '#fff');
-    root.style.setProperty('--textColor', '#012970');
-    root.style.setProperty('--textHover', '#4154f1');
-    root.style.setProperty('--secondaryColor', '#f6f9ff');
-  }
-}
-
-window.onload = firstCheck();
+document.addEventListener("readystatechange", function () {
+  toggleTheme(localStorage.getItem("theme"))
+});

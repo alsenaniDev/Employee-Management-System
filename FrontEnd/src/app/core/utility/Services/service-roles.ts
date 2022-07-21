@@ -12,7 +12,6 @@ export class ServiceRolesPermission {
     constructor(private serviceRoles: ServiceRoles) {  }
 
      getServiceRoles() {
-
         this.serviceRoles.getServiceRoles().subscribe({
             next: (res: any) => {
                 Permission.setServiceRoles(res)

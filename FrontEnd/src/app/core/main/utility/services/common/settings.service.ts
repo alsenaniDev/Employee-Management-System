@@ -28,4 +28,8 @@ export class CommonService {
     getRolesCount() {
         return this.http.get<number>(SettingsProxy.GET_ROLES_COUNT);
     }
+
+    getServiceRoles() {
+        return this.http.get<number>(SettingsProxy.GET_SERVICE_ROLES);
+    }
 }

@@ -18,12 +18,14 @@
             <div [checkServiceRoles]="'3'" class="container-chart">
               <div [style]="{'width': '35%'}">
                 <h5 class="titleOfStats">Stats Of Roles</h5>
-                <p-chart type="bar" [options]="options" [data]="basicDataRoles"></p-chart>
+                <!-- <p-chart type="bar" [options]="options" [data]="basicDataRoles"></p-chart> -->
+                <p-chart type="doughnut" [data]="basicDataRoles" [options]="chartOptions"></p-chart>
               </div>
 
               <div [style]="{'width': '35%'}">
                 <h5 class="titleOfStats">Stats Of Groups</h5>
-                <p-chart #chartt [options]="options" type="bar" [data]="basicDataGroups"></p-chart>
+                <!-- <p-chart #chartt [options]="options" type="bar" [data]="basicDataGroups"></p-chart> -->
+                <p-chart type="polarArea" [data]="basicDataGroups" [options]="chartOptions"></p-chart>
               </div>
             </div>
             <!-- <ng-template #groups> -->

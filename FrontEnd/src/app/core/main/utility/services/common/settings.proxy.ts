@@ -9,4 +9,8 @@ export class SettingsProxy {
     // **************** ROLES END POINTS **************** //
     public static GET_ROLES = this.rootURL + "/roles/show/";
     public static GET_ROLES_COUNT = this.rootURL + "/roles/getCount";
+
+    // **************** SERVICE ROLES END POINTS **************** //
+    public static GET_SERVICE_ROLES = this.rootURL + "/serviceRoles/show";
+    // public static GET_SERVICE_ROLES_COUNT = this.rootURL + "/roles/getCount";
 }

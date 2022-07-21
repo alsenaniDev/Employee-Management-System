@@ -1,0 +1,42 @@
+<div class="modal fade" id="serviceRoleModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="model-title">Services Role Modal</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" id="label-table"></label>
+        <p-accordion *ngFor="let service of services">
+          <p-accordionTab header="{{service.serviceId.name}}" (click)="getServiceId(service.serviceId._id)">
+            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+              <div class="row">
+                <div class="col-lg-10 col-md-10">
+                  <h5 class="card-title">Service Roles <span>| After select roles please click on edit button</span>
+                  </h5>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                  <h5 class="card-title">
+                    <button type="button" class="btn btn-outline-primary">
+                      Edit
+                    </button>
+                  </h5>
+                </div>
+              </div>
+              <div class="row" *ngFor="let role of roles">
+                <div class="col-lg-9 col-md-8">
+                  <input type="checkbox" name="" (change)="getRoleId(role._id)"
+                    [checked]="service.rolesIds.includes(role._id)">
+                  {{role.name}}
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+        </p-accordion>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

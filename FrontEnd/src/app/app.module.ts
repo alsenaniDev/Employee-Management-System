@@ -55,6 +55,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ChartModule } from 'primeng/chart';
 import { SpinnerComponent } from './core/main/utility/common/spinner/spinner.component'
+import { ServiceRoleSettingModalComponent } from './core/main/components/serviceRole-setting-modal/serviceRole-setting-modal.component';
 
 
 
@@ -74,6 +75,7 @@ import { SpinnerComponent } from './core/main/utility/common/spinner/spinner.com
     FormEditComponent,
     GroupSettingModalComponent,
     RoleSettingModalComponent,
+    ServiceRoleSettingModalComponent,
     HomeComponent,
     LoginPageComponent,
     StatsCardComponent,

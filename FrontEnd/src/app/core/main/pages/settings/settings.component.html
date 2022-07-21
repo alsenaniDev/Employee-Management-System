@@ -72,6 +72,37 @@
               </div>
             </div>
           </div>
+
+          <div [checkServiceRoles]="'21'" class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Service Roles <span>| Users Permissions</span></h5>
+                <hr class="hr-card" />
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class=" ri-mini-program-line"></i>
+                  </div>
+                  <div class="ps-3">
+
+                    <ng-container *ngIf="show; else counterGroup">
+                      <app-spinner></app-spinner>
+                    </ng-container>
+
+                    <ng-template #counterGroup>
+                      <h6 id="groups-count">{{groupsNumber}}</h6>
+                    </ng-template>
+
+                  </div>
+                </div>
+                <div class="btn-card">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#serviceRoleModal" (click)="getServiceRoles()">
+                    Show
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -79,5 +110,6 @@
 
   <app-Group-Setting-modal></app-Group-Setting-modal>
   <app-Role-Setting-modal></app-Role-Setting-modal>
+  <app-ServiceRole-Setting-modal></app-ServiceRole-Setting-modal>
 
 </main>
